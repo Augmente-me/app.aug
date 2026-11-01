@@ -318,14 +318,264 @@ dialog::backdrop{background:var(--backdrop);backdrop-filter:blur(4px);-webkit-ba
 }
 @media (min-width:761px){.top-right .gear{display:none}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+
+
+/* Calendrier */
+.cal-detail .row .pill{display:none}
+.cal-detail .row{gap:10px}
+.cal-layout{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:22px;align-items:start}
+.cal-month{text-transform:capitalize;min-width:150px}
+.cal-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px}
+.cal-head{margin-bottom:8px}
+.cal-head span{text-align:center;font-size:10.5px;letter-spacing:1.5px;text-transform:uppercase;color:var(--faint)}
+.cal-day{position:relative;min-height:104px;display:flex;flex-direction:column;align-items:stretch;gap:6px;text-align:left;padding:9px 9px 8px;border-radius:12px;border:1px solid var(--glass-border);background:var(--glass-soft);color:var(--ink);cursor:pointer;transition:border-color .15s,background .15s;min-width:0}
+.cal-day:hover{border-color:var(--line-2)}
+.cal-day.out{opacity:.38}
+.cal-day.today .cal-num{background:var(--accent);color:var(--on-accent)}
+.cal-day.sel{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
+.cal-num{align-self:flex-start;display:grid;place-items:center;min-width:26px;height:26px;border-radius:999px;padding:0 6px;font-family:var(--serif);font-size:17px;font-weight:500;font-variant-numeric:lining-nums}
+.cal-meter{display:inline-block;width:100%;height:3px;border-radius:3px;background:var(--glass-border);overflow:hidden;vertical-align:middle}
+.cal-meter i{display:block;height:100%;width:calc(var(--v)*100%);background:var(--accent);border-radius:3px}
+.cal-tasks{display:grid;gap:3px;min-width:0}
+.cal-chip{font-size:11px;line-height:1.3;padding:2px 6px;border-radius:6px;background:var(--glass);border:1px solid var(--glass-border);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--ink-2)}
+.cal-chip.done{text-decoration:line-through;color:var(--faint)}
+.cal-more{font-size:10.5px;color:var(--faint);padding-left:2px}
+.cal-dot{display:none;place-items:center;min-width:17px;height:17px;padding:0 4px;border-radius:999px;background:var(--accent);color:var(--on-accent);font-size:10px;font-weight:600}
+.cal-legend{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.cal-legend .cal-meter{width:34px}
+.cal-legend .cal-dot{display:inline-grid}
+.cal-detail h2{text-transform:none}
+.cal-detail h2::first-letter{text-transform:uppercase}
+.cal-int{font-family:var(--serif);font-style:italic;font-size:18px;color:var(--ink-2);margin:10px 0 0}
+.cal-h{font-family:var(--sans);font-size:11px;letter-spacing:1.8px;text-transform:uppercase;color:var(--faint);font-weight:500;margin:22px 0 4px}
+@media (max-width:1100px){.cal-layout{grid-template-columns:1fr}}
+@media (max-width:760px){
+  .cal-card{padding:14px 10px}
+  .cal-grid{gap:4px}
+  .cal-day{min-height:58px;padding:6px 4px;align-items:center;gap:5px;border-radius:10px}
+  .cal-num{align-self:center;font-size:15px;min-width:24px;height:24px}
+  .cal-tasks{display:none}
+  .cal-day .cal-dot{display:grid;position:absolute;top:3px;right:3px;min-width:14px;height:14px;font-size:9px}
+  .cal-meter{height:2px}
+  .cal-head span{font-size:9.5px;letter-spacing:1px}
+}
+
+
+/* Rappels */
+[hidden]{display:none!important}
+.bell{position:relative}
+.bell-n{position:absolute;top:2px;right:1px;min-width:16px;height:16px;padding:0 4px;border-radius:999px;background:var(--danger);color:var(--bg);font-size:10px;font-weight:600;display:grid;place-items:center;line-height:1;font-variant-numeric:tabular-nums}
+.pill.late{border-color:var(--danger);color:var(--danger)}
+.late-card{margin-bottom:22px}
+.late-row{flex-wrap:wrap;row-gap:10px}
+.late-row .copy{min-width:180px}
+.late-txt{color:var(--danger)!important}
+.resched{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.cal-chip.late{border-color:var(--danger);color:var(--danger)}
+.ic-soft{color:var(--faint);display:grid}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.field-row .field{margin-bottom:0}
+.field-err{color:var(--danger);font-size:12.5px;margin:8px 0 0}
+.field-err:empty{display:none}
+.ics-btn{margin-top:14px}
+.link-btn{background:none;border:0;padding:0;cursor:pointer;font:inherit}
+.toggle-row{border-top:1px solid var(--line);padding-top:16px}
+.toggle-row input[type=time]{width:auto;flex-shrink:0}
+dialog#rem{width:min(600px,calc(100vw - 32px))}
+#rem-body .row:first-of-type{border-top:0}
+
+/* Écran de connexion */
+.auth{position:fixed;inset:0;z-index:40;display:grid;place-items:center;overflow-y:auto;
+  padding:max(20px,env(safe-area-inset-top)) max(16px,env(safe-area-inset-right)) max(20px,env(safe-area-inset-bottom)) max(16px,env(safe-area-inset-left));
+  background:var(--auth-veil);-webkit-backdrop-filter:blur(18px);backdrop-filter:blur(18px)}
+.auth-card{width:min(420px,100%);background:var(--glass-strong);border:1px solid var(--glass-border);border-radius:24px;padding:34px 30px 26px;display:grid;
+  box-shadow:inset 0 1px 0 var(--glass-hi),0 30px 80px -24px rgba(0,0,0,.55);-webkit-backdrop-filter:blur(28px) saturate(160%);backdrop-filter:blur(28px) saturate(160%)}
+.auth-mono{width:52px;height:52px;margin-bottom:16px}
+.auth-card .brand{font-size:36px}
+.auth-card .tagline{margin-top:6px}
+#auth-title{font-family:var(--serif);font-weight:500;font-size:25px;margin:22px 0 0}
+.auth-tabs{display:flex;margin:16px 0 2px;width:100%}
+.auth-tabs button{flex:1;justify-content:center}
+.auth-msg{font-size:13px;color:var(--danger);margin:6px 0 0;line-height:1.5}
+.auth-msg:empty{display:none}
+.auth-msg.ok{color:var(--ok)}
+.auth-submit{width:100%;justify-content:center;padding:12px 16px;margin-top:14px}
+.auth-submit:disabled{opacity:.6;cursor:progress}
+.auth-forgot{background:none;border:0;cursor:pointer;justify-self:start;margin-top:12px;padding:0;font:inherit;font-size:12.5px}
+.auth-skip{width:100%;justify-content:center}
+body.auth-open{overflow:hidden}
+@media (max-width:760px){.auth-card{padding:28px 20px 22px;border-radius:22px}.field-row{grid-template-columns:1fr 1fr}.late-row .resched{width:100%}}
+
+
+/* ===== Méthode, offres, admin ===== */
+.side-quick{width:100%;justify-content:center;margin-top:22px}
+.fab{display:none}
+.star{color:var(--accent)}
+.plan-cta{display:flex;justify-content:space-between;align-items:center;gap:22px;margin-bottom:22px;background:linear-gradient(135deg,rgba(122,84,54,.30),var(--glass) 60%)}
+.plan-cta h2{font-size:30px;margin-bottom:6px}
+.gentle{color:var(--muted)!important;font-style:italic;font-family:var(--serif);font-size:14.5px!important}
+.cue{font-style:italic}
+.energy{margin:10px 0 2px}
+.lock{display:flex;align-items:center;gap:10px;flex-wrap:wrap;border:1px dashed var(--line-2);border-radius:12px;padding:12px 14px;font-size:13px;color:var(--ink-2);margin-top:14px}
+.btn .plus-badge{font-size:8.5px;padding:2px 6px;letter-spacing:1.2px}
+.chk.pop{animation:pop .34s ease}
+@keyframes pop{0%{transform:scale(.8)}60%{transform:scale(1.2)}100%{transform:scale(1)}}
+.halo{animation:halo 1.6s ease}
+@keyframes halo{0%{box-shadow:0 0 0 0 rgba(201,160,118,0)}35%{box-shadow:0 0 0 7px rgba(201,160,118,.35),0 0 40px rgba(201,160,118,.25)}100%{box-shadow:0 0 0 0 rgba(201,160,118,0)}}
+.all-done{border-color:rgba(201,160,118,.45)!important}
+dialog#wiz{width:min(660px,calc(100vw - 24px))}
+#wiz-body{max-height:min(62vh,620px);overflow-y:auto;padding:2px 2px 6px}
+#wiz-body h2{font-size:28px;margin:4px 0 8px}
+.wiz-steps{display:flex;gap:6px;flex-wrap:wrap;margin:14px 0 18px}
+.wiz-steps span{font-size:10.5px;letter-spacing:1.2px;text-transform:uppercase;color:var(--faint);padding:4px 10px;border-radius:999px;border:1px solid var(--glass-border)}
+.wiz-steps .on{background:var(--accent);color:var(--on-accent);border-color:var(--accent)}
+.wiz-steps .done{color:var(--ink-2)}
+.wiz-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:16px 0}
+.wiz-stats div{border:1px solid var(--glass-border);border-radius:12px;padding:14px;background:var(--glass-soft);min-width:0}
+.wiz-stats b{display:block;font-family:var(--serif);font-weight:500;font-size:30px;line-height:1.1;font-variant-numeric:lining-nums}
+.wiz-stats span{font-size:12px;color:var(--faint)}
+.wiz-place select{width:auto;max-width:52%;flex-shrink:0}
+.chip-grid{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 4px}
+.chip-grid .chip{white-space:normal;text-align:left;padding:7px 12px}
+.ai-box{margin-top:18px;border-top:1px solid var(--line);padding-top:16px}
+.ai-row small{text-transform:none}
+.quick-input{font-size:17px!important;padding:14px 16px!important;margin-top:16px}
+#quick-prev{display:flex;flex-wrap:wrap;gap:6px;align-items:center;min-height:30px;margin-top:12px}
+.qp-title{font-weight:500;margin-right:4px}
+dialog#quick{width:min(560px,calc(100vw - 24px))}
+.menu-list{display:grid;gap:2px;margin-top:12px}
+.menu-list a{display:flex;align-items:center;gap:12px;padding:12px;border-radius:10px;color:var(--ink-2)}
+.menu-list a:hover{background:var(--glass-soft);color:var(--ink)}
+#busy{position:fixed;inset:0;z-index:60;display:grid;place-items:center;background:var(--auth-veil);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+#busy>div{display:flex;gap:12px;align-items:center;padding:16px 22px;border-radius:999px;background:var(--glass-strong);border:1px solid var(--glass-border)}
+.spin{width:16px;height:16px;border-radius:50%;border:2px solid var(--line-2);border-top-color:var(--accent);animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.identity{margin-bottom:22px}
+.identity-row{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;font-family:var(--serif);font-size:22px;color:var(--ink-2)}
+.identity-row input{flex:1;min-width:220px;font-family:var(--serif)!important;font-size:21px!important;font-style:italic;background:transparent!important;border:0!important;border-bottom:1px solid var(--line-2)!important;border-radius:0!important;padding:6px 2px!important}
+.insight{border-top:1px solid var(--line);padding:12px 0}
+.insight:first-of-type{border-top:0;padding-top:4px}
+.insight p{margin:4px 0 0;color:var(--ink-2)}
+.delta{font-size:11.5px;padding:1px 7px;border-radius:999px;border:1px solid var(--line-2);margin-left:2px;font-variant-numeric:tabular-nums}
+.delta.up{color:var(--ok);border-color:var(--ok)}
+.delta.down{color:var(--danger);border-color:var(--danger)}
+.en-dot{display:block;width:8px;height:8px;border-radius:50%;margin:0 auto 6px;border:1px solid var(--line-2)}
+.en-dot.e1{background:var(--danger);border-color:var(--danger)}
+.en-dot.e2{background:var(--muted);border-color:var(--muted)}
+.en-dot.e3{background:var(--ok);border-color:var(--ok)}
+.win-line{margin:6px 0;color:var(--ink-2)}
+.win-line b{font-weight:500;color:var(--faint);margin-right:8px;font-size:12px}
+.heat-head,.heat-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px}
+.heat-head span{text-align:center;font-size:10.5px;letter-spacing:1.5px;color:var(--faint);text-transform:uppercase;margin-bottom:6px}
+.heat{aspect-ratio:1;border-radius:9px;border:1px solid var(--glass-border);position:relative;overflow:hidden;background:var(--glass-soft)}
+.heat::before{content:'';position:absolute;left:0;right:0;bottom:0;height:calc(var(--v)*100%);background:var(--accent);opacity:.32}
+.heat i{position:absolute;top:5px;left:7px;font-style:normal;font-size:11px;color:var(--ink-2);font-variant-numeric:lining-nums}
+.heat.empty{border:0;background:none}
+.heat.future{opacity:.45}
+.table-wrap{overflow-x:auto;margin-top:12px}
+.admin-table{width:100%;border-collapse:collapse;font-size:13px;min-width:460px}
+.admin-table th,.admin-table td{text-align:left;padding:10px 8px;border-bottom:1px solid var(--line);vertical-align:middle}
+.admin-table th{font-size:10.5px;letter-spacing:1.2px;text-transform:uppercase;color:var(--faint);font-weight:500}
+.admin-table td:last-child,.admin-table th:last-child{text-align:right;font-variant-numeric:tabular-nums}
+.admin-table select{width:auto;padding:6px 30px 6px 10px}
+.plans .current{box-shadow:inset 0 0 0 2px var(--accent)}
+.prose h2{font-size:21px;margin:20px 0 6px}
+.prose h2:first-child{margin-top:0}
+.prose p{color:var(--ink-2);margin:0;line-height:1.7;max-width:68ch}
+.coach-card .lock{margin-top:6px}
+@media (max-width:760px){
+  .m-hide,.head-quick{display:none!important}
+  .fab{display:grid;place-items:center;width:52px;height:52px;border-radius:50%;background:var(--accent);color:var(--on-accent);border:0;margin-top:-20px;box-shadow:0 10px 22px -8px rgba(0,0,0,.55);flex:0 0 52px;align-self:center;cursor:pointer}
+  .plan-cta{flex-direction:column;align-items:flex-start}
+  .plan-cta h2{font-size:26px}
+  .identity-row{font-size:19px}
+  .wiz-stats b{font-size:24px}
+  #wiz-body h2{font-size:24px}
+}
+@media (prefers-reduced-motion:reduce){.chk.pop,.halo,.spin{animation:none}}
+
+/* ================= Glassmorphisme ================= */
+:root{--glass:rgba(30,27,24,.52);--glass-strong:rgba(22,20,18,.70);--glass-soft:rgba(255,255,255,.035);--glass-border:rgba(255,255,255,.085);--glass-hi:rgba(255,255,255,.07);--glass-shadow:rgba(0,0,0,.38);--field:rgba(0,0,0,.26);
+  --orb-1:rgba(122,84,54,.42);--orb-2:rgba(86,74,64,.30);--orb-3:rgba(160,112,72,.20);--wm-op:.028;--auth-veil:rgba(13,12,11,.45);--blur:22px;--blur-strong:28px}
+:root[data-theme=light]{--glass:rgba(255,255,255,.56);--glass-strong:rgba(255,255,255,.72);--glass-soft:rgba(255,255,255,.45);--glass-border:rgba(22,19,15,.08);--glass-hi:rgba(255,255,255,.95);--glass-shadow:rgba(70,48,28,.10);--field:rgba(255,255,255,.62);--orb-1:rgba(201,160,118,.38);--orb-2:rgba(214,204,190,.55);--orb-3:rgba(176,138,104,.22);--wm-op:.035;--auth-veil:rgba(246,244,239,.4);--glass-bar:rgba(255,255,255,.62);--glass-top:rgba(246,244,239,.55)}
+@media (prefers-color-scheme:light){:root[data-theme=auto]{--glass:rgba(255,255,255,.56);--glass-strong:rgba(255,255,255,.72);--glass-soft:rgba(255,255,255,.45);--glass-border:rgba(22,19,15,.08);--glass-hi:rgba(255,255,255,.95);--glass-shadow:rgba(70,48,28,.10);--field:rgba(255,255,255,.62);--orb-1:rgba(201,160,118,.38);--orb-2:rgba(214,204,190,.55);--orb-3:rgba(176,138,104,.22);--wm-op:.035;--auth-veil:rgba(246,244,239,.4);--glass-bar:rgba(255,255,255,.62);--glass-top:rgba(246,244,239,.55)}}
+
+/* Fond : lueurs chaudes + monogramme en filigrane, derrière le verre */
+body{background:var(--bg)}
+body::before{content:'';position:fixed;inset:-25%;z-index:-2;pointer-events:none;
+  background:radial-gradient(38% 34% at 18% 14%,var(--orb-1),transparent 70%),radial-gradient(34% 30% at 86% 26%,var(--orb-2),transparent 70%),radial-gradient(40% 36% at 62% 92%,var(--orb-3),transparent 72%);
+  animation:drift 48s ease-in-out infinite alternate}
+body::after{content:'';position:fixed;right:-6vw;bottom:-12vh;width:min(62vw,720px);aspect-ratio:1;z-index:-1;pointer-events:none;
+  background:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20512%20512%22%20width%3D%22512%22%20height%3D%22512%22%3E%3Cpath%20fill%3D%22%23ffffff%22%20fill-rule%3D%22evenodd%22%20d%3D%22M256.00%20133.12%20L153.60%20363.52%20L358.40%20363.52%20Z%20M245.76%20176.32%20L162.56%20363.52%20L328.96%20363.52%20Z%22/%3E%3Ccircle%20cx%3D%22256.00%22%20cy%3D%22349.44%22%20r%3D%2214.08%22%20fill%3D%22%23ffffff%22/%3E%3C/svg%3E") center/contain no-repeat;opacity:var(--wm-op);filter:invert(var(--wm-inv,0))}
+:root[data-theme=light]{--wm-inv:1}
+@media (prefers-color-scheme:light){:root[data-theme=auto]{--wm-inv:1}}
+@keyframes drift{0%{transform:translate3d(0,0,0) scale(1)}50%{transform:translate3d(3%,-2%,0) scale(1.06)}100%{transform:translate3d(-2%,3%,0) scale(1.02)}}
+
+/* Surfaces en verre */
+.card,.week,.notice,.ideas,.seg,aside,header.top,dialog,#toast,.quote{
+  -webkit-backdrop-filter:blur(var(--blur)) saturate(150%);backdrop-filter:blur(var(--blur)) saturate(150%)}
+.card,.notice{background:var(--glass);border:1px solid var(--glass-border);box-shadow:inset 0 1px 0 var(--glass-hi),0 12px 32px -12px var(--glass-shadow)}
+.card{border-radius:18px}
+.week,.seg{background:var(--glass);border-color:var(--glass-border);box-shadow:inset 0 1px 0 var(--glass-hi)}
+.ideas{background:var(--glass-soft);border-color:var(--glass-border);-webkit-backdrop-filter:none;backdrop-filter:none}
+.idea{background:var(--glass);border-color:var(--glass-border)}
+.idea:hover{border-color:var(--line-2)}
+.quote{-webkit-backdrop-filter:none;backdrop-filter:none}
+aside{background:var(--glass-strong);border-right:1px solid var(--glass-border);box-shadow:inset -1px 0 0 var(--glass-hi);-webkit-backdrop-filter:blur(var(--blur-strong)) saturate(160%);backdrop-filter:blur(var(--blur-strong)) saturate(160%)}
+nav a.active{background:var(--glass-soft);box-shadow:inset 2px 0 0 var(--accent),inset 0 0 0 1px var(--glass-border)}
+nav a:hover,.side-foot a:hover,.side-foot a.active{background:var(--glass-soft)}
+header.top{position:sticky;top:0;z-index:4;background:var(--glass-top);border-bottom:1px solid var(--glass-border)}
+dialog{background:var(--glass-strong);border:1px solid var(--glass-border);border-radius:22px;box-shadow:inset 0 1px 0 var(--glass-hi),0 30px 80px -20px rgba(0,0,0,.5);-webkit-backdrop-filter:blur(var(--blur-strong)) saturate(160%);backdrop-filter:blur(var(--blur-strong)) saturate(160%)}
+dialog::backdrop{-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+#toast{box-shadow:0 10px 30px -8px var(--glass-shadow)}
+input:not([type=checkbox]):not([type=file]),select,textarea{background:var(--field);border-color:var(--glass-border)}
+input:not([type=checkbox]):not([type=file]):focus,select:focus,textarea:focus{border-color:var(--line-2)}
+.btn:not(.primary):not(.danger){background:var(--glass-soft)}
+.hero .btn:not(.primary){background:rgba(255,255,255,.06);color:#efe3d4;border-color:rgba(239,227,212,.35);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+.icon-btn:hover{background:var(--glass-soft)}
+.bar{background:var(--glass-border)}
+.chk{background:var(--field)}
+/* Bandeau bois : reflet de verre */
+.hero{box-shadow:inset 0 1px 0 rgba(255,255,255,.10),0 18px 40px -16px rgba(0,0,0,.45);border-radius:20px}
+.hero::before{content:'';position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:linear-gradient(115deg,rgba(255,255,255,.09) 0%,rgba(255,255,255,0) 38%,rgba(255,255,255,0) 70%,rgba(255,255,255,.04) 100%)}
+.ring{box-shadow:0 0 0 1px rgba(255,255,255,.06),0 8px 24px -8px rgba(0,0,0,.5)}
+.ring>div{background:rgba(35,25,16,.72);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+.plans .featured{background:linear-gradient(160deg,rgba(58,41,30,.92),rgba(27,20,15,.92))}
+
+/* Responsive : verre allégé sur mobile pour rester fluide */
+@media (max-width:760px){
+  :root{--blur:14px;--blur-strong:20px}
+  aside{background:var(--glass-bar);border-right:0;border-top:1px solid var(--glass-border);box-shadow:inset 0 1px 0 var(--glass-hi)}
+  nav a.active{background:transparent;box-shadow:none}
+  .card{border-radius:16px;box-shadow:inset 0 1px 0 var(--glass-hi),0 8px 20px -10px var(--glass-shadow)}
+  .hero{border-radius:18px}
+  body::before{inset:-40%;animation-duration:60s}
+  body::after{width:90vw;right:-20vw;bottom:-8vh}
+  dialog{border-radius:20px}
+}
+@media (min-width:761px) and (max-width:1100px){:root{--blur:18px}}
+
+/* Repli : sans prise en charge du flou, ou transparence réduite demandée */
+@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
+  .card,.notice,.week,.seg,.idea{background:var(--surface)}
+  aside,dialog{background:var(--surface)}
+  header.top{background:var(--bg)}
+}
+@media (prefers-reduced-transparency:reduce){
+  .card,.notice,.week,.seg,.idea,aside,dialog{background:var(--surface);-webkit-backdrop-filter:none;backdrop-filter:none}
+  header.top{background:var(--bg)}
+  body::before{display:none}
+}
+@media (prefers-reduced-motion:reduce){body::before{animation:none}}
 </style>
 </head>
 <body>
 <aside>
   <div class="brand-block">
     <img class="mono" src="monogramme.svg" alt="">
-    <a class="brand" href="#dashboard" aria-label="aug.mente, accueil">aug.<em>mente</em></a>
+    <a class="brand" href="#aujourdhui" aria-label="aug.mente, accueil">aug.<em>mente</em></a>
     <div class="tagline">la vie, version augmentée</div>
+    <button type="button" class="btn primary side-quick" data-act="quick"></button>
   </div>
   <div class="side-label">The Weekly System <b>Free</b></div>
   <nav id="nav" aria-label="Navigation principale"></nav>
@@ -338,14 +588,15 @@ dialog::backdrop{background:var(--backdrop);backdrop-filter:blur(4px);-webkit-ba
     <span class="crumb" id="crumb"></span>
     <div class="top-right">
       <span class="save" id="save" role="status"><i></i><span class="txt"></span></span>
+      <button class="icon-btn bell" id="bell" type="button" data-act="open-rem" aria-label="Rappels"><span class="bell-n" id="bell-n" hidden></span></button>
       <button class="icon-btn" id="theme-toggle" type="button"></button>
-      <a class="icon-btn gear" href="#reglages" aria-label="Réglages et sauvegardes"></a>
+      <button class="icon-btn gear" type="button" data-act="menu" aria-label="Menu"></button>
     </div>
   </header>
   <main id="app" tabindex="-1"></main>
   <footer class="foot">
     <span><span class="fbrand">aug.<em>mente</em></span> — la vie, version augmentée</span>
-    <span><a href="https://www.augmente.me" rel="noopener">augmente.me</a> · <a href="#offres">Free / Plus / Pro</a> · <a href="#reglages">Sauvegardes</a></span>
+    <span><a href="https://www.augmente.me" rel="noopener">augmente.me</a> · <a href="#offres">Free / Plus / Pro</a> · <a href="#confidentialite">Confidentialité</a></span>
   </footer>
 </div>
 
@@ -361,22 +612,84 @@ dialog::backdrop{background:var(--backdrop);backdrop-filter:blur(4px);-webkit-ba
   <form method="dialog">
     <h2 id="ask-title"></h2>
     <p id="ask-msg"></p>
-    <div class="dialog-actions"><button class="btn" value="no">Annuler</button><button class="btn primary" id="ask-ok" value="yes"></button></div>
+    <div class="dialog-actions"><button class="btn" id="ask-no" value="no">Annuler</button><button class="btn primary" id="ask-ok" value="yes"></button></div>
   </form>
 </dialog>
+
+<dialog id="wiz" aria-labelledby="wiz-title">
+  <form id="wiz-form" novalidate>
+    <div class="dialog-head"><p class="eyebrow" id="wiz-title" style="margin:0">Poser ma semaine</p><button type="button" class="icon-btn" data-close-wiz aria-label="Fermer"></button></div>
+    <div class="wiz-steps" id="wiz-steps"></div>
+    <div id="wiz-body"></div>
+    <div class="dialog-actions"><button type="button" class="btn" id="wiz-skip">Passer</button><button type="button" class="btn" id="wiz-back">Retour</button><button type="submit" class="btn primary" id="wiz-next">Suivant</button></div>
+  </form>
+</dialog>
+
+<dialog id="quick" aria-labelledby="quick-title">
+  <form id="quick-form" novalidate>
+    <div class="dialog-head"><h2 id="quick-title">Saisie rapide</h2><button type="button" class="icon-btn" data-close-quick aria-label="Fermer"></button></div>
+    <input id="quick-in" class="quick-input" autocomplete="off" maxlength="200" placeholder="Ex. Appeler Paul jeudi 18h rappel 30 min" aria-label="Nouvelle action" aria-describedby="quick-help">
+    <div id="quick-prev" aria-live="polite"></div>
+    <p class="help" id="quick-help">Comprend les jours (demain, jeudi, 12/11), l’heure (18h30), « rappel 30 min », « important » et #cap.</p>
+    <div class="dialog-actions"><button type="button" class="btn" data-close-quick>Annuler</button><button class="btn primary" type="submit">Ajouter</button></div>
+  </form>
+</dialog>
+
+<dialog id="menu" aria-labelledby="menu-title">
+  <div class="dialog-head"><h2 id="menu-title">Menu</h2><button type="button" class="icon-btn" data-close-menu aria-label="Fermer"></button></div>
+  <div class="menu-list" id="menu-list"></div>
+</dialog>
+
+<div id="busy" hidden><div><i class="spin"></i><span>Le coach réfléchit…</span></div></div>
+
+<dialog id="rem" aria-labelledby="rem-title">
+  <div class="dialog-head"><h2 id="rem-title">Rappels</h2><button type="button" class="icon-btn" data-close-rem aria-label="Fermer"></button></div>
+  <div id="rem-body"></div>
+</dialog>
+
+<div id="auth" class="auth" hidden>
+  <div class="auth-card" role="dialog" aria-modal="true" aria-labelledby="auth-title">
+    <img class="auth-mono" src="monogramme.svg" alt="">
+    <div class="brand">aug.<em>mente</em></div>
+    <p class="tagline">la vie, version augmentée</p>
+    <h2 id="auth-title">Bon retour</h2>
+    <div class="seg auth-tabs" role="group" aria-label="Connexion ou inscription">
+      <button type="button" data-auth="login" aria-pressed="true">Se connecter</button>
+      <button type="button" data-auth="signup" aria-pressed="false">Créer un compte</button>
+    </div>
+    <form id="auth-form" novalidate>
+      <label class="field" id="auth-email-row">E-mail<input id="auth-email" name="email" type="email" autocomplete="email" inputmode="email" autocapitalize="off" spellcheck="false" maxlength="200"></label>
+      <label class="field" id="auth-pass-row"><span id="auth-pass-label">Mot de passe</span><input id="auth-pass" name="password" type="password" autocomplete="current-password" maxlength="200"></label>
+      <p id="auth-msg" class="auth-msg" role="alert"></p>
+      <button class="btn primary auth-submit" id="auth-submit" type="submit">Se connecter</button>
+    </form>
+    <button type="button" class="link auth-forgot" data-auth="forgot" id="auth-forgot">Mot de passe oublié ?</button>
+    <div id="auth-skip-block">
+      <div class="or"><span>ou</span></div>
+      <button type="button" class="btn auth-skip" data-auth="skip">Continuer sans compte</button>
+      <p class="help" style="margin-top:10px">Sans compte, vos données restent sur cet appareil.</p>
+    </div>
+  </div>
+</div>
 
 <div id="toast" role="status" aria-live="polite"></div>
 <noscript><p style="padding:40px">aug.mente a besoin de JavaScript pour fonctionner.</p></noscript>
 
+<script src="config.js"></script>
 <script type="module">
 /* ---------- Icônes ---------- */
 const P={
+  menu:'<path d="M4 7h16M4 12h16M4 17h16"/>',
+  bell:'<path d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15z"/><path d="M10 20.5a2 2 0 0 0 4 0"/>',
+  clock:'<circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/>',
+  user:'<circle cx="12" cy="8.5" r="3.5"/><path d="M5 20c1.2-3.6 4-5.5 7-5.5s5.8 1.9 7 5.5"/>',
+  cal:'<rect x="3.5" y="5" width="17" height="15.5" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/>',
   grid:'<path d="M4 4h6.5v6.5H4zM13.5 4H20v6.5h-6.5zM4 13.5h6.5V20H4zM13.5 13.5H20V20h-6.5z"/>',
   ritual:'<circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3"/>',
   check:'<path d="M5 12.5l4.5 4.5L19 7.5"/>',
   goal:'<path d="M4 18l6-6 4 4 6-8"/><path d="M15 8h5v5"/>',
   review:'<circle cx="12" cy="12" r="8"/><path d="M12 8v4l3 2"/>',
-  gear:'<circle cx="12" cy="12" r="3"/><path d="M12 3v2.5M12 18.5V21M3 12h2.5M18.5 12H21M5.6 5.6l1.8 1.8M16.6 16.6l1.8 1.8M5.6 18.4l1.8-1.8M16.6 7.4l1.8-1.8"/>',
+  gear:'<path d="M4 7h9M17 7h3M4 17h3M11 17h9"/><circle cx="15" cy="7" r="2"/><circle cx="9" cy="17" r="2"/>',
   left:'<path d="M15 6l-6 6 6 6"/>',right:'<path d="M9 6l6 6-6 6"/>',
   plus:'<path d="M12 5v14M5 12h14"/>',edit:'<path d="M4 20h4L19 9l-4-4L4 16z"/>',
   x:'<path d="M6 6l12 12M18 6L6 18"/>',arrow:'<path d="M7 17L17 7M9 7h8v8"/>',
@@ -409,20 +722,29 @@ function validState(s){
   if(!s.goals.every(g=>g&&id(g.id)&&text(g.title)&&text(g.unit)&&Number.isFinite(g.current)&&g.current>=0&&Number.isFinite(g.target)&&g.target>0))return false;
   const ids=[...s.rituals,...s.goals].map(x=>x.id);if(new Set(ids).size!==ids.length)return false;
   return Object.entries(s.weeks).every(([k,w])=>/^\d{4}-\d{2}-\d{2}$/.test(k)&&w&&typeof w==='object'
-    &&Array.isArray(w.tasks)&&w.tasks.every(t=>t&&id(t.id)&&text(t.title)&&typeof t.done==='boolean'&&PRIOS.includes(t.priority)&&typeof t.goal==='string')
+    &&Array.isArray(w.tasks)&&w.tasks.every(t=>t&&id(t.id)&&text(t.title)&&typeof t.done==='boolean'&&PRIOS.includes(t.priority)&&typeof t.goal==='string'&&(t.day===undefined||t.day===null||(Number.isInteger(t.day)&&t.day>=0&&t.day<7))&&(t.time===undefined||t.time===null||t.time===''||/^([01]\d|2[0-3]):[0-5]\d$/.test(t.time))&&(t.remind===undefined||t.remind===null||[0,10,30,60,1440].includes(t.remind)))
     &&w.checks&&typeof w.checks==='object'&&!Array.isArray(w.checks)&&Object.values(w.checks).every(a=>Array.isArray(a)&&a.length<=7&&a.every(b=>typeof b==='boolean'))
     &&w.review&&['wins','lessons','next'].every(f=>text(w.review[f]))&&text(w.intention));
 }
 
 let state=fresh(),storageOK=true,key=monday(),filter='Toutes',search='',ui={};
-try{const raw=localStorage.getItem(KEY);if(raw){let p=null;try{p=JSON.parse(raw)}catch{}if(validState(p))state={lastExport:'',...p};else{try{localStorage.setItem(KEY+'.recuperation',raw)}catch{}throw Error('invalid')}}}catch{storageOK=false}
+let calMonth=(()=>{const d=new Date();return new Date(d.getFullYear(),d.getMonth(),1,12)})(),calSel=dateKey(new Date());
+const UID_KEY='augmente.weekly.uid';
+let cloudUid=null;try{cloudUid=localStorage.getItem(UID_KEY)}catch{}
+const storeKey=()=>cloudUid?KEY+':'+cloudUid:KEY;
+function loadLocal(k){
+  try{const raw=localStorage.getItem(k);if(!raw)return fresh();let p=null;try{p=JSON.parse(raw)}catch{}
+    if(validState(p))return{lastExport:'',...p};try{localStorage.setItem(k+'.recuperation',raw)}catch{}storageOK=false;return fresh()}
+  catch{storageOK=false;return fresh()}
+}
+state=loadLocal(storeKey());
 try{ui=JSON.parse(localStorage.getItem(UI_KEY)||'{}')||{}}catch{ui={}}
 const saveUI=()=>{try{localStorage.setItem(UI_KEY,JSON.stringify(ui))}catch{}};
 
 /* Lecture sans création : naviguer ne crée plus de semaines vides */
 const peek=k=>state.weeks[k]??blankWeek();
 const week=k=>state.weeks[k]??=blankWeek();
-const isEmptyWeek=w=>!w.tasks.length&&!w.intention&&!Object.values(w.review).some(Boolean)&&!Object.values(w.checks).some(a=>a.some(Boolean));
+const isEmptyWeek=w=>!w.tasks.length&&!w.intention&&!w.planned&&!Object.values(w.review).some(Boolean)&&!Object.values(w.checks).some(a=>a.some(Boolean))&&!(w.energy||[]).some(Boolean)&&!(w.wins7||[]).some(Boolean);
 
 function stats(k){
   const w=peek(k),checks=state.rituals.reduce((n,r)=>n+(w.checks[r.id]??[]).filter(Boolean).length,0),total=state.rituals.length*7,done=w.tasks.filter(t=>t.done).length;
@@ -442,26 +764,384 @@ const bar=(p,label)=>`<div class="bar" role="progressbar" aria-label="${esc(labe
 const empty=(title,t)=>`<div class="empty"><em>${title}</em>${t}</div>`;
 
 function setSave(status){
-  const el=$('#save');el.classList.toggle('warn',!storageOK);
-  el.querySelector('.txt').textContent=!storageOK?'Sauvegarde indisponible, exportez vos données':status||'Enregistré sur cet appareil';
-  el.title=el.querySelector('.txt').textContent;
+  const el=$('#save');let txt,warn=!storageOK;
+  if(!storageOK)txt='Sauvegarde indisponible, exportez vos données';
+  else if(cloud.user){txt=cloud.status==='error'?'Hors connexion · gardé sur l’appareil':cloud.status==='synced'?'Synchronisé':'Synchronisation…';warn=cloud.status==='error'}
+  else txt=status||'Enregistré sur cet appareil';
+  el.classList.toggle('warn',warn);el.querySelector('.txt').textContent=txt;el.title=txt;
+  const a=$('#account-status');if(a)a.textContent=syncLabel();
+}
+function persistLocal(){
+  for(const[k,w]of Object.entries(state.weeks))if(isEmptyWeek(w))delete state.weeks[k];
+  try{localStorage.setItem(storeKey(),JSON.stringify(state));storageOK=true}catch{storageOK=false;toast('Sauvegarde impossible. Exportez vos données.')}
 }
 function save(){
-  for(const[k,w]of Object.entries(state.weeks))if(isEmptyWeek(w))delete state.weeks[k];
-  try{localStorage.setItem(KEY,JSON.stringify(state));storageOK=true}catch{storageOK=false;toast('Sauvegarde impossible. Exportez vos données.')}
-  setSave();
+  state.updatedAt=new Date().toISOString();persistLocal();cloudQueue();setSave();scheduleReminders();
 }
 let saveTimer;
-function saveSoon(){setSave('Enregistrement…');clearTimeout(saveTimer);saveTimer=setTimeout(save,400)}
+function saveSoon(){setSave('Enregistrement…');clearTimeout(saveTimer);saveTimer=setTimeout(()=>{saveTimer=null;save()},400)}
 function toast(t){const el=$('#toast');el.textContent=t;el.classList.add('show');clearTimeout(toast.t);toast.t=setTimeout(()=>el.classList.remove('show'),3200)}
 
 /* ---------- Dialogues ---------- */
-function ask(title,msg,ok='Confirmer'){
-  return new Promise(res=>{const d=$('#ask');$('#ask-title').textContent=title;$('#ask-msg').textContent=msg;$('#ask-ok').textContent=ok;
-    d.returnValue='';d.onclose=()=>res(d.returnValue==='yes');d.showModal();});
+function askChoice(title,msg,ok='Confirmer',no='Annuler'){
+  return new Promise(res=>{const d=$('#ask');$('#ask-title').textContent=title;$('#ask-msg').textContent=msg;$('#ask-ok').textContent=ok;$('#ask-no').textContent=no;
+    d.returnValue='';d.onclose=()=>res(d.returnValue);d.showModal();});
 }
+const ask=async(title,msg,ok='Confirmer')=>(await askChoice(title,msg,ok,'Annuler'))==='yes';
+/* ---------- Rappels ---------- */
+const REMINDS=[['','Aucun rappel'],[0,'À l’heure prévue'],[10,'10 min avant'],[30,'30 min avant'],[60,'1 h avant'],[1440,'La veille']];
+const remLabel=m=>(REMINDS.find(r=>r[0]===m)||[,''])[1].toLowerCase();
+const allTasks=()=>Object.entries(state.weeks).flatMap(([wk,w])=>w.tasks.map(t=>({t,wk})));
+function dueEnd(t,wk){if(!Number.isInteger(t.day))return new Date(shift(wk,6)+'T23:59:59');const d=shift(wk,t.day);return new Date(d+'T'+(t.time||'23:59')+':'+(t.time?'00':'59'))}
+const isLate=(t,wk)=>!t.done&&dueEnd(t,wk)<new Date();
+const lateTasks=()=>allTasks().filter(({t,wk})=>isLate(t,wk)).sort((a,b)=>dueEnd(a.t,a.wk)-dueEnd(b.t,b.wk));
+function todayUpcoming(){const k=dateKey(new Date()),wk=monday(),di=todayIdx();return peek(wk).tasks.filter(t=>t.day===di&&!t.done&&!isLate(t,wk)).sort((a,b)=>(a.time||'99').localeCompare(b.time||'99')).map(t=>({t,wk}))}
+function remindAt(t,wk){if(t.remind===null||t.remind===undefined||!Number.isInteger(t.day))return null;const d=new Date(shift(wk,t.day)+'T'+(t.time||'09:00')+':00');return new Date(d-t.remind*60000)}
+function whenLabel(t,wk){return Number.isInteger(t.day)?`${DAYS_LONG[t.day]} ${fmt(shift(wk,t.day))}${t.time?' · '+t.time:''}`:`semaine du ${fmt(wk)}`}
+let swReg=null;
+if('serviceWorker' in navigator&&location.protocol==='https:'){navigator.serviceWorker.register('sw.js').then(r=>swReg=r).catch(()=>{})}
+const notifSupported=()=>'Notification' in window;
+function askNotifPermission(){if(!notifSupported()||Notification.permission!=='default')return;Notification.requestPermission().then(p=>{if(p==='granted')toast('Notifications activées');if(location.hash==='#reglages')render()}).catch(()=>{})}
+function notify(title,body,tag){
+  if(!notifSupported()||Notification.permission!=='granted')return;
+  const opts={body,tag,icon:'icon-192.png',badge:'icon-192.png'};
+  if(swReg)swReg.showNotification(title,opts).catch(()=>{try{new Notification(title,opts)}catch{}});else{try{new Notification(title,opts)}catch{}}
+}
+let remTimers=[];
+function fireReminder(id,ts){
+  const hit=allTasks().find(x=>x.t.id===id);if(!hit||hit.t.done)return;
+  ui.notified={...(ui.notified||{}),[id]:ts};saveUI();
+  notify('Rappel aug.mente',`${hit.t.title} · ${whenLabel(hit.t,hit.wk)}`,'task-'+id);toast('Rappel : '+hit.t.title);updateBell();
+}
+function scheduleReminders(){
+  remTimers.forEach(clearTimeout);remTimers=[];const now=Date.now();
+  for(const{t,wk}of allTasks()){
+    if(t.done)continue;const at=remindAt(t,wk);if(!at)continue;const ts=at.getTime();if(ui.notified?.[t.id]===ts)continue;
+    if(ts<=now){if(now-ts<12*3600e3)fireReminder(t.id,ts)}else if(ts-now<24*3600e3)remTimers.push(setTimeout(()=>fireReminder(t.id,ts),ts-now));
+  }
+  if(ui.nudge&&state.rituals.length){
+    const[h,m]=(ui.nudgeTime||'20:30').split(':').map(Number),at=new Date();at.setHours(h,m,0,0);const tk=dateKey(new Date());
+    if(ui.nudged!==tk){const fire=()=>{const w=peek(monday()),ti=todayIdx(),left=state.rituals.filter(r=>!w.checks[r.id]?.[ti]).length;ui.nudged=tk;saveUI();
+        if(left){const msg=`Il vous reste ${left} rituel${left>1?'s':''} à cocher aujourd’hui.`;notify('aug.mente',msg,'rituals');toast(msg)}};
+      const d=at-now;if(d<=0&&d>-3*3600e3)fire();else if(d>0)remTimers.push(setTimeout(fire,d))}
+  }
+  updateBell();
+}
+function updateBell(){
+  const n=lateTasks().length,b=$('#bell-n'),bell=$('#bell');if(!b)return;
+  bell.innerHTML=ic('bell',19)+`<span class="bell-n" id="bell-n" ${n?'':'hidden'}>${n>9?'9+':n}</span>`;
+  bell.setAttribute('aria-label',n?`Rappels, ${n} action${n>1?'s':''} en retard`:'Rappels');
+}
+function lateRow({t,wk}){
+  return `<div class="row late-row"><div class="copy"><span class="t">${esc(t.title)}</span><small class="late-txt">Prévue ${esc(whenLabel(t,wk))}</small></div>
+  <div class="resched"><button class="btn sm" data-act="move" data-id="${t.id}" data-week="${wk}" data-to="0">Aujourd’hui</button><button class="btn sm" data-act="move" data-id="${t.id}" data-week="${wk}" data-to="1">Demain</button><button class="btn sm" data-act="move-pick" data-id="${t.id}" data-week="${wk}">${ic('cal',14)}Choisir</button><button class="icon-btn" data-act="late-done" data-id="${t.id}" data-week="${wk}" aria-label="Marquer « ${esc(t.title)} » comme faite" title="C’est fait">${ic('check',17)}</button></div></div>`;
+}
+function remBody(){
+  const l=lateTasks(),td=todayUpcoming();
+  return (l.length?`<h3 class="cal-h">En retard · ${l.length}</h3>${l.map(lateRow).join('')}`:'')
+   +(td.length?`<h3 class="cal-h">Aujourd’hui</h3>${td.map(({t})=>`<div class="row"><span class="ic-soft">${ic('clock',16)}</span><div class="copy"><span class="t">${esc(t.title)}</span><small>${t.time||'Dans la journée'}${t.remind!==null&&t.remind!==undefined?' · rappel '+remLabel(t.remind):''}</small></div></div>`).join('')}`:'')
+   +(l.length?`<div class="btns"><button class="btn sm" data-act="ai-resched">${has('pro')?ic('spark',14):badge('pro')}Répartir avec le coach</button></div>`:'')+(!l.length&&!td.length?empty('Tout est à jour.','Aucune action en retard, rien de prévu aujourd’hui.'):'')
+   +`<p class="help">Astuce : pour être prévenu même app fermée, ouvrez une action et touchez « Ajouter à mon calendrier ».</p>`;
+}
+function openRem(){$('#rem-body').innerHTML=remBody();if(!$('#rem').open)$('#rem').showModal()}
+function moveTask(id,fromWk,dateStr,time){
+  const w=week(fromWk),i=w.tasks.findIndex(x=>x.id===id);if(i<0)return;const[t]=w.tasks.splice(i,1);
+  const d=new Date(dateStr+'T12:00:00'),nwk=monday(d);t.day=(d.getDay()+6)%7;if(time!==undefined)t.time=time||null;
+  week(nwk).tasks.push(t);save();render();toast('Reprogrammée '+whenLabel(t,nwk));
+}
+function icsFor(t,wk){
+  const d=shift(wk,t.day).replace(/-/g,''),pad=n=>String(n).padStart(2,'0'),now=new Date();
+  const stamp=`${now.getUTCFullYear()}${pad(now.getUTCMonth()+1)}${pad(now.getUTCDate())}T${pad(now.getUTCHours())}${pad(now.getUTCMinutes())}00Z`;
+  const txt=x=>x.replace(/\\/g,'\\\\').replace(/[,;]/g,m=>'\\'+m).replace(/\n/g,' ');
+  const lines=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//aug.mente//Weekly System//FR','CALSCALE:GREGORIAN','BEGIN:VEVENT','UID:'+t.id+'@augmente','DTSTAMP:'+stamp];
+  if(t.time){lines.push('DTSTART:'+d+'T'+t.time.replace(':','')+'00','DURATION:PT30M')}else lines.push('DTSTART;VALUE=DATE:'+d);
+  lines.push('SUMMARY:'+txt(t.title));
+  if(t.remind!==null&&t.remind!==undefined){lines.push('BEGIN:VALARM','ACTION:DISPLAY','DESCRIPTION:'+txt(t.title),'TRIGGER:'+(t.time?(t.remind?'-PT'+t.remind+'M':'PT0M'):(t.remind===1440?'-PT15H':'PT9H')),'END:VALARM')}
+  lines.push('END:VEVENT','END:VCALENDAR');
+  const url=URL.createObjectURL(new Blob([lines.join('\r\n')],{type:'text/calendar;charset=utf-8'})),a=document.createElement('a');
+  a.href=url;a.download=(t.title.normalize('NFD').replace(/[^\w]+/g,'-').replace(/^-|-$/g,'').slice(0,40)||'action')+'.ics';document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1500);
+  toast('Ouvrez le fichier pour l’ajouter à votre calendrier');
+}
+
+/* ---------- Compte et sauvegarde automatique (Supabase) ---------- */
+const CFG=window.AUGMENTE_CONFIG||{};
+const SB_SRC='https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.105.1/dist/umd/supabase.js';
+const cloud={enabled:!!(CFG.supabaseUrl&&CFG.supabaseAnonKey),sb:null,user:null,status:'local',pending:false,timer:null,lastSync:null};
+const hasData=x=>!!(x&&(x.rituals.length||x.goals.length||Object.keys(x.weeks).length||x.name));
+function loadScript(src){return new Promise((res,rej)=>{if(window.supabase?.createClient)return res();const el=document.createElement('script');el.src=src;el.onload=res;el.onerror=rej;document.head.append(el);setTimeout(()=>rej(new Error('timeout')),12000)})}
+function syncLabel(){
+  if(!cloud.user)return'';
+  if(cloud.status==='error')return'Hors connexion. Vos modifications sont gardées sur cet appareil et partiront au retour du réseau.';
+  if(cloud.status==='synced'&&cloud.lastSync)return'Dernière synchronisation à '+cloud.lastSync.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'})+'.';
+  return'Synchronisation en cours…';
+}
+async function fetchRemote(){
+  const{data,error}=await cloud.sb.from('weekly_state').select('data,updated_at').eq('user_id',cloud.user.id).maybeSingle();
+  if(error)throw error;return data&&validState(data.data)?data:null;
+}
+async function cloudPush(){
+  if(!cloud.user||!cloud.sb)return;clearTimeout(cloud.timer);cloud.status='syncing';setSave();
+  try{const{error}=await cloud.sb.from('weekly_state').upsert({user_id:cloud.user.id,data:state,updated_at:new Date().toISOString()},{onConflict:'user_id'});if(error)throw error;
+    cloud.pending=false;cloud.status='synced';cloud.lastSync=new Date()}
+  catch{cloud.pending=true;cloud.status='error'}
+  setSave();
+}
+function cloudQueue(){if(!cloud.user)return;cloud.pending=true;cloud.status='syncing';clearTimeout(cloud.timer);cloud.timer=setTimeout(cloudPush,1200)}
+function adopt(remote){state={lastExport:'',...remote.data};persistLocal();cloud.pending=false;cloud.status='synced';cloud.lastSync=new Date()}
+async function reconcile(remote){
+  if(!remote)return cloudPush();
+  const lt=state.updatedAt||'',rt=remote.data.updatedAt||remote.updated_at||'';
+  if(rt>lt){adopt(remote);render()}else if(lt>rt)await cloudPush();else{cloud.status='synced';cloud.lastSync=new Date();setSave()}
+}
+async function cloudPull(){
+  if(!cloud.user||cloud.pending||document.querySelector('dialog[open]')||document.activeElement?.matches('textarea,input'))return;
+  try{await reconcile(await fetchRemote())}catch{cloud.status='error';setSave()}
+}
+const dropAnon=()=>{try{localStorage.removeItem(KEY)}catch{}};
+async function onSignedIn(user){
+  cloud.user=user;const wasAnon=!cloudUid,anon=wasAnon?state:null;
+  if(cloudUid!==user.id){cloudUid=user.id;try{localStorage.setItem(UID_KEY,user.id)}catch{}if(!wasAnon)state=loadLocal(storeKey())}
+  let remote;try{remote=await fetchRemote()}catch{cloud.status='error';cloud.pending=true;setSave();render();return}
+  if(wasAnon){
+    const anonHas=hasData(anon);
+    if(!remote){persistLocal();await cloudPush();if(anonHas){dropAnon();toast('Vos données sont maintenant sauvegardées sur votre compte')}}
+    else if(!anonHas){adopt(remote);dropAnon()}
+    else{
+      const when=new Date(remote.updated_at).toLocaleDateString('fr-FR',{day:'numeric',month:'long',hour:'2-digit',minute:'2-digit'});
+      const c=await askChoice('Deux versions de vos données',`Votre compte contient des données enregistrées le ${when}. Cet appareil en contient aussi. Laquelle garder ? L’autre version sera remplacée.`,'Garder celles du compte','Garder celles de cet appareil');
+      if(c==='no'){persistLocal();await cloudPush();dropAnon()}else{adopt(remote);if(c==='yes')dropAnon()}
+    }
+  }else await reconcile(remote);
+  await loadProfile();setSave();render();scheduleReminders();maybeOnboard();
+}
+async function signOut(){
+  if(!await ask('Se déconnecter ?','Vos données restent sur votre compte. Elles seront retirées de cet appareil.','Se déconnecter'))return;
+  if(cloud.pending)await cloudPush();
+  if(cloud.pending&&!await ask('Modifications non synchronisées','Certaines modifications n’ont pas pu être envoyées (pas de réseau). Si vous vous déconnectez maintenant, elles seront perdues.','Me déconnecter quand même'))return;
+  try{await cloud.sb.auth.signOut()}catch{}
+  try{localStorage.removeItem(storeKey());localStorage.removeItem(UID_KEY)}catch{}
+  cloudUid=null;cloud.user=null;cloud.status='local';cloud.pending=false;profile=null;adminData=null;state=loadLocal(KEY);updateChrome();render();setSave();scheduleReminders();toast('Vous êtes déconnecté');
+}
+let authMode='login';
+function openAuth(mode='login',msg='',ok=false){
+  authMode=mode;$('#auth').hidden=false;document.body.classList.add('auth-open');syncAuth(msg,ok);
+  setTimeout(()=>$(mode==='reset'?'#auth-pass':'#auth-email')?.focus(),60);
+}
+function closeAuth(){$('#auth').hidden=true;document.body.classList.remove('auth-open')}
+function syncAuth(msg='',ok=false){
+  const m=authMode;
+  $('#auth-title').textContent={login:'Bon retour',signup:'Créer votre espace',forgot:'Mot de passe oublié',reset:'Nouveau mot de passe'}[m];
+  document.querySelectorAll('.auth-tabs [data-auth]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.auth===m));
+  $('.auth-tabs').hidden=m==='reset'||m==='forgot';
+  $('#auth-email-row').hidden=m==='reset';$('#auth-pass-row').hidden=m==='forgot';
+  $('#auth-pass-label').textContent=m==='reset'?'Nouveau mot de passe (8 caractères minimum)':m==='signup'?'Mot de passe (8 caractères minimum)':'Mot de passe';
+  $('#auth-pass').autocomplete=m==='login'?'current-password':'new-password';
+  $('#auth-submit').textContent={login:'Se connecter',signup:'Créer mon compte',forgot:'Recevoir le lien',reset:'Enregistrer le mot de passe'}[m];
+  $('#auth-forgot').hidden=m!=='login';$('#auth-forgot').textContent='Mot de passe oublié ?';
+  if(m==='forgot'){$('#auth-forgot').hidden=false;$('#auth-forgot').textContent='Revenir à la connexion';$('#auth-forgot').dataset.auth='login'}else $('#auth-forgot').dataset.auth='forgot';
+  $('#auth-skip-block').hidden=m==='reset';
+  const el=$('#auth-msg');el.textContent=msg;el.classList.toggle('ok',ok);
+}
+function authError(e){
+  const t=(e?.message||'').toLowerCase();
+  if(t.includes('invalid login'))return'E-mail ou mot de passe incorrect.';
+  if(t.includes('already registered')||t.includes('already been registered'))return'Un compte existe déjà avec cet e-mail. Connectez-vous.';
+  if(t.includes('not confirmed'))return'Confirmez d’abord votre e-mail : ouvrez le lien reçu (pensez aux spams).';
+  if(t.includes('rate limit')||e?.status===429)return'Trop de tentatives. Réessayez dans quelques minutes.';
+  if(t.includes('password'))return'Mot de passe refusé : choisissez-en un plus long ou plus varié.';
+  if(t.includes('fetch')||t.includes('network'))return'Pas de connexion internet. Réessayez dans un instant.';
+  return'Une erreur est survenue. Réessayez dans un instant.';
+}
+document.addEventListener('click',e=>{
+  const b=e.target.closest('[data-auth]');if(!b)return;const a=b.dataset.auth;
+  if(a==='skip'){ui.authSkipped=true;saveUI();closeAuth();maybeOnboard();return}
+  authMode=a;syncAuth();$(a==='reset'?'#auth-pass':'#auth-email')?.focus();
+});
+$('#auth-form').addEventListener('submit',async e=>{
+  e.preventDefault();if(!cloud.sb){syncAuth('Connexion indisponible pour le moment. Vérifiez votre réseau.');return}
+  const email=$('#auth-email').value.trim(),pass=$('#auth-pass').value,m=authMode,btn=$('#auth-submit');
+  if(m!=='reset'&&!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))return syncAuth('Saisissez une adresse e-mail valide.');
+  if(m!=='forgot'&&!pass)return syncAuth('Saisissez votre mot de passe.');
+  if((m==='signup'||m==='reset')&&pass.length<8)return syncAuth('Le mot de passe doit faire au moins 8 caractères.');
+  const label=btn.textContent;btn.disabled=true;btn.textContent='Un instant…';
+  const back=location.origin+location.pathname;
+  try{
+    if(m==='login'){const{data,error}=await cloud.sb.auth.signInWithPassword({email,password:pass});if(error)throw error;closeAuth();$('#auth-pass').value='';await onSignedIn(data.user);toast('Connecté')}
+    else if(m==='signup'){const{data,error}=await cloud.sb.auth.signUp({email,password:pass,options:{emailRedirectTo:back}});if(error)throw error;
+      if(data.session){closeAuth();$('#auth-pass').value='';await onSignedIn(data.user);toast('Compte créé')}
+      else{authMode='login';syncAuth('Compte créé. Ouvrez le lien reçu par e-mail pour l’activer, puis connectez-vous.',true)}}
+    else if(m==='forgot'){const{error}=await cloud.sb.auth.resetPasswordForEmail(email,{redirectTo:back});if(error)throw error;syncAuth('Si un compte existe pour cette adresse, un lien vient de vous être envoyé.',true)}
+    else if(m==='reset'){const{error}=await cloud.sb.auth.updateUser({password:pass});if(error)throw error;$('#auth-pass').value='';closeAuth();toast('Mot de passe modifié')}
+  }catch(err){syncAuth(authError(err))}
+  finally{btn.disabled=false;if(btn.textContent==='Un instant…')btn.textContent=label}
+});
+async function cloudInit(){
+  if(!cloud.enabled)return;
+  try{await loadScript(SB_SRC)}catch{if(cloudUid){cloud.status='error';setSave()}return}
+  cloud.sb=window.supabase.createClient(CFG.supabaseUrl,CFG.supabaseAnonKey,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true,storageKey:'augmente.auth'}});
+  cloud.sb.auth.onAuthStateChange((ev,session)=>{
+    if(ev==='PASSWORD_RECOVERY')setTimeout(()=>openAuth('reset'),0);
+    if(ev==='TOKEN_REFRESHED'&&session)cloud.user=session.user;
+    if(ev==='SIGNED_OUT'&&cloud.user){cloud.user=null;cloud.status='local';setSave()}
+  });
+  let session=null;try{({data:{session}}=await cloud.sb.auth.getSession())}catch{}
+  if(session?.user)await onSignedIn(session.user);
+  else if(cloudUid)openAuth('login','Votre session a expiré. Reconnectez-vous pour synchroniser vos données.');
+  else if(!ui.authSkipped)openAuth('login');
+}
+
+/* ---------- Offres et administration ---------- */
+const PLAN_RANK={free:0,plus:1,pro:2},PLAN_NAME={free:'Free',plus:'Plus',pro:'Pro'};
+let profile=null,adminData=null;
+const isAdmin=()=>!!profile?.is_admin;
+const previewMode=()=>!cloud.enabled;
+function plan(){
+  if(isAdmin()||previewMode())return PLAN_RANK[ui.viewAs]!==undefined?ui.viewAs:(isAdmin()?'pro':'free');
+  return PLAN_RANK[profile?.plan]!==undefined?profile.plan:'free';
+}
+const has=p=>PLAN_RANK[plan()]>=PLAN_RANK[p];
+const badge=p=>`<span class="plus-badge">${PLAN_NAME[p].toUpperCase()}</span>`;
+const lockCard=(p,what)=>`<div class="lock">${badge(p)}<span>${what} fait partie de l’offre ${PLAN_NAME[p]}.</span><a class="link" href="#offres">Voir les offres ${ic('arrow',13)}</a></div>`;
+async function loadProfile(){
+  profile=null;
+  if(cloud.user&&cloud.sb){try{const{data}=await cloud.sb.from('profiles').select('id,email,plan,is_admin,created_at').eq('id',cloud.user.id).maybeSingle();profile=data||null}catch{}}
+  updateChrome();
+}
+async function loadAdmin(){
+  if(!isAdmin())return;
+  const month=new Date().toISOString().slice(0,7);
+  try{
+    const[p,u]=await Promise.all([cloud.sb.from('profiles').select('id,email,plan,is_admin,created_at').order('created_at',{ascending:false}),cloud.sb.from('ai_usage').select('user_id,calls').eq('month',month)]);
+    if(p.error)throw p.error;
+    adminData={profiles:p.data||[],usage:Object.fromEntries((u.data||[]).map(r=>[r.user_id,r.calls]))};
+  }catch{adminData={profiles:[],usage:{},error:true}}
+  if(location.hash==='#admin')render();
+}
+async function setUserPlan(uidv,p){
+  if(!isAdmin()||!PLAN_RANK.hasOwnProperty(p))return;
+  const{error}=await cloud.sb.from('profiles').update({plan:p}).eq('id',uidv);
+  if(error){toast('Modification refusée. Vérifiez vos droits administrateur.');return}
+  const row=adminData?.profiles.find(x=>x.id===uidv);if(row)row.plan=p;
+  if(uidv===cloud.user?.id&&profile)profile.plan=p;
+  toast(`Offre ${PLAN_NAME[p]} attribuée`);render();
+}
+
+/* ---------- Méthode : repères ---------- */
+const QUOTES=['Le progrès commence par ce que l’on répète.','Une petite action faite vaut mieux qu’un grand projet remis à demain.','Faire moins, mais le faire vraiment.','Un jour manqué n’est qu’un jour. Deux, c’est un signal.','Ce qui compte se planifie. Le reste peut attendre.','On ne trouve pas le temps, on le choisit.','La régularité bat l’intensité.','Avancer lentement, c’est encore avancer.','Une semaine posée, une tête plus légère.','Célébrer les petits pas donne envie des suivants.','Le minimum d’un jour difficile compte autant qu’un grand jour.','Ce que l’on note, on peut l’ajuster.'];
+const quoteOfWeek=()=>QUOTES.at(Math.floor(Date.parse(monday()+'T12:00:00')/6048e5)%QUOTES.length);
+function ritualDoneOn(r,d){const di=(d.getDay()+6)%7;return!!state.weeks[monday(d)]?.checks[r.id]?.[di]}
+function softStreak(r){
+  const d=new Date();d.setHours(12,0,0,0);let n=0,miss=0;
+  if(!ritualDoneOn(r,d))d.setDate(d.getDate()-1);
+  for(let i=0;i<400;i++){if(ritualDoneOn(r,d)){n++;miss=0}else if(++miss>=2)break;d.setDate(d.getDate()-1)}
+  return n;
+}
+const targetPlanWeek=()=>todayIdx()>=5?shift(monday(),7):monday();
+function goalAdjust(goalId,delta){const g=state.goals.find(x=>x.id===goalId);if(g&&g.auto)g.current=Math.max(0,Math.round((g.current+delta)*100)/100)}
+function weekSummary(wk){
+  const w=peek(wk),s=stats(wk),en=(w.energy||[]).filter(Boolean);
+  return{week_start:wk,rituals_done:s.checks,rituals_possible:s.total,actions_done:s.done,actions_total:s.tasks,
+    energy_avg:en.length?Math.round(en.reduce((a,b)=>a+b,0)/en.length*10)/10:null,
+    by_day:DAYS.map((d,i)=>({day:i,rituals:state.rituals.filter(r=>w.checks[r.id]?.[i]).length,actions:w.tasks.filter(t=>t.day===i).length,energy:(w.energy||[])[i]||null}))};
+}
+
+/* ---------- Saisie rapide en langage naturel ---------- */
+function parseQuick(raw){
+  let s=' '+String(raw||'').trim()+' ',date=null,time=null,remind=null,priority='Normale',goal='',m;
+  const cut=re=>{const x=s.match(re);if(x)s=s.replace(x[0],' ');return x};
+  const base=new Date();base.setHours(12,0,0,0);
+  if((m=cut(/\s(?:avec\s)?rappel(?:\s(?:la\s)?veille|\s(\d{1,3})\s?(min(?:utes?)?|h(?:eures?)?)(?:\savant)?|\sà\sl['’]heure)?(?=\s)/i))){
+    if(/veille/i.test(m[0]))remind=1440;else if(m[1])remind=/^h/i.test(m[2])?(+m[1])*60:+m[1];else remind=0;
+    if(![0,10,30,60,1440].includes(remind))remind=[0,10,30,60,1440].reduce((a,b)=>Math.abs(b-remind)<Math.abs(a-remind)?b:a);
+  }
+  if((m=cut(/\s(?:à\s)?(\d{1,2})\s?(?:h|:)\s?(\d{2})?(?=\s)/i))){const h=+m[1],mi=+(m[2]||0);if(h<24&&mi<60)time=`${String(h).padStart(2,'0')}:${String(mi).padStart(2,'0')}`}
+  if(cut(/\saujourd['’]?hui(?=\s)|\sce\s(?:soir|matin|midi)(?=\s)/i))date=new Date(base);
+  else if(cut(/\sapr[èe]s[-\s]demain(?=\s)/i)){date=new Date(base);date.setDate(date.getDate()+2)}
+  else if(cut(/\sdemain(?=\s)/i)){date=new Date(base);date.setDate(date.getDate()+1)}
+  else if((m=cut(/\s(?:le\s|ce\s)?(lundi|mardi|mercredi|jeudi|vendredi|samedi|dimanche)(\sprochain)?(?=\s)/i))){const idx=DAYS_LONG.indexOf(m[1].toLowerCase());let diff=(idx-todayIdx()+7)%7;if(m[2]&&diff===0)diff=7;date=new Date(base);date.setDate(date.getDate()+diff)}
+  else if((m=cut(/\s(?:le\s)?(\d{1,2})\/(\d{1,2})(?=\s)/))){date=new Date(base);date.setMonth(+m[2]-1,+m[1]);if(date<base)date.setFullYear(date.getFullYear()+1)}
+  if(cut(/\s(?:!|urgent|important|prioritaire)(?=\s)/i))priority='Haute';
+  if((m=cut(/\s#([^\s#]+)(?=\s)/))){const w=m[1].toLowerCase();const g=state.goals.find(x=>x.title.toLowerCase().includes(w));if(g)goal=g.id}
+  if(remind!==null&&!date)date=new Date(base);
+  let title=s.replace(/\s+/g,' ').trim().replace(/\s(?:à|le|ce|pour|et)$/i,'').trim().slice(0,160);
+  title=title.charAt(0).toUpperCase()+title.slice(1);
+  return{title,date:date?dateKey(date):null,time,remind,priority,goal};
+}
+function quickPreview(p){
+  const bits=[];
+  if(p.date){const d=new Date(p.date+'T12:00:00');bits.push(d.toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'short'}))}else bits.push('cette semaine');
+  if(p.time)bits.push(p.time);if(p.remind!==null)bits.push('rappel '+remLabel(p.remind));if(p.priority==='Haute')bits.push('priorité haute');
+  const g=state.goals.find(x=>x.id===p.goal);if(g)bits.push('cap · '+g.title);
+  return p.title?`<span class="qp-title">${esc(p.title)}</span>${bits.map(b=>`<span class="pill">${esc(b)}</span>`).join('')}`:'<span class="help" style="margin:0">Écrivez une action, avec un jour, une heure ou un rappel si besoin.</span>';
+}
+function addQuick(p){
+  if(!p.title)return false;
+  let wk=monday(),day=null;if(p.date){const d=new Date(p.date+'T12:00:00');wk=monday(d);day=(d.getDay()+6)%7}
+  week(wk).tasks.push({id:uid(),title:p.title,done:false,priority:p.priority,goal:p.goal,day,time:p.time,remind:p.remind});
+  if(p.remind!==null)askNotifPermission();
+  save();render();toast('Ajoutée · '+(Number.isInteger(day)?whenLabel({day,time:p.time},wk):'cette semaine'));return true;
+}
+function openQuick(){$('#quick-in').value='';$('#quick-prev').innerHTML=quickPreview(parseQuick(''));$('#quick').showModal();setTimeout(()=>$('#quick-in').focus(),40)}
+
+/* ---------- Coach IA (Pro) ---------- */
+function setBusy(on,txt='Le coach réfléchit…'){const b=$('#busy');b.querySelector('span').textContent=txt;b.hidden=!on}
+async function coach(task,payload){
+  if(!has('pro')){toast('Le coach fait partie de l’offre Pro.');location.hash='#offres';return null}
+  if(!cloud.user||!cloud.sb){toast(previewMode()?'Aperçu : le coach répond une fois l’app reliée à Supabase.':'Connectez-vous pour utiliser le coach.');if(cloud.enabled)openAuth('login');return null}
+  if(!state.aiConsent){
+    const ok=await ask('Activer le coach IA ?','Pour vous répondre, le coach envoie un résumé des données utiles à la demande (titres, chiffres, notes de bilan) à notre serveur, puis à Claude, le modèle d’IA d’Anthropic. Vous pouvez le désactiver à tout moment dans les Réglages.','Activer le coach');
+    if(!ok)return null;state.aiConsent=true;save();
+  }
+  setBusy(true);
+  try{
+    const{data,error}=await cloud.sb.functions.invoke('coach',{body:{task,payload}});
+    if(error){let msg='Le coach n’a pas pu répondre. Réessayez dans un instant.';try{const j=await error.context?.json?.();if(j?.error)msg=j.error}catch{}toast(msg);return null}
+    const r=data?.result;if(!r||typeof r!=='object')throw 0;
+    if(typeof r.care==='string'&&r.care.trim()){await askChoice('Un mot du coach',r.care.slice(0,600),'Merci','Fermer');return null}
+    return r;
+  }catch{toast('Le coach n’a pas pu répondre. Réessayez dans un instant.');return null}
+  finally{setBusy(false)}
+}
+const cleanTitle=t=>typeof t==='string'?t.replace(/\s+/g,' ').trim().slice(0,160):'';
+const okTime=t=>typeof t==='string'&&/^([01]\d|2[0-3]):[0-5]\d$/.test(t)?t:null;
+function coachPayloadPlan(wk){
+  const prev=shift(wk,-7),w=peek(wk);
+  return{week_start:wk,intention:w.intention||null,identity:state.identity||null,
+    caps:state.goals.map(g=>({title:g.title,current:g.current,target:g.target,unit:g.unit})),
+    rituals:state.rituals.map(r=>r.title),last_week:{...weekSummary(prev),wins:peek(prev).review.wins||null},
+    already_planned:w.tasks.map(t=>({title:t.title,day:Number.isInteger(t.day)?t.day:null,done:t.done})),
+    late:lateTasks().slice(0,10).map(({t})=>t.title)};
+}
+async function coachReview(){
+  const weeks=[0,-7,-14,-21].map(n=>shift(monday(),n));
+  const r=await coach('review',{weeks:weeks.map(weekSummary),caps:state.goals.map(g=>({title:g.title,progress_pct:goalPct(g)})),identity:state.identity||null,notes:peek(monday()).review});
+  if(!r)return;
+  ui.lastReview={at:new Date().toISOString(),insights:(Array.isArray(r.insights)?r.insights:[]).slice(0,3).map(x=>({title:cleanTitle(x?.title),detail:String(x?.detail||'').slice(0,400)})),question:String(r.question||'').slice(0,300),next_step:String(r.next_step||'').slice(0,300)};
+  saveUI();render();
+}
+async function coachSplit(goalId){
+  const g=state.goals.find(x=>x.id===goalId);if(!g)return;
+  const r=await coach('split_cap',{cap:{title:g.title,current:g.current,target:g.target,unit:g.unit},identity:state.identity||null});
+  if(!r)return;
+  const steps=(Array.isArray(r.steps)?r.steps:[]).map(x=>cleanTitle(x?.title)).filter(Boolean).slice(0,6);
+  if(!steps.length){toast('Le coach n’a pas proposé d’étapes. Réessayez.');return}
+  editor('Découper « '+g.title+' »',`<p class="lead" style="margin-top:6px">${esc(String(r.message||'Voici des étapes proposées. Gardez celles qui vous parlent.').slice(0,300))}</p>`+steps.map((t,i)=>`<label class="row ai-row"><input class="chk sq" type="checkbox" name="s${i}" checked><span class="copy"><span class="t">${esc(t)}</span></span></label>`).join('')+`<p class="help">Les étapes cochées deviennent des actions de cette semaine, liées au cap.</p>`,
+    f=>{steps.forEach((t,i)=>{if(f.get('s'+i))week(monday()).tasks.push({id:uid(),title:t,done:false,priority:'Normale',goal:g.id,day:null,time:null,remind:null})})},null,'Ajouter les étapes');
+}
+async function coachReschedule(){
+  const late=lateTasks().slice(0,15);if(!late.length){toast('Aucune action en retard.');return}
+  const load=Array.from({length:14},(_,i)=>{const d=new Date();d.setDate(d.getDate()+i);const wk=monday(d),di=(d.getDay()+6)%7;return{date:dateKey(d),actions:peek(wk).tasks.filter(t=>t.day===di&&!t.done).length}});
+  const r=await coach('reschedule',{today:dateKey(new Date()),late:late.map(({t,wk})=>({id:t.id,title:t.title,priority:t.priority,time:t.time||null,was:whenLabel(t,wk)})),load});
+  if(!r)return;
+  const lo=dateKey(new Date()),hi=load.at(-1).date;
+  const moves=(Array.isArray(r.moves)?r.moves:[]).filter(m=>m&&late.some(x=>x.t.id===m.id)&&/^\d{4}-\d{2}-\d{2}$/.test(m.date)&&m.date>=lo&&m.date<=hi);
+  if(!moves.length){toast('Le coach n’a rien proposé de valable. Réessayez.');return}
+  if($('#rem').open)$('#rem').close();
+  editor('Répartir mes retards',`<p class="lead" style="margin-top:6px">${esc(String(r.message||'Voici une répartition qui allège les jours chargés.').slice(0,300))}</p>`+moves.map((m,i)=>{const it=late.find(x=>x.t.id===m.id);const d=new Date(m.date+'T12:00:00');return`<label class="row ai-row"><input class="chk sq" type="checkbox" name="m${i}" checked><span class="copy"><span class="t">${esc(it.t.title)}</span><small>${esc(d.toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'short'}))}${okTime(m.time)?' · '+m.time:''}</small></span></label>`}).join(''),
+    f=>{moves.forEach((m,i)=>{if(!f.get('m'+i))return;const it=late.find(x=>x.t.id===m.id);if(it)moveTask(it.t.id,it.wk,m.date,okTime(m.time)??it.t.time??null)})},null,'Appliquer');
+}
+
 /* ---------- Bibliothèque d’idées (version Plus) ---------- */
-const PLUS_PREVIEW=true; // Plus en avant-première : passer à false pour réserver la bibliothèque à l’offre Plus
 const IDEAS={
   rituels:[
     ['Bien-être','Boire un grand verre d’eau au réveil'],['Bien-être','Marcher 20 minutes'],['Bien-être','10 minutes d’étirements'],['Bien-être','Respirer 5 minutes au calme'],['Bien-être','Se coucher avant 23 h'],
@@ -488,7 +1168,7 @@ const IDEAS={
   ].map(([c,t,target,unit])=>({c,t,target,unit}))
 };
 function ideasBlock(kind,taken){
-  if(!PLUS_PREVIEW)return `<div class="ideas locked"><div class="ideas-head"><span class="plus-badge">PLUS</span>Des idées prêtes à personnaliser arrivent avec l’offre Plus.</div></div>`;
+  if(!has('plus'))return `<div class="ideas locked"><div class="ideas-head"><span class="plus-badge">PLUS</span>La bibliothèque d’idées prêtes à personnaliser fait partie de l’offre Plus.</div></div>`;
   const list=IDEAS[kind],cats=['Toutes',...new Set(list.map(i=>i.c))];
   return `<div class="ideas"><div class="ideas-head"><span class="plus-badge">PLUS</span><span>Choisissez une idée, puis personnalisez-la</span></div>
   <div class="chips" role="group" aria-label="Catégories">${cats.map((c,i)=>`<button type="button" class="chip" data-cat="${esc(c)}" aria-pressed="${i===0}">${esc(c)}</button>`).join('')}</div>
@@ -510,7 +1190,8 @@ function wireIdeas(kind){
     f.title.focus();f.title.setSelectionRange(it.t.length,it.t.length);
   });
 }
-function editor(title,fields,submit,kind){
+function editor(title,fields,submit,kind,okLabel){
+  $('#editor button[type=submit]').textContent=okLabel||'Enregistrer';
   $('#modal-title').textContent=title;$('#fields').innerHTML=fields;
   $('#editor').onsubmit=e=>{e.preventDefault();if(submit(new FormData(e.target))===false)return;save();$('#modal').close();render()};
   $('#modal').classList.toggle('wide',!!kind);
@@ -519,11 +1200,24 @@ function editor(title,fields,submit,kind){
 const field=(label,name,value='',type='text',extra='')=>`<label class="field">${label}<input name="${name}" type="${type}" value="${esc(value)}" required ${type==='text'?'maxlength="160"':''} ${extra}></label>`;
 
 /* ---------- Navigation ---------- */
-const PAGES={dashboard:['Vue d’ensemble','Accueil','grid'],rituels:['Mes rituels','Rituels','ritual'],taches:['Mes tâches','Tâches','check'],objectifs:['Mes caps','Caps','goal'],bilan:['Bilan de semaine','Bilan','review']};
-const EXTRA={offres:'Les offres',reglages:'Réglages & sauvegardes'};
-$('#nav').innerHTML=Object.entries(PAGES).map(([h,[full,short,i]])=>`<a href="#${h}">${ic(i)}<span class="full">${full}</span><span class="short">${short}</span></a>`).join('');
-$('#side-foot').innerHTML=`<a href="#offres">${ic('spark')}<span>La suite, Plus & Pro</span></a><a href="#reglages">${ic('gear')}<span>Réglages & sauvegardes</span></a><div class="side-quote">Moins de bruit.<br>Plus d’essentiel.</div>`;
-$('.gear').innerHTML=ic('gear',20);
+const PAGES={aujourdhui:['Aujourd’hui','Aujourd’hui','sun',1],dashboard:['Ma semaine','Semaine','grid',1],calendrier:['Calendrier','Agenda','cal',0],rituels:['Mes rituels','Rituels','ritual',0],taches:['Mes actions','Actions','check',0],objectifs:['Mes caps','Caps','goal',1],bilan:['Bilan','Bilan','review',1]};
+const EXTRA={offres:'Les offres',reglages:'Réglages & sauvegardes',admin:'Administration',confidentialite:'Confidentialité'};
+function updateChrome(){
+  let html='',mob=0;
+  for(const[h,[full,short,i,m]]of Object.entries(PAGES)){html+=`<a href="#${h}" class="${m?'':'m-hide'}">${ic(i)}<span class="full">${full}</span><span class="short">${short}</span></a>`;if(m&&++mob===2)html+=`<button type="button" class="fab" data-act="quick" aria-label="Saisie rapide">${ic('plus',22)}</button>`}
+  $('#nav').innerHTML=html;
+  $('#side-foot').innerHTML=`${isAdmin()?`<a href="#admin">${ic('user')}<span>Administration</span></a>`:''}<a href="#offres">${ic('spark')}<span>Les offres · ${PLAN_NAME[plan()]}</span></a><a href="#reglages">${ic('gear')}<span>Réglages & sauvegardes</span></a><div class="side-quote">Moins de bruit.<br>Plus d’essentiel.</div>`;
+  $('.side-label b').textContent=PLAN_NAME[plan()];
+  const page=location.hash.slice(1)||'aujourdhui';document.querySelectorAll('nav a,.side-foot a').forEach(a=>{const on=a.hash==='#'+page;a.classList.toggle('active',on);on?a.setAttribute('aria-current','page'):a.removeAttribute('aria-current')});
+}
+function openMenu(){
+  const links=[...Object.entries(PAGES).map(([h,[full,,i]])=>[h,full,i]),...(isAdmin()?[['admin','Administration','user']]:[]),['offres','Les offres','spark'],['reglages','Réglages & sauvegardes','gear'],['confidentialite','Confidentialité','check']];
+  $('#menu-list').innerHTML=links.map(([h,l,i])=>`<a href="#${h}">${ic(i)}<span>${l}</span></a>`).join('')+`<button type="button" class="btn primary" data-act="quick" style="margin-top:10px;justify-content:center">${ic('plus',15)}Saisie rapide</button>`;
+  $('#menu').showModal();
+}
+$('.gear').innerHTML=ic('menu',20);
+$('.side-quick').innerHTML=ic('plus',15)+'Saisie rapide';
+document.querySelectorAll('[data-close-wiz],[data-close-quick],[data-close-menu]').forEach(b=>{if(b.classList.contains('icon-btn'))b.innerHTML=ic('x');b.onclick=()=>b.closest('dialog').close()});
 document.querySelectorAll('[data-close]').forEach(b=>{if(b.classList.contains('icon-btn'))b.innerHTML=ic('x');b.onclick=()=>$('#modal').close()});
 const navStyle=document.createElement('style');navStyle.textContent='nav a .short{display:none}@media(max-width:760px){nav a .short{display:block}}';document.head.append(navStyle);
 
@@ -534,9 +1228,11 @@ function weekControl(){
 }
 const heading=(eyebrow,title,sub,action='')=>`<div class="title-row"><div><p class="eyebrow">${eyebrow}</p><h1>${title}</h1><p class="lead">${sub}</p></div>${action}</div>`;
 
-function taskRow(t){
+function taskRow(t,wk){
+  if(typeof wk!=='string')wk=key;
   const g=state.goals.find(g=>g.id===t.goal);
-  return `<div class="row ${t.done?'done':''}"><input class="chk" type="checkbox" aria-label="Terminer : ${esc(t.title)}" data-task="${t.id}" ${t.done?'checked':''}><div class="copy"><span class="t">${esc(t.title)}</span><small>${g?'Cap · '+esc(g.title):'Cette semaine'}</small></div><span class="pill ${t.priority==='Haute'?'high':''}">${esc(t.priority)}</span><span class="acts"><button class="icon-btn" data-act="edit-task" data-id="${t.id}" aria-label="Modifier ${esc(t.title)}">${ic('edit',16)}</button><button class="icon-btn" data-act="del-task" data-id="${t.id}" aria-label="Supprimer ${esc(t.title)}">${ic('x',16)}</button></span></div>`;
+  const when=(Number.isInteger(t.day)?DAYS_LONG[t.day]+' '+fmt(shift(wk,t.day))+(t.time?' · '+t.time:''):'Cette semaine')+(t.remind!==null&&t.remind!==undefined&&!t.done?' · rappel '+remLabel(t.remind):''),late=isLate(t,wk);
+  return `<div class="row ${t.done?'done':''}"><input class="chk" type="checkbox" aria-label="Terminer : ${esc(t.title)}" data-task="${t.id}" data-week="${wk}" ${t.done?'checked':''}><div class="copy"><span class="t">${t.star?'<span class="star" title="Priorité de la semaine">★</span> ':''}${esc(t.title)}</span><small>${esc(when)}${g?' · Cap · '+esc(g.title):''}</small></div>${late?'<span class="pill late">En retard</span>':`<span class="pill ${t.priority==='Haute'?'high':''}">${esc(t.priority)}</span>`}<span class="acts"><button class="icon-btn" data-act="edit-task" data-id="${t.id}" data-week="${wk}" aria-label="Modifier ${esc(t.title)}">${ic('edit',16)}</button><button class="icon-btn" data-act="del-task" data-id="${t.id}" data-week="${wk}" aria-label="Supprimer ${esc(t.title)}">${ic('x',16)}</button></span></div>`;
 }
 const sortTasks=l=>l.slice().sort((a,b)=>a.done-b.done||PRIOS.indexOf(a.priority)-PRIOS.indexOf(b.priority));
 
@@ -552,12 +1248,16 @@ function notices(){
   return out.join('');
 }
 
+function lateCard(){
+  const l=lateTasks();if(!l.length)return'';
+  return `<section class="card late-card"><div class="section-head"><h2>À reprogrammer</h2><div class="btns" style="margin:0"><span class="pill late">${l.length} en retard</span><button class="btn sm" data-act="ai-resched">${has('pro')?ic('spark',14):badge('pro')}Répartir</button></div></div>${l.slice(0,3).map(lateRow).join('')}${l.length>3?`<p class="help"><button type="button" class="link link-btn" data-act="open-rem">Voir les ${l.length} actions en retard ${ic('arrow',13)}</button></p>`:''}</section>`;
+}
 /* ---------- Pages ---------- */
 function dashboard(){
   const s=stats(key),w=peek(key),cur=monday(),tw=peek(cur),ti=todayIdx();
   const goalsAvg=state.goals.length?Math.round(state.goals.reduce((n,g)=>n+goalPct(g),0)/state.goals.length):0;
-  return heading('Votre rythme, votre progression',`L’essentiel${state.name?', '+esc(state.name):''}.`,'Un espace calme pour transformer vos intentions en actions.',weekControl())
-  +notices()
+  return heading('Votre rythme, votre progression','Ma semaine.','La vue d’ensemble : intention, avancement, actions et caps.',weekControl())
+  +notices()+lateCard()
   +`<section class="hero"><div><p class="eyebrow">Une semaine, une intention</p><h2>${w.intention?esc(w.intention):'Qu’est-ce qui compte vraiment ?'}</h2><p>${w.intention?'Un petit pas après l’autre.':'Choisissez une intention simple, puis faites le premier pas.'}</p><button class="btn sm" data-act="intention">${ic('edit',14)}${w.intention?'Modifier l’intention':'Définir mon intention'}</button></div><div class="ring" style="--p:${s.score}%" role="img" aria-label="Avancement de la semaine : ${s.score} %"><div><b>${s.score}%</b><small>AVANCEMENT</small></div></div></section>`
   +`<div class="kpis">
     <div class="card kpi"><span class="label">${ic('ritual',15)}Rituels accomplis</span><strong>${s.checks}<span> / ${s.total}</span></strong><small>${state.rituals.length} rituel${state.rituals.length>1?'s':''} × 7 jours</small>${bar(s.ritualPct,'Rituels')}</div>
@@ -582,16 +1282,6 @@ function dashboard(){
   </div>`;
 }
 
-function rituals(){
-  const w=peek(key),cur=key===monday(),ti=todayIdx();
-  return heading('Les petits gestes','Ce que l’on répète.','Cochez vos rituels jour après jour. La progression se calcule toute seule.',weekControl())
-  +`<section class="card"><div class="section-head"><h2>Mes rituels</h2><button class="btn primary sm" data-act="add-ritual">${ic('plus',14)}Nouveau rituel</button></div>
-  ${state.rituals.length?`<div class="rgrid-wrap"><div class="rgrid head"><div>Rituel</div>${DAYS.map((d,i)=>`<span class="${cur&&i===ti?'today':''}">${d}<small>${fmt(shift(key,i))}</small></span>`).join('')}<span></span></div>
-  ${state.rituals.map(r=>`<div class="rgrid"><div class="rname"><button class="icon-btn" data-act="edit-ritual" data-id="${r.id}" aria-label="Modifier ${esc(r.title)}">${ic('edit',15)}</button><div><span class="t">${esc(r.title)}</span><small>${(w.checks[r.id]??[]).filter(Boolean).length}/7 cette semaine</small></div></div>${DAYS.map((d,i)=>`<label><input class="chk sq" type="checkbox" aria-label="${esc(r.title)}, ${DAYS_LONG[i]}" data-ritual="${r.id}" data-day="${i}" ${w.checks[r.id]?.[i]?'checked':''}></label>`).join('')}<button class="icon-btn" data-act="del-ritual" data-id="${r.id}" aria-label="Supprimer ${esc(r.title)}">${ic('x',16)}</button></div>`).join('')}</div>`
-  :empty('Aucun rituel pour l’instant.','Commencez par un geste facile à répéter : lire 10 minutes, marcher, préparer sa journée.')}
-  <p class="help">Les rituels se retrouvent chaque semaine ; les coches sont propres à la semaine affichée. Supprimer un rituel efface aussi son historique.</p></section>`;
-}
-
 function filteredTasks(){
   const q=search.toLocaleLowerCase('fr');
   return sortTasks(peek(key).tasks.filter(t=>(filter==='Toutes'||(filter==='À faire'?!t.done:t.done))&&t.title.toLocaleLowerCase('fr').includes(q)));
@@ -603,53 +1293,325 @@ function tasks(){
   <section class="card" id="task-list">${taskListHTML()}</section>`;
 }
 
-function goals(){
-  return heading('Un cap, des pas concrets','Mes caps.','Une cible, une valeur actuelle, et la progression devient visible.',`<button class="btn primary" data-act="add-goal">${ic('plus',14)}Nouveau cap</button>`)
-  +(state.goals.length?`<div class="goal-list">${state.goals.map(g=>{const p=goalPct(g);return `<section class="card goal-card"><h3>${esc(g.title)}</h3><p class="big">${p}%</p>${bar(p,g.title)}<p class="help" style="margin-top:10px">${num(g.current)} / ${num(g.target)} ${esc(g.unit)}</p><div class="acts"><button class="btn sm" data-act="edit-goal" data-id="${g.id}">Mettre à jour</button><button class="icon-btn" data-act="del-goal" data-id="${g.id}" aria-label="Supprimer ${esc(g.title)}">${ic('x',16)}</button></div></section>`}).join('')}</div>`
-  :`<section class="card">${empty('Quel cap voulez-vous vous donner ?','Choisissez quelque chose de mesurable : 12 séances, 200 pages, 5 étapes…')}</section>`)
-  +`<p class="help">Les caps restent d’une semaine à l’autre. Leur progression suit la valeur que vous saisissez ; cocher une tâche liée ne la modifie pas.</p>`;
+function remindersCard(){
+  const perm=notifSupported()?Notification.permission:'unsupported';
+  const ios=/iPhone|iPad|iPod/.test(navigator.userAgent),standalone=navigator.standalone||matchMedia('(display-mode: standalone)').matches;
+  const status=perm==='granted'?'Notifications activées sur cet appareil.':perm==='denied'?'Notifications refusées. Vous pouvez les réactiver dans les réglages du navigateur.':perm==='unsupported'?(ios&&!standalone?'Sur iPhone, installez d’abord l’app sur l’écran d’accueil pour recevoir des notifications.':'Cet appareil n’affiche pas les notifications web : les rappels apparaissent dans l’app.'):'Autorisez les notifications pour être prévenu à l’heure de vos rappels.';
+  return`<section class="card"><h2>Rappels</h2><p class="lead" style="margin-top:8px">${status}</p>
+  ${perm==='default'?`<div class="btns"><button class="btn primary" data-act="notif">${ic('bell',15)}Activer les notifications</button></div>`:''}
+  <label class="row toggle-row" style="margin-top:14px"><input class="chk sq" type="checkbox" id="nudge" ${ui.nudge?'checked':''}><span class="copy"><span class="t">Rappel du soir pour les rituels</span><small>Si des rituels ne sont pas cochés à l’heure choisie</small></span><input type="time" id="nudge-time" value="${esc(ui.nudgeTime||'20:30')}" aria-label="Heure du rappel du soir"></label>
+  <p class="help">Les rappels se déclenchent quand l’app est ouverte ou en arrière-plan. Pour un rappel garanti, même app fermée, utilisez « Ajouter à mon calendrier » dans une action.</p></section>`;
+}
+/* ---------- Aujourd’hui ---------- */
+function ritualTodayRow(r,wk,ti){
+  const done=!!peek(wk).checks[r.id]?.[ti],y=new Date();y.setDate(y.getDate()-1);
+  const streak=softStreak(r),missedY=!ritualDoneOn(r,y);
+  const sub=[r.cue?esc(r.cue):'',r.min?'Minimum : '+esc(r.min):'',streak>1?`Régularité : ${streak} jours`:''].filter(Boolean).join(' · ');
+  return `<label class="row"><input class="chk sq" type="checkbox" data-ritual="${r.id}" data-day="${ti}" data-week="${wk}" ${done?'checked':''}><span class="copy"><span class="t">${esc(r.title)}</span>${sub?`<small>${sub}</small>`:''}${!done&&missedY&&streak>0?'<small class="gentle">Hier est passé. Aujourd’hui suffit pour garder le fil.</small>':''}</span></label>`;
+}
+function today(){
+  const now=new Date(),wk=monday(),ti=todayIdx(),w=peek(wk);
+  const dayTasks=w.tasks.filter(t=>t.day===ti).sort((a,b)=>a.done-b.done||(b.star?1:0)-(a.star?1:0)||PRIOS.indexOf(a.priority)-PRIOS.indexOf(b.priority)||(a.time||'99').localeCompare(b.time||'99'));
+  const top=dayTasks.filter(t=>!t.done).slice(0,3),others=dayTasks.filter(t=>!top.includes(t));
+  const loose=w.tasks.filter(t=>!Number.isInteger(t.day)&&!t.done);
+  const tw=targetPlanWeek(),needPlan=!peek(tw).planned;
+  const allDone=state.rituals.length>0&&state.rituals.every(r=>w.checks[r.id]?.[ti]);
+  const en=(w.energy||[])[ti]||0,win=(w.wins7||[])[ti]||'';
+  const dateLbl=now.toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long'});
+  return heading(dateLbl,`Aujourd’hui${state.name?', '+esc(state.name):''}.`,w.intention?`« ${esc(w.intention)} »`:'Trois actions, quelques rituels, et c’est une bonne journée.',`<button class="btn primary head-quick" data-act="quick">${ic('plus',15)}Saisie rapide</button>`)
+  +notices()
+  +(needPlan?`<section class="card plan-cta"><div><p class="eyebrow">${tw===monday()?'Cette semaine':'Semaine prochaine'} · 15 minutes</p><h2>Poser ma semaine</h2><p class="lead">Un regard sur la semaine écoulée, une intention, trois priorités, et chaque action à sa place.</p></div><button class="btn primary" data-act="wizard">${ic('spark',15)}Commencer</button></section>`:'')
+  +`<div class="columns">
+    <section class="card"><div class="section-head"><h2>Mes 3 actions du jour</h2><button class="btn sm" data-act="add-task" data-week="${wk}" data-day="${ti}">${ic('plus',14)}Ajouter</button></div>
+      ${top.length?top.map(t=>taskRow(t,wk)).join(''):empty(dayTasks.length?'Tout est fait pour aujourd’hui.':'Rien de prévu aujourd’hui.',dayTasks.length?'Prenez le temps de le savourer.':'Placez une action de la semaine ci-dessous, ou ajoutez-en une.')}
+      ${others.length?`<h3 class="cal-h">Aussi aujourd’hui</h3>${others.map(t=>taskRow(t,wk)).join('')}`:''}
+      ${loose.length?`<h3 class="cal-h">À placer cette semaine</h3>${loose.slice(0,4).map(t=>`<div class="row"><div class="copy"><span class="t">${esc(t.title)}</span><small>Sans jour précis</small></div><button class="btn sm" data-act="move" data-id="${t.id}" data-week="${wk}" data-to="0">Aujourd’hui</button></div>`).join('')}`:''}
+    </section>
+    <div class="stack">
+      <section class="card${allDone?' all-done':''}" id="today-rituals"><div class="section-head"><h2>Rituels du jour</h2>${allDone?'<span class="pill high">Tout est fait</span>':''}</div>
+        ${state.rituals.length?state.rituals.map(r=>ritualTodayRow(r,wk,ti)).join(''):empty('Un rituel, c’est un geste simple.',`<a class="link" href="#rituels">Créer mon premier rituel ${ic('arrow',13)}</a>`)}
+      </section>
+      <section class="card"><h2>Le soir, en une minute</h2>
+        <p class="cal-h">Mon énergie aujourd’hui</p>
+        <div class="seg energy" role="group" aria-label="Mon énergie aujourd’hui">${[[1,'Basse'],[2,'Correcte'],[3,'Haute']].map(([v,l])=>`<button type="button" data-act="energy" data-v="${v}" data-week="${wk}" data-day="${ti}" aria-pressed="${en===v}">${l}</button>`).join('')}</div>
+        <label class="field">Ma victoire du jour<input id="win-today" data-win="1" data-week="${wk}" data-day="${ti}" maxlength="200" value="${esc(win)}" placeholder="Même petite, elle compte"></label>
+      </section>
+      <div class="quote">« ${esc(quoteOfWeek())} »<small>LE RAPPEL AUG.MENTE DE LA SEMAINE</small></div>
+    </div>
+  </div>`+(lateTasks().length?'<div style="height:22px"></div>'+lateCard():'');
 }
 
+/* ---------- Assistant du dimanche et démarrage guidé ---------- */
+let wiz=null;
+const WIZ_STEPS={plan:['Regarder','Choisir','Prioriser','Placer'],onboard:['Bienvenue','Rituels','Cap']};
+function openWizard(kind){
+  if($('#wiz').open)return;
+  wiz={kind,step:0,wk:kind==='plan'?targetPlanWeek():monday(),sel:new Set(),cap:-1,ai:null};
+  drawWiz();$('#wiz').showModal();
+  if(!matchMedia('(pointer:coarse)').matches)setTimeout(()=>$('#wiz-body input,#wiz-body textarea')?.focus(),40);
+}
+function drawWiz(){
+  const steps=WIZ_STEPS[wiz.kind];
+  $('#wiz-title').textContent=wiz.kind==='plan'?'Poser ma semaine · '+fmt(wiz.wk)+' — '+fmt(shift(wiz.wk,6)):'Démarrage';
+  $('#wiz-steps').innerHTML=steps.map((s,i)=>`<span class="${i===wiz.step?'on':i<wiz.step?'done':''}">${i+1}. ${s}</span>`).join('');
+  $('#wiz-body').innerHTML=wiz.kind==='plan'?planStep():onboardStep();
+  $('#wiz-back').hidden=wiz.step===0;
+  $('#wiz-skip').hidden=wiz.kind!=='onboard';
+  $('#wiz-next').textContent=wiz.step===steps.length-1?(wiz.kind==='plan'?'Poser ma semaine':'Commencer'):'Suivant';
+  $('#wiz-body').scrollTop=0;
+  if(wiz.step>0&&!matchMedia('(pointer:coarse)').matches)setTimeout(()=>$('#wiz-body input:not([type=checkbox]),#wiz-body textarea')?.focus(),40);
+}
+function planStep(){
+  const wk=wiz.wk,prev=shift(wk,-7),w=peek(wk);
+  if(wiz.step===0){
+    const s=weekSummary(prev);
+    return `<h2>La semaine du ${fmt(prev)} en un regard</h2><div class="wiz-stats"><div><b>${s.rituals_done}</b><span>rituels sur ${s.rituals_possible}</span></div><div><b>${s.actions_done}</b><span>actions sur ${s.actions_total}</span></div><div><b>${s.energy_avg??'—'}</b><span>énergie moyenne sur 3</span></div></div>
+    <label class="field">Ce qui a bien marché<textarea name="wins" maxlength="5000" placeholder="Une victoire, même petite…">${esc(peek(prev).review.wins)}</textarea></label>`;
+  }
+  if(wiz.step===1)return `<h2>Mon intention pour la semaine du ${fmt(wk)}</h2>${state.identity?`<p class="lead">Rappel : je deviens quelqu’un qui ${esc(state.identity)}.</p>`:''}<label class="field">Cette semaine, je choisis de…<input name="intention" maxlength="160" value="${esc(w.intention)}" placeholder="Ex. Ralentir le soir"></label><p class="help">Une seule intention, simple. Elle vous accompagnera chaque jour en haut de l’écran.</p>`;
+  if(wiz.step===2){
+    const stars=w.tasks.filter(t=>t.star).slice(0,3);
+    return `<h2>Mes 3 priorités</h2><p class="lead">Ce qui rendra la semaine réussie, même si rien d’autre n’avance.</p>${[0,1,2].map(i=>`<label class="field">Priorité ${i+1}<input name="p${i}" maxlength="160" value="${esc(stars[i]?.title||'')}" data-id="${stars[i]?.id||''}" placeholder="${['Ex. Finaliser le dossier','Ex. Appeler maman','Ex. 3 séances de sport'][i]}"></label>`).join('')}
+    <div class="ai-box">${has('pro')?`<button type="button" class="btn" data-act="ai-plan">${ic('spark',15)}Proposer avec le coach</button>`:`<div class="lock">${badge('pro')}<span>Le coach peut proposer un plan à partir de vos caps et de votre bilan.</span></div>`}
+    ${wiz.ai?`<p class="lead" style="margin-top:12px">${esc(wiz.ai.message)}</p>${wiz.ai.items.map((it,i)=>`<label class="row ai-row"><input class="chk sq" type="checkbox" name="ai${i}" checked><span class="copy"><span class="t">${esc(it.title)}</span><small>${Number.isInteger(it.day)?DAYS_LONG[it.day]+' '+fmt(shift(wk,it.day)):'Dans la semaine'}${it.time?' · '+it.time:''}${it.cap?' · Cap · '+esc(it.cap):''}</small></span></label>`).join('')}`:''}</div>`;
+  }
+  const free=w.tasks.filter(t=>!t.done&&!Number.isInteger(t.day));
+  const older=lateTasks().filter(x=>x.wk<wk);
+  return `<h2>Chaque action à sa place</h2><p class="lead">Choisissez un jour pour ce qui n’en a pas encore. Le reste attendra dans la semaine.</p>
+  ${free.length?free.map(t=>`<div class="row wiz-place"><div class="copy"><span class="t">${t.star?'★ ':''}${esc(t.title)}</span></div><select name="d-${t.id}" aria-label="Jour pour ${esc(t.title)}"><option value="">Dans la semaine</option>${DAYS_LONG.map((d,i)=>`<option value="${i}">${d} ${fmt(shift(wk,i))}</option>`).join('')}</select></div>`).join(''):'<p class="help">Toutes vos actions ont déjà un jour.</p>'}
+  ${older.length?`<h3 class="cal-h">Encore en retard</h3>${older.map(({t,wk:ow})=>`<label class="row ai-row"><input class="chk sq" type="checkbox" name="b-${t.id}" data-from="${ow}"><span class="copy"><span class="t">${esc(t.title)}</span><small>Reporter dans cette semaine</small></span></label>`).join('')}`:''}`;
+}
+function onboardStep(){
+  if(wiz.step===0)return `<p class="eyebrow">Bienvenue dans aug.mente</p><h2>Faisons connaissance</h2><p class="lead">Trois questions, deux minutes, et votre semaine est prête.</p><label class="field">Comment vous appeler ?<input name="name" maxlength="60" value="${esc(state.name)}" autocomplete="given-name" placeholder="Votre prénom"></label><label class="field">Cette semaine, je choisis de…<input name="intention" maxlength="160" value="${esc(peek(monday()).intention)}" placeholder="Ex. Faire de la place à l’essentiel"></label>`;
+  if(wiz.step===1)return `<h2>Trois rituels pour commencer</h2><p class="lead">De petits gestes faciles à répéter. Vous pourrez les modifier ensuite.</p><div class="chip-grid">${IDEAS.rituels.map((it,i)=>`<button type="button" class="chip" data-act="wiz-pick" data-i="${i}" aria-pressed="${wiz.sel.has(i)}">${esc(it.t)}</button>`).join('')}</div><label class="field">Ou le vôtre<input name="custom" maxlength="160" placeholder="Ex. Marcher après le déjeuner"></label>`;
+  return `<h2>Un cap pour les prochains mois</h2><p class="lead">Une direction mesurable. Choisissez-en un, ou passez cette étape.</p><div class="chip-grid">${IDEAS.caps.slice(0,9).map((it,i)=>`<button type="button" class="chip" data-act="wiz-cap" data-i="${i}" aria-pressed="${wiz.cap===i}">${esc(it.t)}</button>`).join('')}</div><label class="field">Je deviens quelqu’un qui… <span class="help" style="margin:0">(facultatif)</span><input name="identity" maxlength="160" value="${esc(state.identity||'')}" placeholder="Ex. prend soin de son énergie"></label>`;
+}
+function wizApply(){
+  const f=new FormData($('#wiz-form'));
+  if(wiz.kind==='onboard'){
+    if(wiz.step===0){state.name=String(f.get('name')||'').trim().slice(0,60);week(monday()).intention=String(f.get('intention')||'').trim().slice(0,160)}
+    if(wiz.step===1){const c=String(f.get('custom')||'').trim().slice(0,160);wiz.custom=c}
+    if(wiz.step===2){state.identity=String(f.get('identity')||'').trim().slice(0,160)}
+    return;
+  }
+  const wk=wiz.wk,w=week(wk);
+  if(wiz.step===0){week(shift(wk,-7)).review.wins=String(f.get('wins')||'').slice(0,5000)}
+  if(wiz.step===1){w.intention=String(f.get('intention')||'').trim().slice(0,160)}
+  if(wiz.step===2){
+    const stars=w.tasks.filter(t=>t.star);
+    [0,1,2].forEach(i=>{const v=String(f.get('p'+i)||'').trim().slice(0,160),el=$(`#wiz-form [name=p${i}]`),ex=stars.find(t=>t.id===el?.dataset.id);
+      if(ex){if(v)ex.title=v;else ex.star=false}else if(v)w.tasks.push({id:uid(),title:v,done:false,priority:'Haute',goal:'',day:null,time:null,remind:null,star:true})});
+    if(wiz.ai){wiz.ai.items.forEach((it,i)=>{if(!f.get('ai'+i))return;const g=state.goals.find(x=>x.title===it.cap);w.tasks.push({id:uid(),title:it.title,done:false,priority:'Normale',goal:g?.id||'',day:it.day,time:it.time,remind:null})});wiz.ai=null}
+  }
+  if(wiz.step===3){
+    w.tasks.forEach(t=>{const v=f.get('d-'+t.id);if(v!==null&&v!=='')t.day=+v});
+    lateTasks().filter(x=>x.wk<wk).forEach(({t,wk:ow})=>{if(!f.get('b-'+t.id))return;const src=week(ow);src.tasks=src.tasks.filter(x=>x.id!==t.id);t.day=null;w.tasks.push(t)});
+  }
+}
+function wizFinish(){
+  if(wiz.kind==='onboard'){
+    [...wiz.sel].forEach(i=>{const t=IDEAS.rituels[i].t;if(!state.rituals.some(r=>r.title===t))state.rituals.push({id:uid(),title:t})});
+    if(wiz.custom)state.rituals.push({id:uid(),title:wiz.custom});
+    if(wiz.cap>=0){const c=IDEAS.caps[wiz.cap];state.goals.push({id:uid(),title:c.t,current:0,target:c.target,unit:c.unit,auto:true})}
+    state.onboarded=true;save();$('#wiz').close();location.hash='#aujourdhui';render();toast('Bienvenue. Votre espace est prêt.');return;
+  }
+  week(wiz.wk).planned=true;save();$('#wiz').close();render();toast('Votre semaine est posée');
+}
+function maybeOnboard(){
+  if(state.onboarded||hasData(state)||!$('#auth').hidden||$('#wiz').open||$('dialog[open]'))return;
+  openWizard('onboard');
+}
+
+/* ---------- Ma semaine (vue d’ensemble) ---------- */
+function weekView(){return dashboard()}
+
+/* ---------- Rituels ---------- */
+const ROUTINES=[
+  {name:'Matin serein',items:['Boire un grand verre d’eau au réveil','Préparer ma journée en 5 minutes','10 minutes d’étirements']},
+  {name:'Soirée apaisée',items:['30 minutes sans écran avant de dormir','Écrire 3 lignes dans mon carnet','Se coucher avant 23 h']},
+  {name:'Esprit curieux',items:['Lire 10 minutes','10 minutes de langue étrangère','Écouter un podcast inspirant']},
+  {name:'Corps en mouvement',items:['Marcher 20 minutes','10 minutes d’étirements','Respirer 5 minutes au calme']},
+  {name:'Tech maîtrisée',items:['1 heure en mode Concentration','Traiter mes mails en une fois','Tester une astuce IA']},
+  {name:'Liens qui comptent',items:['Envoyer un message à un proche','Dire merci à quelqu’un','Noter une chose positive de la journée']}
+];
+function openRoutines(){
+  if(!has('plus')){toast('Les modèles de routines font partie de l’offre Plus.');location.hash='#offres';return}
+  const owned=new Set(state.rituals.map(r=>r.title));
+  editor('Modèles de routines',`<p class="lead" style="margin-top:6px">Des ensembles de rituels qui vont bien ensemble. Les rituels déjà présents ne sont pas dupliqués.</p>`+ROUTINES.map((r,i)=>`<label class="row ai-row"><input class="chk sq" type="checkbox" name="r${i}"><span class="copy"><span class="t">${esc(r.name)}</span><small>${r.items.map(x=>(owned.has(x)?'✓ ':'')+esc(x)).join(' · ')}</small></span></label>`).join(''),
+    f=>{let n=0;ROUTINES.forEach((r,i)=>{if(!f.get('r'+i))return;r.items.forEach(t=>{if(!state.rituals.some(x=>x.title===t)){state.rituals.push({id:uid(),title:t});n++}})});toast(n?`${n} rituel${n>1?'s':''} ajouté${n>1?'s':''}`:'Ces rituels sont déjà là')},null,'Ajouter');
+}
+function rituals(){
+  const w=peek(key),cur=key===monday(),ti=todayIdx();
+  return heading('Les petits gestes','Ce que l’on répète.','Cochez vos rituels jour après jour. Un jour manqué n’est qu’un jour : seuls deux d’affilée cassent le fil.',weekControl())
+  +`<section class="card"><div class="section-head"><h2>Mes rituels</h2><div class="btns" style="margin:0"><button class="btn sm" data-act="routines">${has('plus')?'':badge('plus')}Modèles de routines</button><button class="btn primary sm" data-act="add-ritual">${ic('plus',14)}Nouveau rituel</button></div></div>
+  ${state.rituals.length?`<div class="rgrid-wrap"><div class="rgrid head"><div>Rituel</div>${DAYS.map((d,i)=>`<span class="${cur&&i===ti?'today':''}">${d}<small>${fmt(shift(key,i))}</small></span>`).join('')}<span></span></div>
+  ${state.rituals.map(r=>{const st=softStreak(r),g=state.goals.find(x=>x.id===r.goal);return `<div class="rgrid"><div class="rname"><button class="icon-btn" data-act="edit-ritual" data-id="${r.id}" aria-label="Modifier ${esc(r.title)}">${ic('edit',15)}</button><div><span class="t">${esc(r.title)}</span><small>${(w.checks[r.id]??[]).filter(Boolean).length}/7 · régularité ${st} j${r.min?' · min. '+esc(r.min):''}${g?' · Cap · '+esc(g.title):''}</small>${r.cue?`<small class="cue">${esc(r.cue)}</small>`:''}</div></div>${DAYS.map((d,i)=>`<label><input class="chk sq" type="checkbox" aria-label="${esc(r.title)}, ${DAYS_LONG[i]}" data-ritual="${r.id}" data-day="${i}" ${w.checks[r.id]?.[i]?'checked':''}></label>`).join('')}<button class="icon-btn" data-act="del-ritual" data-id="${r.id}" aria-label="Supprimer ${esc(r.title)}">${ic('x',16)}</button></div>`}).join('')}</div>`
+  :empty('Aucun rituel pour l’instant.','Commencez par un geste facile à répéter : lire 10 minutes, marcher, préparer sa journée.')}
+  <p class="help">La régularité compte les jours sans deux manques d’affilée. La version minimum compte autant qu’un grand jour.</p></section>`;
+}
+
+/* ---------- Caps ---------- */
+function goals(){
+  return heading('Un cap, des pas concrets','Mes caps.','Une direction mesurable, et des actions qui la font avancer toute seule.',`<button class="btn primary" data-act="add-goal">${ic('plus',14)}Nouveau cap</button>`)
+  +`<section class="card identity"><p class="eyebrow">Mon identité</p><label class="identity-row"><span>Je deviens quelqu’un qui</span><input id="identity" maxlength="160" value="${esc(state.identity||'')}" placeholder="prend soin de son énergie et tient ses engagements" aria-label="Je deviens quelqu’un qui…"></label><p class="help" style="margin-top:8px">Le cap donne la direction, l’identité donne le sens.</p></section>`
+  +(state.goals.length?`<div class="goal-list">${state.goals.map(g=>{const p=goalPct(g);return `<section class="card goal-card"><h3>${esc(g.title)}</h3><p class="big">${p}%</p>${bar(p,g.title)}<p class="help" style="margin-top:10px">${num(g.current)} / ${num(g.target)} ${esc(g.unit)}${g.auto?' · avance avec les actions et rituels liés':''}</p>
+    <div class="acts"><div class="btns" style="margin:0"><button class="btn sm" data-act="goal-inc" data-id="${g.id}" aria-label="Ajouter 1 à ${esc(g.title)}">+1</button><button class="btn sm" data-act="edit-goal" data-id="${g.id}">Mettre à jour</button><button class="btn sm" data-act="ai-split" data-id="${g.id}">${has('pro')?ic('spark',14):badge('pro')}Découper</button></div><button class="icon-btn" data-act="del-goal" data-id="${g.id}" aria-label="Supprimer ${esc(g.title)}">${ic('x',16)}</button></div></section>`}).join('')}</div>`
+  :`<section class="card">${empty('Quel cap voulez-vous vous donner ?','Choisissez quelque chose de mesurable : 12 séances, 200 pages, 5 étapes…')}</section>`);
+}
+
+/* ---------- Bilan ---------- */
+let revMode='semaine',revMonth=(()=>{const d=new Date();return new Date(d.getFullYear(),d.getMonth(),1,12)})();
+const ym=d=>`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;
+function reviewSwitch(){return `<div class="seg" role="group" aria-label="Période du bilan"><button type="button" data-act="rev-mode" data-value="semaine" aria-pressed="${revMode==='semaine'}">Semaine</button><button type="button" data-act="rev-mode" data-value="mois" aria-pressed="${revMode==='mois'}">${has('plus')?'':badge('plus')}Mois</button></div>`}
+function coachCard(){
+  const L=ui.lastReview;
+  return `<section class="card coach-card"><div class="section-head"><h2>Le regard du coach</h2>${has('pro')?`<button class="btn sm" data-act="ai-review">${ic('spark',14)}${L?'Actualiser':'Analyser mes 4 semaines'}</button>`:''}</div>
+  ${!has('pro')?lockCard('pro','L’analyse de vos tendances par le coach IA'):L?`${L.insights.map(x=>`<div class="insight"><b>${esc(x.title)}</b><p>${esc(x.detail)}</p></div>`).join('')}${L.question?`<p class="cal-int">« ${esc(L.question)} »</p>`:''}${L.next_step?`<p class="lead" style="margin-top:12px"><b>Prochain pas :</b> ${esc(L.next_step)}</p>`:''}<p class="help">Analyse du ${new Date(L.at).toLocaleDateString('fr-FR',{day:'numeric',month:'long'})}. Le coach propose, vous décidez.</p>`:'<p class="lead" style="margin-top:8px">Le coach repère les liens entre votre énergie, vos rituels et votre charge d’actions sur les 4 dernières semaines.</p>'}</section>`;
+}
 function review(){
-  const w=peek(key),s=stats(key);
-  const max=Math.max(1,state.rituals.length);
-  return heading('Prendre du recul','Bilan de semaine.','Reconnaître le chemin parcouru, puis repartir.',weekControl())
+  if(revMode==='mois')return reviewMonth();
+  const w=peek(key),s=stats(key),prev=stats(shift(key,-7));
+  const max=Math.max(1,state.rituals.length),en=w.energy||[];
+  const delta=(a,b)=>{const d=a-b;return d===0?'<span class="delta">=</span>':`<span class="delta ${d>0?'up':'down'}">${d>0?'+':''}${d}</span>`};
+  return heading('Prendre du recul','Bilan de semaine.','Reconnaître le chemin parcouru, puis repartir.',`<div class="btns" style="margin:0">${reviewSwitch()}${weekControl()}</div>`)
   +`<div class="columns"><section class="card bilan"><h2>Mes notes</h2>
   ${[['wins','Ce qui a bien marché','Une victoire, même petite…'],['lessons','Ce que j’ai appris','Ce que j’ajusterais…'],['next','Mon prochain pas','La priorité de la semaine prochaine…']].map(([f,l,p])=>`<label class="field">${l}<textarea data-review="${f}" placeholder="${p}" maxlength="5000">${esc(w.review[f])}</textarea></label>`).join('')}
+  ${(w.wins7||[]).some(Boolean)?`<h3 class="cal-h">Mes victoires du soir</h3>${(w.wins7||[]).map((v,i)=>v?`<p class="win-line"><b>${DAYS[i]}</b> ${esc(v)}</p>`:'').join('')}`:''}
   <p class="help" style="margin-top:0">Enregistré au fil de la saisie.</p></section>
-  <section class="card"><h2>La semaine en un regard</h2><p class="lead" style="margin-top:8px">${s.checks} rituel${s.checks>1?'s':''} accompli${s.checks>1?'s':''} · ${s.done} tâche${s.done>1?'s':''} terminée${s.done>1?'s':''}</p>
-  <div class="daychart" role="img" aria-label="Rituels accomplis par jour">${DAYS.map((d,i)=>{const n=state.rituals.filter(r=>w.checks[r.id]?.[i]).length;return `<div><b>${n}</b><i style="height:${state.rituals.length?n/max*110:2}px"></i>${d}</div>`}).join('')}</div>
-  <p class="help">L’avancement global (${s.score} %) combine rituels cochés et tâches terminées, chaque action comptant autant.</p></section></div>`;
+  <div class="stack"><section class="card"><h2>La semaine en un regard</h2>
+  <p class="lead" style="margin-top:8px">${s.checks} rituel${s.checks>1?'s':''} ${has('plus')?delta(s.checks,prev.checks):''} · ${s.done} action${s.done>1?'s':''} faite${s.done>1?'s':''} ${has('plus')?delta(s.done,prev.done):''}</p>
+  <div class="daychart" role="img" aria-label="Rituels accomplis et énergie par jour">${DAYS.map((d,i)=>{const n=state.rituals.filter(r=>w.checks[r.id]?.[i]).length,e=en[i]||0;return `<div><b>${n}</b><i style="height:${state.rituals.length?n/max*100:2}px"></i><span class="en-dot e${e}" title="Énergie ${['non notée','basse','correcte','haute'].at(e)}"></span>${d}</div>`}).join('')}</div>
+  <p class="help">Barres : rituels faits. Point : énergie du soir (vide si non notée).${has('plus')?' Les écarts comparent à la semaine précédente.':''}</p>
+  ${has('plus')?'':lockCard('plus','La comparaison avec la semaine précédente')}</section>
+  ${coachCard()}</div></div>`;
+}
+function reviewMonth(){
+  const head=heading('Prendre du recul','Bilan du mois.','Une vue plus large : vos rituels jour par jour, vos actions, vos caps.',`<div class="btns" style="margin:0">${reviewSwitch()}</div>`);
+  if(!has('plus'))return head+`<section class="card">${lockCard('plus','Le bilan mensuel')}</section>`;
+  const y=revMonth.getFullYear(),m=revMonth.getMonth(),days=new Date(y,m+1,0).getDate(),first=(new Date(y,m,1).getDay()+6)%7;
+  const nR=state.rituals.length,key2=ym(revMonth),notes=state.months?.[key2]||{wins:'',lessons:'',next:''};
+  let done=0,poss=0,acts=0,actsDone=0,ens=[];
+  const cells=Array.from({length:first},()=>'<span class="heat empty"></span>').join('')+Array.from({length:days},(_,i)=>{
+    const d=new Date(y,m,i+1,12),wk=monday(d),di=(d.getDay()+6)%7,w=state.weeks[wk],n=w?state.rituals.filter(r=>w.checks[r.id]?.[di]).length:0;
+    const future=d>new Date();if(!future){done+=n;poss+=nR}
+    if(w){const t=w.tasks.filter(x=>x.day===di);acts+=t.length;actsDone+=t.filter(x=>x.done).length;const e=(w.energy||[])[di];if(e)ens.push(e)}
+    const v=nR?n/nR:0;return `<span class="heat${future?' future':''}" style="--v:${v}" title="${d.toLocaleDateString('fr-FR',{day:'numeric',month:'long'})} : ${n}/${nR} rituels"><i>${i+1}</i></span>`}).join('');
+  const label=revMonth.toLocaleDateString('fr-FR',{month:'long',year:'numeric'});
+  return head+`<div class="columns"><section class="card"><div class="section-head"><h2 class="cal-month">${label}</h2><div class="week" style="padding:2px"><button class="icon-btn" data-act="rev-prev" aria-label="Mois précédent">${ic('left')}</button><button class="icon-btn" data-act="rev-next" aria-label="Mois suivant">${ic('right')}</button></div></div>
+    <div class="heat-head">${DAYS.map(d=>`<span>${d}</span>`).join('')}</div><div class="heat-grid">${cells}</div>
+    <div class="wiz-stats" style="margin-top:20px"><div><b>${poss?Math.round(done/poss*100):0} %</b><span>des rituels faits</span></div><div><b>${actsDone}/${acts}</b><span>actions datées faites</span></div><div><b>${ens.length?Math.round(ens.reduce((a,b)=>a+b,0)/ens.length*10)/10:'—'}</b><span>énergie moyenne sur 3</span></div></div>
+    ${state.goals.length?`<h3 class="cal-h">Mes caps</h3>${state.goals.map(goalLine).join('')}`:''}</section>
+  <section class="card bilan"><h2>Mes notes du mois</h2>${[['wins','Ce dont je suis fier'],['lessons','Ce que je change'],['next','Le cap du mois prochain']].map(([f,l])=>`<label class="field">${l}<textarea data-month="${f}" data-ym="${key2}" maxlength="5000">${esc(notes[f]||'')}</textarea></label>`).join('')}<p class="help" style="margin-top:0">Enregistré au fil de la saisie.</p></section></div>`;
 }
 
+/* ---------- Offres ---------- */
 function plans(){
-  return heading('La suite','Le système grandit avec vous.','Le cœur reste gratuit. Le reste est en préparation, je partagerai l’avancement en route.')
-  +`<div class="plans"><section class="card"><span class="pill high">Disponible</span><h2>Free</h2><p class="lead">Pour poser les bases.</p><ul><li>Rituels, actions et caps</li><li>Navigation par semaine et bilans</li><li>Sauvegarde locale et export</li><li>Installation sur l’écran d’accueil</li></ul><p class="help">Votre offre actuelle · gratuite</p></section>
-  <section class="card featured"><span class="pill">${PLUS_PREVIEW?'En avant-première':'À venir'}</span><h2>Plus</h2><p class="lead">Pour installer un rythme.</p><ul><li>Bibliothèque d’idées prêtes à personnaliser : actions, caps et rituels${PLUS_PREVIEW?' <em>· déjà disponible</em>':''}</li><li>Modèles de routines guidées</li><li>Régularité sur plusieurs mois</li><li>Bilans personnalisés</li></ul><p class="help">Tarif à définir · pas encore disponible</p></section>
-  <section class="card"><span class="pill">À venir</span><h2>Pro</h2><p class="lead">Pour aller plus loin à plusieurs.</p><ul><li>Espaces partagés</li><li>Synchronisation entre appareils</li><li>Suivi d’équipe</li></ul><p class="help">Tarif à définir · pas encore disponible</p></section></div>
-  <p class="help">Aucun paiement ni abonnement n’est actif dans cette version. Pendant cette période, la bibliothèque d’idées est ouverte à tous.</p>`;
+  const cur=plan(),mark=p=>cur===p?'<p class="help">Votre offre actuelle</p>':'';
+  return heading('La suite','Trois façons d’utiliser aug.mente.','Le cœur reste gratuit. Plus et Pro sont attribués sur invitation pendant le lancement.')
+  +`<div class="plans">
+  <section class="card${cur==='free'?' current':''}"><span class="pill high">Gratuit</span><h2>Free</h2><p class="lead">La méthode complète.</p><ul><li>Vue Aujourd’hui et assistant du dimanche</li><li>Rituels, actions, caps et calendrier</li><li>Rappels et ajout au calendrier</li><li>Compte et sauvegarde automatique</li></ul>${mark('free')}</section>
+  <section class="card featured${cur==='plus'?' current':''}"><span class="pill">Sur invitation</span><h2>Plus</h2><p class="lead">Pour installer un rythme.</p><ul><li>Bibliothèque d’idées à personnaliser</li><li>Modèles de routines</li><li>Bilan du mois et carte de régularité</li><li>Comparaison semaine contre semaine</li></ul>${mark('plus')}</section>
+  <section class="card${cur==='pro'?' current':''}"><span class="pill">Sur invitation</span><h2>Pro</h2><p class="lead">Avec un coach IA personnel.</p><ul><li>Tout Plus</li><li>Préparation du dimanche par le coach</li><li>Analyse de vos tendances</li><li>Découpage des caps et répartition des retards</li></ul>${mark('pro')}</section></div>
+  <p class="help">Aucun paiement n’est actif pour l’instant. Pour rejoindre Plus ou Pro, écrivez via <a class="link" href="https://www.augmente.me/contact/" rel="noopener">augmente.me</a>.</p>`;
 }
 
+/* ---------- Réglages ---------- */
+function accountCard(){
+  if(!cloud.enabled)return`<section class="card"><h2>Compte</h2><p class="lead" style="margin-top:8px">Mode aperçu : la connexion n’est pas activée sur cette version. Vos données restent sur cet appareil.</p><p class="cal-h">Aperçu des offres</p>${viewAsSeg()}<p class="help">Ce sélecteur permet de découvrir Free, Plus et Pro sans compte. Le coach IA ne répond qu’une fois l’app reliée à Supabase.</p><div class="btns"><button class="btn" data-act="demo">Charger la démonstration</button><button class="btn" data-act="replay-onboard">Rejouer le démarrage guidé</button></div></section>`;
+  if(cloud.user)return`<section class="card"><h2>Compte</h2><p class="lead" style="margin-top:8px">Connecté avec <b>${esc(cloud.user.email)}</b> · offre <b>${PLAN_NAME[plan()]}</b>${isAdmin()?' · administrateur':''}. Vos données se sauvegardent automatiquement et vous suivent sur tous vos appareils.</p><p class="help" id="account-status">${syncLabel()}</p><div class="btns"><button class="btn" data-act="sync-now">Synchroniser maintenant</button><button class="btn" data-act="sign-out">Se déconnecter</button>${isAdmin()?`<a class="btn" href="#admin">${ic('user',15)}Administration</a>`:''}</div>
+  ${state.aiConsent?`<label class="row toggle-row" style="margin-top:14px"><input class="chk sq" type="checkbox" id="ai-consent" checked><span class="copy"><span class="t">Coach IA activé</span><small>Décochez pour ne plus envoyer de données au coach</small></span></label>`:''}
+  <p class="help"><button type="button" class="link link-btn" data-act="delete-account">Supprimer mon compte</button></p></section>`;
+  return`<section class="card"><h2>Compte</h2><p class="lead" style="margin-top:8px">Créez un compte pour sauvegarder automatiquement vos données et les retrouver sur votre iPhone comme sur votre ordinateur.</p><div class="btns"><button class="btn primary" data-act="open-auth">${ic('user',15)}Se connecter ou créer un compte</button></div></section>`;
+}
+const viewAsSeg=()=>`<div class="seg" role="group" aria-label="Voir l’app comme">${['free','plus','pro'].map(p=>`<button type="button" data-act="view-as" data-value="${p}" aria-pressed="${plan()===p}">${PLAN_NAME[p]}</button>`).join('')}</div>`;
 function settings(){
   return heading('Votre espace','Réglages & sauvegardes.','Vos préférences, vos données, votre contrôle.')
   +`<div class="settings">
+  ${accountCard()}
+  ${remindersCard()}
   <section class="card"><h2>Apparence</h2><p class="lead" style="margin-top:8px">Interface noire ou blanche. « Automatique » suit le réglage de votre iPhone ou de votre ordinateur.</p><div class="seg" role="group" aria-label="Thème de l’interface">${[['dark','Sombre','moon'],['light','Clair','sun'],['auto','Automatique','auto']].map(([v,l,i])=>`<button type="button" data-act="theme" data-value="${v}" aria-pressed="${(ui.theme||'dark')===v}">${ic(i,15)}${l}</button>`).join('')}</div></section>
   <section class="card"><h2>Profil</h2><label class="field">Comment vous appeler ?<input id="name" maxlength="60" value="${esc(state.name)}" placeholder="Votre prénom" autocomplete="given-name"></label><button class="btn primary" data-act="profile">Enregistrer</button></section>
-  <section class="card"><h2>Sauvegarder & restaurer</h2><p class="lead" style="margin-top:8px">Vos données restent dans ce navigateur, sur cet appareil. Rien n’est envoyé sur un serveur. Exportez une copie de temps en temps pour la garder ou la transférer.</p>
+  <section class="card"><h2>Sauvegarder & restaurer</h2><p class="lead" style="margin-top:8px">${cloud.user?'Vos données sont sauvegardées sur votre compte. Une copie reste utile pour les archiver.':'Vos données restent dans ce navigateur, sur cet appareil. Exportez une copie de temps en temps pour la garder ou la transférer.'}</p>
   <div class="btns"><button class="btn" data-act="export">${ic('down',15)}Exporter mes données</button><button class="btn" data-act="import">${ic('up',15)}Restaurer une sauvegarde</button></div><input type="file" id="import-file" accept="application/json,.json" hidden>
   <p class="help">${state.lastExport?'Dernière copie : '+new Date(state.lastExport).toLocaleDateString('fr-FR',{day:'numeric',month:'long',year:'numeric'})+'.':'Aucune copie exportée pour l’instant.'} La restauration remplace toutes les données actuelles, après confirmation.</p></section>
-  <section class="card"><h2>Découvrir avec un exemple</h2><p class="lead" style="margin-top:8px">Chargez une semaine de démonstration pour explorer le système. Vos données actuelles seront remplacées, après confirmation.</p><div class="btns"><button class="btn" data-act="demo">Charger la démonstration</button></div></section>
-  <section class="card"><h2>Effacer mes données</h2><p class="lead" style="margin-top:8px">Supprime rituels, caps, actions et bilans de ce navigateur.</p><div class="btns"><button class="btn danger" data-act="reset">Tout effacer</button></div></section>
+  <section class="card"><h2>Effacer mes données</h2><p class="lead" style="margin-top:8px">Supprime rituels, caps, actions et bilans ${cloud.user?'de cet appareil et de votre compte':'de ce navigateur'}.</p><div class="btns"><button class="btn danger" data-act="reset">Tout effacer</button></div></section>
+  <p class="help"><a class="link" href="#confidentialite">Confidentialité et données ${ic('arrow',13)}</a></p>
   </div>`;
 }
 
-const VIEWS={dashboard,rituels:rituals,taches:tasks,objectifs:goals,bilan:review,offres:plans,reglages:settings};
+/* ---------- Administration ---------- */
+function adminPage(){
+  if(!isAdmin())return heading('Administration','Accès réservé.','Cette page est réservée à l’administrateur.');
+  if(!adminData){loadAdmin();return heading('Administration','Tableau de bord.','Chargement des comptes…')}
+  const P=adminData.profiles,c={free:0,plus:0,pro:0};P.forEach(p=>c[p.plan]=(c[p.plan]||0)+1);
+  const week7=P.filter(p=>Date.now()-new Date(p.created_at)<7*864e5).length,aiTotal=Object.values(adminData.usage).reduce((a,b)=>a+b,0);
+  return heading('Administration','Tableau de bord.','Comptes, offres et usage du coach. Le contenu des utilisateurs reste privé : vous n’y avez pas accès.',`<button class="btn" data-act="admin-refresh">Actualiser</button>`)
+  +(adminData.error?`<div class="notice"><div>Impossible de charger les comptes. Vérifiez que le script SQL a bien été exécuté.</div></div>`:'')
+  +`<div class="kpis"><div class="card kpi"><span class="label">${ic('user',15)}Comptes</span><strong>${P.length}</strong><small>${week7} inscrit${week7>1?'s':''} ces 7 derniers jours</small></div>
+  <div class="card kpi"><span class="label">Free</span><strong>${c.free}</strong><small>offre gratuite</small></div>
+  <div class="card kpi"><span class="label">Plus · Pro</span><strong>${c.plus}<span> · ${c.pro}</span></strong><small>attribués à la main</small></div>
+  <div class="card kpi"><span class="label">${ic('spark',15)}Coach ce mois</span><strong>${aiTotal}</strong><small>demandes, tous comptes</small></div></div>
+  <div class="columns"><section class="card"><h2>Comptes</h2><div class="table-wrap"><table class="admin-table"><thead><tr><th>E-mail</th><th>Offre</th><th>Inscrit le</th><th>Coach (mois)</th></tr></thead><tbody>
+  ${P.map(p=>`<tr><td>${esc(p.email||'—')}${p.is_admin?' <span class="pill high">admin</span>':''}</td><td><select data-plan-user="${esc(p.id)}" aria-label="Offre de ${esc(p.email||'ce compte')}">${['free','plus','pro'].map(x=>`<option value="${x}" ${p.plan===x?'selected':''}>${PLAN_NAME[x]}</option>`).join('')}</select></td><td>${new Date(p.created_at).toLocaleDateString('fr-FR')}</td><td>${adminData.usage[p.id]||0}</td></tr>`).join('')}
+  </tbody></table></div></section>
+  <div class="stack"><section class="card"><h2>Voir l’app comme</h2><p class="lead" style="margin-top:8px">Votre compte a accès à tout. Choisissez une offre pour vérifier ce qu’un utilisateur voit.</p>${viewAsSeg()}</section>
+  <section class="card"><h2>Outils</h2><div class="btns"><button class="btn" data-act="demo">Charger la démonstration</button><button class="btn" data-act="replay-onboard">Rejouer le démarrage guidé</button></div><p class="help">La démonstration remplace vos propres données, après confirmation.</p></section></div></div>`;
+}
+
+/* ---------- Confidentialité ---------- */
+function privacy(){
+  return heading('Confiance','Confidentialité.','Ce que l’app garde, où, et comment le reprendre.')
+  +`<div class="settings"><section class="card prose"><h2>Sans compte</h2><p>Vos rituels, actions, caps et bilans restent uniquement dans le navigateur de votre appareil. Rien n’est envoyé sur un serveur.</p>
+  <h2>Avec un compte</h2><p>Votre adresse e-mail et le contenu de votre espace sont stockés chez Supabase, dans la région choisie à la création du projet (Paris), pour les synchroniser entre vos appareils. Des règles d’accès garantissent que chacun ne voit que ses propres données. L’administrateur voit les adresses e-mail, les offres et le nombre de demandes au coach, jamais le contenu de votre espace.</p>
+  <h2>Coach IA (offre Pro)</h2><p>Uniquement si vous l’activez : pour chaque demande, un résumé des données utiles (titres, chiffres, notes de bilan) est transmis à Claude, le modèle d’IA d’Anthropic, via notre serveur. Vous pouvez le désactiver à tout moment dans les Réglages.</p>
+  <h2>Rappels et calendrier</h2><p>Les rappels sont calculés sur votre appareil. Le fichier « Ajouter à mon calendrier » est créé localement et ouvert par votre application de calendrier.</p>
+  <h2>Mesure d’audience</h2><p>L’app n’utilise aucun traceur ni outil de mesure d’audience.</p>
+  <h2>Vos droits</h2><p>Vous pouvez exporter vos données et supprimer votre compte à tout moment depuis les Réglages. Pour toute question, écrivez via <a class="link" href="https://www.augmente.me/contact/" rel="noopener">augmente.me</a>.</p></section></div>`;
+}
+
+/* ---------- Calendrier ---------- */
+function calendar(){
+  const y=calMonth.getFullYear(),m=calMonth.getMonth(),first=new Date(y,m,1,12),start=new Date(first);start.setDate(1-((first.getDay()+6)%7));
+  const today=dateKey(new Date()),nR=state.rituals.length;
+  const monthLbl=first.toLocaleDateString('fr-FR',{month:'long',year:'numeric'});
+  let cells='';
+  for(let i=0;i<42;i++){
+    const d=new Date(start);d.setDate(start.getDate()+i);const k=dateKey(d),wk=monday(d),di=(d.getDay()+6)%7,w=state.weeks[wk];
+    if(i===35&&d.getMonth()!==m)break;
+    const done=w?state.rituals.filter(r=>w.checks[r.id]?.[di]).length:0;
+    const tasksDay=w?w.tasks.filter(t=>t.day===di):[];
+    const pct=nR?done/nR:0;
+    cells+=`<button type="button" class="cal-day${d.getMonth()!==m?' out':''}${k===today?' today':''}${k===calSel?' sel':''}" data-act="cal-pick" data-date="${k}" aria-label="${d.toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long'})} : ${done} rituel${done>1?'s':''} sur ${nR}, ${tasksDay.length} action${tasksDay.length>1?'s':''}" aria-pressed="${k===calSel}">
+      <span class="cal-num">${d.getDate()}</span>
+      ${nR?`<span class="cal-meter" style="--v:${pct}"><i></i></span>`:''}
+      <span class="cal-tasks">${tasksDay.slice(0,2).map(t=>`<span class="cal-chip${t.done?' done':''}${isLate(t,wk)?' late':''}">${t.time?t.time+' ':''}${esc(t.title)}</span>`).join('')}${tasksDay.length>2?`<span class="cal-more">+${tasksDay.length-2}</span>`:''}</span>
+      ${tasksDay.length?`<span class="cal-dot" aria-hidden="true">${tasksDay.length}</span>`:''}
+    </button>`;
+  }
+  // détail du jour choisi
+  const sd=new Date(calSel+'T12:00:00'),swk=monday(sd),sdi=(sd.getDay()+6)%7,sw=peek(swk);
+  const planned=sw.tasks.filter(t=>t.day===sdi).sort((a,b)=>a.done-b.done||(a.time||'99').localeCompare(b.time||'99')),loose=sw.tasks.filter(t=>!Number.isInteger(t.day));
+  const detail=`<section class="card cal-detail"><p class="eyebrow">${calSel===today?'Aujourd’hui':'Jour choisi'}</p><h2>${sd.toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long'})}</h2>
+    ${sw.intention?`<p class="cal-int">« ${esc(sw.intention)} »</p>`:''}
+    <h3 class="cal-h">Rituels</h3>
+    ${nR?state.rituals.map(r=>`<label class="row"><input class="chk sq" type="checkbox" data-ritual="${r.id}" data-day="${sdi}" data-week="${swk}" ${sw.checks[r.id]?.[sdi]?'checked':''}><span class="copy"><span class="t">${esc(r.title)}</span></span></label>`).join(''):empty('Aucun rituel.',`<a class="link" href="#rituels">Créer un rituel ${ic('arrow',13)}</a>`)}
+    <div class="section-head" style="margin:22px 0 4px"><h3 class="cal-h" style="margin:0">Actions prévues</h3><button class="btn sm" data-act="add-task" data-week="${swk}" data-day="${sdi}">${ic('plus',14)}Ajouter</button></div>
+    ${planned.length?planned.map(t=>taskRow(t,swk)).join(''):`<p class="help" style="margin-top:6px">Rien de prévu ce jour-là.</p>`}
+    ${loose.length?`<p class="help">${loose.length} autre${loose.length>1?'s':''} action${loose.length>1?'s':''} sans jour précis cette semaine. <a class="link" href="#taches" data-act="goto-week" data-week="${swk}">Voir ${ic('arrow',13)}</a></p>`:''}
+  </section>`;
+  return heading('Une vue d’ensemble','Calendrier.','Vos rituels jour après jour et les actions que vous avez placées dans la semaine.',
+    `<div class="week" role="group" aria-label="Choisir le mois"><button class="icon-btn" data-act="cal-prev" aria-label="Mois précédent">${ic('left')}</button><span class="label cal-month">${monthLbl}</span><button class="icon-btn" data-act="cal-next" aria-label="Mois suivant">${ic('right')}</button><button class="btn sm now" data-act="cal-today">Aujourd’hui</button></div>`)
+  +`<div class="cal-layout"><section class="card cal-card"><div class="cal-grid cal-head">${DAYS.map(d=>`<span>${d}</span>`).join('')}</div><div class="cal-grid">${cells}</div>
+    <p class="help cal-legend"><span class="cal-meter" style="--v:.66"><i></i></span> Rituels accomplis &nbsp;·&nbsp; <span class="cal-dot">2</span> Actions prévues</p></section>${detail}</div>`;
+}
+
+const VIEWS={aujourdhui:today,dashboard,calendrier:calendar,rituels:rituals,taches:tasks,objectifs:goals,bilan:review,offres:plans,reglages:settings,admin:adminPage,confidentialite:privacy};
 let lastPage='';
 function render(){
-  let page=location.hash.slice(1)||'dashboard';if(!VIEWS[page])page='dashboard';
+  let page=location.hash.slice(1)||'aujourdhui';if(!VIEWS[page])page='aujourdhui';if($('#menu').open)$('#menu').close();
   const title=PAGES[page]?.[0]??EXTRA[page];
   $('#crumb').textContent='Mon espace / '+title;
-  document.title=(page==='dashboard'?'':title+' · ')+'aug.mente';
+  document.title=(page==='aujourdhui'?'':title+' · ')+'aug.mente';
   document.querySelectorAll('nav a,.side-foot a').forEach(a=>{const on=a.hash==='#'+page;a.classList.toggle('active',on);on?a.setAttribute('aria-current','page'):a.removeAttribute('aria-current')});
   $('#app').innerHTML=VIEWS[page]();
   if(page!==lastPage){if(lastPage){window.scrollTo(0,0);$('#app').focus({preventScroll:true})}lastPage=page}
@@ -667,10 +1629,14 @@ function demo(){
   state=fresh();const r1={id:uid(),title:'Lire 10 minutes'},r2={id:uid(),title:'Bouger 20 minutes'},r3={id:uid(),title:'Préparer ma journée'};state.rituals=[r1,r2,r3];
   const g={id:uid(),title:'Retrouver le plaisir de lire',current:35,target:100,unit:'pages'};state.goals=[g,{id:uid(),title:'Installer une routine de mouvement',current:3,target:12,unit:'séances'}];
   key=monday();const w=week(key),t=todayIdx();w.intention='Faire de la place à ce qui me fait avancer.';
-  w.tasks=[{id:uid(),title:'Bloquer trois créneaux pour moi',done:true,priority:'Haute',goal:''},{id:uid(),title:'Choisir ma prochaine lecture',done:false,priority:'Normale',goal:g.id},{id:uid(),title:'Planifier ma semaine en 15 minutes',done:false,priority:'Haute',goal:''}];
+  w.tasks=[{id:uid(),title:'Bloquer trois créneaux pour moi',done:true,priority:'Haute',goal:'',day:0},{id:uid(),title:'Choisir ma prochaine lecture',done:false,priority:'Normale',goal:g.id,day:3},{id:uid(),title:'Planifier ma semaine en 15 minutes',done:false,priority:'Haute',goal:'',day:6},{id:uid(),title:'Appeler un ami',done:false,priority:'Normale',goal:'',day:6,time:'18:30',remind:30},{id:uid(),title:'Sauvegarder mes photos',done:false,priority:'Basse',goal:'',day:6}];
   const upTo=a=>a.map((v,i)=>i<=t&&v);
   w.checks={[r1.id]:upTo([true,true,true,false,true,true,true]),[r2.id]:upTo([true,false,true,false,true,false,true]),[r3.id]:upTo([true,true,true,true,true,false,true])};
-  save();location.hash='#dashboard';render();toast('Démonstration chargée');
+  week(shift(key,-7)).tasks.push({id:uid(),title:'Renvoyer le colis',done:false,priority:'Haute',goal:'',day:4,time:'10:00',remind:null},{id:uid(),title:'Résilier l’abonnement inutilisé',done:false,priority:'Normale',goal:'',day:null});
+  w.tasks[2].star=true;w.tasks[3].star=true;w.planned=true;w.energy=upTo([2,3,2,1,2,3,2]).map(v=>v||0);w.wins7=['Dossier bouclé','','3 km en courant','','Dîner sans téléphone','',''].map((v,i)=>i<=t?v:'');
+  r1.min='1 page';r1.cue='Quand je pose mon café, je lis';r1.goal=g.id;g.auto=true;state.goals[1].auto=true;r2.goal=state.goals[1].id;
+  state.identity='prend soin de son énergie et tient ses engagements';state.onboarded=true;
+  save();location.hash='#aujourdhui';render();toast('Démonstration chargée');
 }
 
 document.addEventListener('click',async e=>{
@@ -678,43 +1644,94 @@ document.addEventListener('click',async e=>{
   const a=b.dataset.act,id=b.dataset.id;
   if(a==='prev'||a==='next'){key=shift(key,a==='prev'?-7:7);render();return}
   if(a==='today'){key=monday();render();return}
+  if(a==='open-rem'){openRem();return}
+  if(a==='quick'){if($('#menu').open)$('#menu').close();openQuick();return}
+  if(a==='menu'){openMenu();return}
+  if(a==='wizard'){openWizard('plan');return}
+  if(a==='wiz-pick'){const i=+b.dataset.i;wiz.sel.has(i)?wiz.sel.delete(i):wiz.sel.add(i);b.setAttribute('aria-pressed',wiz.sel.has(i));return}
+  if(a==='wiz-cap'){const i=+b.dataset.i;wiz.cap=wiz.cap===i?-1:i;document.querySelectorAll('[data-act=wiz-cap]').forEach(x=>x.setAttribute('aria-pressed',+x.dataset.i===wiz.cap));return}
+  if(a==='ai-plan'){wizApply();const r=await coach('plan_week',coachPayloadPlan(wiz.wk));if(r){const items=(Array.isArray(r.priorities)?r.priorities:[]).slice(0,5).map(x=>({title:cleanTitle(x?.title),day:Number.isInteger(x?.day)&&x.day>=0&&x.day<7?x.day:null,time:okTime(x?.time),cap:typeof x?.cap==='string'?x.cap.slice(0,160):null})).filter(x=>x.title);wiz.ai={message:String(r.message||'Voici une proposition. Gardez ce qui vous parle.').slice(0,400),items}}save();drawWiz();return}
+  if(a==='energy'){const w=week(b.dataset.week),arr=w.energy??=Array(7).fill(0);const v=+b.dataset.v;arr[+b.dataset.day]=arr[+b.dataset.day]===v?0:v;save();render();return}
+  if(a==='routines'){openRoutines();return}
+  if(a==='goal-inc'){const g=state.goals.find(x=>x.id===id);if(g){g.current=Math.round((g.current+1)*100)/100;save();render();if(goalPct(g)===100)toast('Cap atteint. Bravo.')}return}
+  if(a==='ai-split'){coachSplit(id);return}
+  if(a==='ai-review'){coachReview();return}
+  if(a==='ai-resched'){coachReschedule();return}
+  if(a==='rev-mode'){revMode=b.dataset.value==='mois'?'mois':'semaine';render();return}
+  if(a==='rev-prev'||a==='rev-next'){revMonth=new Date(revMonth.getFullYear(),revMonth.getMonth()+(a==='rev-prev'?-1:1),1,12);render();return}
+  if(a==='view-as'){ui.viewAs=b.dataset.value;saveUI();updateChrome();render();toast('Aperçu : offre '+PLAN_NAME[plan()]);return}
+  if(a==='admin-refresh'){adminData=null;render();return}
+  if(a==='replay-onboard'){state.onboarded=false;save();openWizard('onboard');return}
+  if(a==='delete-account'){
+    if(!await ask('Supprimer votre compte ?','Votre compte et toutes les données qu’il contient seront supprimés définitivement, sur tous vos appareils.','Continuer'))return;
+    if(!await ask('Confirmez la suppression','Cette action est définitive. Pensez à exporter une copie avant si vous souhaitez garder vos données.','Supprimer définitivement'))return;
+    const{error}=await cloud.sb.rpc('delete_my_account');if(error){toast('Suppression impossible pour le moment. Réessayez.');return}
+    try{await cloud.sb.auth.signOut()}catch{}try{localStorage.removeItem(storeKey());localStorage.removeItem(UID_KEY)}catch{}
+    cloudUid=null;cloud.user=null;cloud.status='local';profile=null;adminData=null;state=loadLocal(KEY);updateChrome();location.hash='#aujourdhui';render();toast('Votre compte a été supprimé');return}
+  if(a==='move'){const d=new Date();d.setDate(d.getDate()+(+b.dataset.to));moveTask(id,b.dataset.week,dateKey(d));if($('#rem').open)openRem();return}
+  if(a==='late-done'){const t=week(b.dataset.week).tasks.find(x=>x.id===id);if(t){t.done=true;save();render();toast('Bravo, c’est fait')}if($('#rem').open)openRem();return}
+  if(a==='move-pick'){const t=peek(b.dataset.week).tasks.find(x=>x.id===id);if(!t)return;const fw=b.dataset.week;
+    editor('Reprogrammer',`<p class="lead" style="margin-top:6px">${esc(t.title)}</p>`+field('Nouvelle date','date',dateKey(new Date()),'date')+`<label class="field">Heure (facultatif)<input name="time" type="time" value="${esc(t.time||'')}"></label>`,
+      f=>{const dt=f.get('date');if(!/^\d{4}-\d{2}-\d{2}$/.test(dt))return false;moveTask(id,fw,dt,f.get('time')||null);if($('#rem').open)openRem()});return}
+  if(a==='ics'){const t=peek(b.dataset.week).tasks.find(x=>x.id===id);if(t&&Number.isInteger(t.day))icsFor(t,b.dataset.week);return}
+  if(a==='notif'){askNotifPermission();return}
+  if(a==='open-auth'){openAuth('login');return}
+  if(a==='sign-out'){signOut();return}
+  if(a==='sync-now'){cloudPush().then(()=>cloudPull());return}
+  if(a==='cal-prev'||a==='cal-next'){calMonth=new Date(calMonth.getFullYear(),calMonth.getMonth()+(a==='cal-prev'?-1:1),1,12);render();return}
+  if(a==='cal-today'){const d=new Date();calMonth=new Date(d.getFullYear(),d.getMonth(),1,12);calSel=dateKey(d);render();return}
+  if(a==='cal-pick'){calSel=b.dataset.date;const d=new Date(calSel+'T12:00:00');if(d.getMonth()!==calMonth.getMonth())calMonth=new Date(d.getFullYear(),d.getMonth(),1,12);render();if(matchMedia('(max-width:1100px)').matches)$('.cal-detail')?.scrollIntoView({behavior:'smooth',block:'start'});return}
+  if(a==='goto-week'){key=b.dataset.week;return}
   if(a==='hide-install'){ui.installHidden=true;saveUI();render();return}
   if(a==='theme'){setTheme(b.dataset.value);render();return}
   if(a==='add-task'||a==='edit-task'){
-    const w=peek(key),t=w.tasks.find(t=>t.id===id);
+    const wk=b.dataset.week||key,w=peek(wk),t=w.tasks.find(t=>t.id===id),preDay=t?t.day:(b.dataset.day!==undefined?+b.dataset.day:null);
     editor(t?'Modifier la tâche':'Nouvelle action',(t?'':ideasBlock('actions',new Set(w.tasks.map(x=>x.title.toLocaleLowerCase('fr')))))+field('Une action concrète','title',t?.title,'text','placeholder="Ex. Appeler le garage"')
       +`<label class="field">Priorité<select name="priority">${PRIOS.map(p=>`<option ${p===(t?.priority??'Normale')?'selected':''}>${p}</option>`).join('')}</select></label>`
+      +`<label class="field">Jour prévu<select name="day"><option value="">Dans la semaine</option>${DAYS_LONG.map((d,i)=>`<option value="${i}" ${preDay===i?'selected':''}>${d} ${fmt(shift(wk,i))}</option>`).join('')}</select></label>`
+      +`<div class="field-row"><label class="field">Heure<input name="time" type="time" value="${esc(t?.time||'')}"></label><label class="field">Rappel<select name="remind">${REMINDS.map(([v,l])=>`<option value="${v}" ${(t?.remind??'')===v?'selected':''}>${l}</option>`).join('')}</select></label></div><p class="field-err" id="field-err" role="alert"></p>`
+      +(t&&Number.isInteger(t.day)?`<button type="button" class="btn sm ics-btn" data-act="ics" data-id="${t.id}" data-week="${wk}">${ic('cal',14)}Ajouter à mon calendrier</button>`:'')
       +`<label class="field">Cap associé<select name="goal"><option value="">Aucun</option>${state.goals.map(g=>`<option value="${g.id}" ${g.id===t?.goal?'selected':''}>${esc(g.title)}</option>`).join('')}</select></label>`,
-      f=>{const title=f.get('title').trim();if(!title)return false;const v={title,priority:PRIOS.includes(f.get('priority'))?f.get('priority'):'Normale',goal:f.get('goal')||''};if(t)Object.assign(t,v);else week(key).tasks.push({id:uid(),done:false,...v})},t?'':'actions');
+      f=>{const title=f.get('title').trim();if(!title)return false;const v={title,priority:PRIOS.includes(f.get('priority'))?f.get('priority'):'Normale',goal:f.get('goal')||'',day:f.get('day')===''?null:+f.get('day'),time:f.get('time')||null,remind:f.get('remind')===''?null:+f.get('remind')};if(v.remind!==null&&v.day===null){$('#field-err').textContent='Choisissez un jour pour programmer un rappel.';return false}if(v.remind!==null)askNotifPermission();if(t)Object.assign(t,v);else week(wk).tasks.push({id:uid(),done:false,...v})},t?'':'actions');
     return;
   }
   if(a==='add-ritual'||a==='edit-ritual'){
     const r=state.rituals.find(r=>r.id===id);
-    editor(r?'Modifier le rituel':'Nouveau rituel',(r?'':ideasBlock('rituels',new Set(state.rituals.map(x=>x.title.toLocaleLowerCase('fr')))))+field('Un geste à répéter','title',r?.title,'text','placeholder="Ex. Marcher 20 minutes"'),f=>{const title=f.get('title').trim();if(!title)return false;if(r)r.title=title;else state.rituals.push({id:uid(),title})},r?'':'rituels');
+    editor(r?'Modifier le rituel':'Nouveau rituel',(r?'':ideasBlock('rituels',new Set(state.rituals.map(x=>x.title.toLocaleLowerCase('fr')))))+field('Un geste à répéter','title',r?.title,'text','placeholder="Ex. Lire 10 minutes"')
+      +`<label class="field">Version minimum (les jours difficiles)<input name="min" maxlength="80" value="${esc(r?.min||'')}" placeholder="Ex. 1 page"></label>`
+      +`<label class="field">Quand…, je… (facultatif)<input name="cue" maxlength="160" value="${esc(r?.cue||'')}" placeholder="Ex. Quand je pose mon café, je lis"></label>`
+      +`<label class="field">Cap associé<select name="goal"><option value="">Aucun</option>${state.goals.map(g=>`<option value="${g.id}" ${g.id===r?.goal?'selected':''}>${esc(g.title)}</option>`).join('')}</select></label>`,
+      f=>{const title=f.get('title').trim();if(!title)return false;const v={title,min:String(f.get('min')||'').trim().slice(0,80),cue:String(f.get('cue')||'').trim().slice(0,160),goal:f.get('goal')||''};if(r)Object.assign(r,v);else state.rituals.push({id:uid(),...v})},r?'':'rituels');
     return;
   }
   if(a==='add-goal'||a==='edit-goal'){
     const g=state.goals.find(g=>g.id===id);
-    editor(g?'Mettre à jour le cap':'Nouveau cap',(g?'':ideasBlock('caps',new Set(state.goals.map(x=>x.title.toLocaleLowerCase('fr')))))+field('Mon cap','title',g?.title,'text','placeholder="Ex. Lire 12 livres"')+field('Cible','target',g?.target??10,'number','min="0.01" step="any" inputmode="decimal"')+field('Où j’en suis','current',g?.current??0,'number','min="0" step="any" inputmode="decimal"')+field('Unité','unit',g?.unit??'étapes','text','placeholder="pages, séances, étapes…"'),
-      f=>{const v={title:f.get('title').trim(),target:Number(f.get('target')),current:Number(f.get('current')),unit:f.get('unit').trim()};if(!v.title||!v.unit||!(v.target>0)||!(v.current>=0))return false;if(g)Object.assign(g,v);else state.goals.push({id:uid(),...v})},g?'':'caps');
+    editor(g?'Mettre à jour le cap':'Nouveau cap',(g?'':ideasBlock('caps',new Set(state.goals.map(x=>x.title.toLocaleLowerCase('fr')))))+field('Mon cap','title',g?.title,'text','placeholder="Ex. Lire 12 livres"')+field('Cible','target',g?.target??10,'number','min="0.01" step="any" inputmode="decimal"')+field('Où j’en suis','current',g?.current??0,'number','min="0" step="any" inputmode="decimal"')+field('Unité','unit',g?.unit??'étapes','text','placeholder="pages, séances, étapes…"')
+      +`<label class="row toggle-row"><input class="chk sq" type="checkbox" name="auto" ${(g?g.auto:true)?'checked':''}><span class="copy"><span class="t">Avance toute seule</span><small>+1 à chaque action liée faite et à chaque rituel lié coché</small></span></label>`,
+      f=>{const v={title:f.get('title').trim(),target:Number(f.get('target')),current:Number(f.get('current')),unit:f.get('unit').trim(),auto:!!f.get('auto')};if(!v.title||!v.unit||!(v.target>0)||!(v.current>=0))return false;if(g)Object.assign(g,v);else state.goals.push({id:uid(),...v})},g?'':'caps');
     return;
   }
   if(a==='intention'){const w=peek(key);editor('Mon intention de la semaine',field('Cette semaine, je choisis de…','intention',w.intention,'text','placeholder="Ex. Ralentir le soir"').replace(' required',''),f=>{week(key).intention=f.get('intention').trim()});return}
-  if(a==='del-task'){if(!await ask('Supprimer cette tâche ?','Elle disparaîtra de cette semaine.','Supprimer'))return;const w=week(key);w.tasks=w.tasks.filter(t=>t.id!==id)}
+  if(a==='del-task'){if(!await ask('Supprimer cette action ?','Elle disparaîtra de cette semaine.','Supprimer'))return;const w=week(b.dataset.week||key);w.tasks=w.tasks.filter(t=>t.id!==id)}
   if(a==='del-ritual'){if(!await ask('Supprimer ce rituel ?','Ses coches seront effacées dans toutes les semaines.','Supprimer'))return;state.rituals=state.rituals.filter(r=>r.id!==id);Object.values(state.weeks).forEach(w=>delete w.checks[id])}
   if(a==='del-goal'){if(!await ask('Supprimer ce cap ?','Les tâches associées sont conservées.','Supprimer'))return;state.goals=state.goals.filter(g=>g.id!==id);Object.values(state.weeks).forEach(w=>w.tasks.forEach(t=>{if(t.goal===id)t.goal=''}))}
   if(a==='profile'){state.name=$('#name').value.trim().slice(0,60);toast('Prénom enregistré')}
   if(a==='export'){download();return}
   if(a==='import'){$('#import-file').click();return}
   if(a==='demo'){if(await ask('Charger la démonstration ?','Vos données actuelles seront remplacées. Exportez-les d’abord si besoin.','Charger'))demo();return}
-  if(a==='reset'){if(!await ask('Tout effacer ?','Rituels, caps, actions et bilans seront supprimés de ce navigateur. Cette action est définitive.','Tout effacer'))return;state=fresh();toast('Votre espace a été réinitialisé')}
+  if(a==='reset'){if(!await ask('Tout effacer ?',`Rituels, caps, actions et bilans seront supprimés ${cloud.user?'de cet appareil et de votre compte':'de ce navigateur'}. Cette action est définitive.`,'Tout effacer'))return;state=fresh();toast('Votre espace a été réinitialisé')}
   save();render();
 });
 
 document.addEventListener('change',async e=>{
   const t=e.target;
-  if(t.dataset.task){const task=week(key).tasks.find(x=>x.id===t.dataset.task);if(task)task.done=t.checked;save();render();return}
-  if(t.dataset.ritual){const w=week(t.dataset.week||key),arr=w.checks[t.dataset.ritual]??=Array(7).fill(false);while(arr.length<7)arr.push(false);arr[Number(t.dataset.day)]=t.checked;save();render();return}
+  if(t.dataset.task){const task=week(t.dataset.week||key).tasks.find(x=>x.id===t.dataset.task);if(task&&task.done!==t.checked){task.done=t.checked;if(task.goal)goalAdjust(task.goal,t.checked?1:-1)}save();render();popAt(`[data-task="${t.dataset.task}"]`);return}
+  if(t.dataset.ritual){const w=week(t.dataset.week||key),arr=w.checks[t.dataset.ritual]??=Array(7).fill(false);while(arr.length<7)arr.push(false);const d=Number(t.dataset.day);if(!!arr[d]!==t.checked){arr[d]=t.checked;const r=state.rituals.find(x=>x.id===t.dataset.ritual);if(r?.goal)goalAdjust(r.goal,t.checked?1:-1)}save();render();popAt(`[data-ritual="${t.dataset.ritual}"][data-day="${d}"]`);
+    const tw=peek(monday()),ti=todayIdx();if(t.checked&&(t.dataset.week||key)===monday()&&d===ti&&state.rituals.length&&state.rituals.every(r=>tw.checks[r.id]?.[ti])){$('#today-rituals')?.classList.add('halo');toast('Tous vos rituels du jour sont faits. Bravo.')}return}
+  if(t.dataset.planUser){setUserPlan(t.dataset.planUser,t.value);return}
+  if(t.id==='ai-consent'){state.aiConsent=t.checked;save();toast(t.checked?'Coach IA activé':'Coach IA désactivé');return}
+  if(t.id==='nudge'){ui.nudge=t.checked;ui.nudged=null;saveUI();scheduleReminders();if(t.checked)askNotifPermission();return}
+  if(t.id==='nudge-time'){ui.nudgeTime=t.value||'20:30';ui.nudged=null;saveUI();scheduleReminders();return}
   if(t.id==='filter'){filter=t.value;$('#task-list').innerHTML=taskListHTML();return}
   if(t.id==='import-file'&&t.files[0]){
     const file=t.files[0];t.value='';
@@ -727,8 +1744,19 @@ document.addEventListener('change',async e=>{
 document.addEventListener('input',e=>{
   const t=e.target;
   if(t.dataset.review){week(key).review[t.dataset.review]=t.value;saveSoon()}
+  if(t.dataset.win){const w=week(t.dataset.week),arr=w.wins7??=Array(7).fill('');arr[+t.dataset.day]=t.value.slice(0,200);saveSoon()}
+  if(t.dataset.month){state.months??={};const m=state.months[t.dataset.ym]??={wins:'',lessons:'',next:''};m[t.dataset.month]=t.value.slice(0,5000);saveSoon()}
+  if(t.id==='identity'){state.identity=t.value.slice(0,160);saveSoon()}
+  if(t.id==='quick-in'){$('#quick-prev').innerHTML=quickPreview(parseQuick(t.value))}
   if(t.id==='search'){search=t.value;$('#task-list').innerHTML=taskListHTML()}
 });
+
+function popAt(sel){const el=document.querySelector(sel);if(!el||matchMedia('(prefers-reduced-motion: reduce)').matches)return;el.classList.add('pop');setTimeout(()=>el.classList.remove('pop'),400)}
+$('#quick-form').addEventListener('submit',e=>{e.preventDefault();if(addQuick(parseQuick($('#quick-in').value)))$('#quick').close();else $('#quick-in').focus()});
+$('#wiz-form').addEventListener('submit',e=>{e.preventDefault();wizApply();if(wiz.step===WIZ_STEPS[wiz.kind].length-1)wizFinish();else{wiz.step++;save();drawWiz()}});
+$('#wiz-back').onclick=()=>{wizApply();wiz.step=Math.max(0,wiz.step-1);drawWiz()};
+$('#wiz-skip').onclick=()=>{state.onboarded=true;save();$('#wiz').close()};
+$('#wiz').addEventListener('close',()=>{if(wiz?.kind==='onboard'&&!state.onboarded){state.onboarded=true;save()}render()});
 
 /* ---------- Thème ---------- */
 const mqLight=matchMedia('(prefers-color-scheme: light)');
@@ -747,10 +1775,17 @@ mqLight.addEventListener?.('change',()=>{if((ui.theme||'dark')==='auto')applyThe
 applyTheme();
 
 window.addEventListener('hashchange',render);
-window.addEventListener('pagehide',()=>{clearTimeout(saveTimer);save()});
-document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'&&!$('dialog[open]')&&!document.activeElement?.matches('textarea,input'))render()});
+window.addEventListener('pagehide',()=>{if(saveTimer){clearTimeout(saveTimer);saveTimer=null;save()}if(cloud.pending)cloudPush()});
+window.addEventListener('online',()=>{cloud.pending?cloudPush():cloudPull()});
+setInterval(()=>{if(document.visibilityState==='visible'){updateBell();cloudPull()}},60000);
+setInterval(scheduleReminders,5*60000);
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'){scheduleReminders();if(!$('dialog[open]')&&!document.activeElement?.matches('textarea,input'))render();cloud.pending?cloudPush():cloudPull()}});
+document.querySelectorAll('[data-close-rem]').forEach(b=>{b.innerHTML=ic('x');b.onclick=()=>$('#rem').close()});
 navigator.storage?.persist?.().catch(()=>{});
+updateChrome();
 render();
+scheduleReminders();
+cloudInit().finally(()=>setTimeout(maybeOnboard,300));
 if(!storageOK)toast('Données locales illisibles ou stockage bloqué. Restaurez une sauvegarde avant de modifier votre espace.');
 </script>
 </body>
