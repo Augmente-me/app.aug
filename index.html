@@ -126,7 +126,7 @@ h2{font-family:var(--serif);font-weight:500;font-size:25px;line-height:1.15;marg
    repeating-linear-gradient(88deg,rgba(0,0,0,.12) 0 1px,transparent 1px 13px),
    linear-gradient(135deg,var(--wood-3) 0%,var(--wood-1) 38%,var(--wood-2) 100%);
   border:1px solid #3b2b20}
-.hero::after{content:'';position:absolute;right:120px;bottom:-110px;width:330px;height:330px;background:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20512%20512%22%20width%3D%22512%22%20height%3D%22512%22%3E%3Cpath%20fill%3D%22%23ffffff%22%20fill-rule%3D%22evenodd%22%20d%3D%22M256.00%20133.12%20L153.60%20363.52%20L358.40%20363.52%20Z%20M245.76%20176.32%20L162.56%20363.52%20L328.96%20363.52%20Z%22/%3E%3Ccircle%20cx%3D%22256.00%22%20cy%3D%22349.44%22%20r%3D%2214.08%22%20fill%3D%22%23ffffff%22/%3E%3C/svg%3E") center/contain no-repeat;opacity:.05;pointer-events:none}
+.hero::after{content:'';position:absolute;right:120px;bottom:-110px;width:330px;height:330px;background:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20512%20512%22%20width%3D%22512%22%20height%3D%22512%22%3E%3Cpath%20fill%3D%22%23ffffff%22%20d%3D%22M256.00%20133.12%20L153.60%20363.52%20L162.56%20363.52%20L245.76%20176.32%20L328.96%20363.52%20L358.40%20363.52%20Z%22/%3E%3Ccircle%20cx%3D%22256.00%22%20cy%3D%22349.44%22%20r%3D%2214.08%22%20fill%3D%22%23ffffff%22/%3E%3C/svg%3E") center/contain no-repeat;opacity:.05;pointer-events:none}
 .hero .eyebrow{color:#c9b8a6}
 .hero h2{font-size:34px;font-style:italic;font-weight:400;color:#fbf6ee;margin-bottom:8px;max-width:640px}
 .hero p{color:#d6c7b6;margin:0;font-size:13.5px}
@@ -404,10 +404,24 @@ dialog#rem{width:min(600px,calc(100vw - 32px))}
 .auth-forgot{background:none;border:0;cursor:pointer;justify-self:start;margin-top:12px;padding:0;font:inherit;font-size:12.5px}
 .auth-skip{width:100%;justify-content:center}
 body.auth-open{overflow:hidden}
+body.gate>aside,body.gate>.shell,body.gate .fab{visibility:hidden}
+body.gate .auth{background:var(--bg)}
 @media (max-width:760px){.auth-card{padding:28px 20px 22px;border-radius:22px}.field-row{grid-template-columns:1fr 1fr}.late-row .resched{width:100%}}
 
 
 /* ===== Méthode, offres, admin ===== */
+@media (min-width:761px){
+  aside{overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin}
+  .side-foot{padding-bottom:4px}
+}
+@media (min-width:761px) and (max-height:820px){
+  aside{padding-top:24px}
+  .brand-block .mono{width:36px;height:36px;margin-bottom:12px}
+  .side-label{margin-top:24px}
+  nav a{padding:9px 12px}
+  .side-quick{margin-top:16px}
+  .side-quote{display:none}
+}
 .side-quick{width:100%;justify-content:center;margin-top:22px}
 .fab{display:none}
 .star{color:var(--accent)}
@@ -506,7 +520,7 @@ body::before{content:'';position:fixed;inset:-25%;z-index:-2;pointer-events:none
   background:radial-gradient(38% 34% at 18% 14%,var(--orb-1),transparent 70%),radial-gradient(34% 30% at 86% 26%,var(--orb-2),transparent 70%),radial-gradient(40% 36% at 62% 92%,var(--orb-3),transparent 72%);
   animation:drift 48s ease-in-out infinite alternate}
 body::after{content:'';position:fixed;right:-6vw;bottom:-12vh;width:min(62vw,720px);aspect-ratio:1;z-index:-1;pointer-events:none;
-  background:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20512%20512%22%20width%3D%22512%22%20height%3D%22512%22%3E%3Cpath%20fill%3D%22%23ffffff%22%20fill-rule%3D%22evenodd%22%20d%3D%22M256.00%20133.12%20L153.60%20363.52%20L358.40%20363.52%20Z%20M245.76%20176.32%20L162.56%20363.52%20L328.96%20363.52%20Z%22/%3E%3Ccircle%20cx%3D%22256.00%22%20cy%3D%22349.44%22%20r%3D%2214.08%22%20fill%3D%22%23ffffff%22/%3E%3C/svg%3E") center/contain no-repeat;opacity:var(--wm-op);filter:invert(var(--wm-inv,0))}
+  background:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20512%20512%22%20width%3D%22512%22%20height%3D%22512%22%3E%3Cpath%20fill%3D%22%23ffffff%22%20d%3D%22M256.00%20133.12%20L153.60%20363.52%20L162.56%20363.52%20L245.76%20176.32%20L328.96%20363.52%20L358.40%20363.52%20Z%22/%3E%3Ccircle%20cx%3D%22256.00%22%20cy%3D%22349.44%22%20r%3D%2214.08%22%20fill%3D%22%23ffffff%22/%3E%3C/svg%3E") center/contain no-repeat;opacity:var(--wm-op);filter:invert(var(--wm-inv,0))}
 :root[data-theme=light]{--wm-inv:1}
 @media (prefers-color-scheme:light){:root[data-theme=auto]{--wm-inv:1}}
 @keyframes drift{0%{transform:translate3d(0,0,0) scale(1)}50%{transform:translate3d(3%,-2%,0) scale(1.06)}100%{transform:translate3d(-2%,3%,0) scale(1.02)}}
@@ -568,8 +582,10 @@ input:not([type=checkbox]):not([type=file]):focus,select:focus,textarea:focus{bo
 }
 @media (prefers-reduced-motion:reduce){body::before{animation:none}}
 </style>
+<script src="config.js"></script>
 </head>
 <body>
+<script>try{if((window.AUGMENTE_CONFIG||{}).supabaseUrl)document.body.classList.add('gate')}catch(e){}</script>
 <aside>
   <div class="brand-block">
     <img class="mono" src="monogramme.svg" alt="">
@@ -664,18 +680,12 @@ input:not([type=checkbox]):not([type=file]):focus,select:focus,textarea:focus{bo
       <button class="btn primary auth-submit" id="auth-submit" type="submit">Se connecter</button>
     </form>
     <button type="button" class="link auth-forgot" data-auth="forgot" id="auth-forgot">Mot de passe oublié ?</button>
-    <div id="auth-skip-block">
-      <div class="or"><span>ou</span></div>
-      <button type="button" class="btn auth-skip" data-auth="skip">Continuer sans compte</button>
-      <p class="help" style="margin-top:10px">Sans compte, vos données restent sur cet appareil.</p>
-    </div>
   </div>
 </div>
 
 <div id="toast" role="status" aria-live="polite"></div>
 <noscript><p style="padding:40px">aug.mente a besoin de JavaScript pour fonctionner.</p></noscript>
 
-<script src="config.js"></script>
 <script type="module">
 /* ---------- Icônes ---------- */
 const P={
@@ -866,12 +876,12 @@ function icsFor(t,wk){
 /* ---------- Compte et sauvegarde automatique (Supabase) ---------- */
 const CFG=window.AUGMENTE_CONFIG||{};
 const SB_SRC='https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.105.1/dist/umd/supabase.js';
-const cloud={enabled:!!(CFG.supabaseUrl&&CFG.supabaseAnonKey),sb:null,user:null,status:'local',pending:false,timer:null,lastSync:null};
+const cloud={enabled:!!(CFG.supabaseUrl&&CFG.supabaseAnonKey),sb:null,user:null,status:'local',pending:false,timer:null,lastSync:null,lastError:'',retry:null};
 const hasData=x=>!!(x&&(x.rituals.length||x.goals.length||Object.keys(x.weeks).length||x.name));
 function loadScript(src){return new Promise((res,rej)=>{if(window.supabase?.createClient)return res();const el=document.createElement('script');el.src=src;el.onload=res;el.onerror=rej;document.head.append(el);setTimeout(()=>rej(new Error('timeout')),12000)})}
 function syncLabel(){
   if(!cloud.user)return'';
-  if(cloud.status==='error')return'Hors connexion. Vos modifications sont gardées sur cet appareil et partiront au retour du réseau.';
+  if(cloud.status==='error')return'Synchronisation en attente : vos modifications sont gardées sur cet appareil et repartiront automatiquement.'+(cloud.lastError?` Détail technique : ${cloud.lastError}`:'');
   if(cloud.status==='synced'&&cloud.lastSync)return'Dernière synchronisation à '+cloud.lastSync.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'})+'.';
   return'Synchronisation en cours…';
 }
@@ -882,8 +892,9 @@ async function fetchRemote(){
 async function cloudPush(){
   if(!cloud.user||!cloud.sb)return;clearTimeout(cloud.timer);cloud.status='syncing';setSave();
   try{const{error}=await cloud.sb.from('weekly_state').upsert({user_id:cloud.user.id,data:state,updated_at:new Date().toISOString()},{onConflict:'user_id'});if(error)throw error;
-    cloud.pending=false;cloud.status='synced';cloud.lastSync=new Date()}
-  catch{cloud.pending=true;cloud.status='error'}
+    cloud.pending=false;cloud.status='synced';cloud.lastSync=new Date();cloud.lastError=''}
+  catch(e){cloud.pending=true;cloud.status='error';cloud.lastError=String(e?.message||e?.code||e||'erreur inconnue').slice(0,200);console.warn('[aug.mente] synchronisation',e);
+    clearTimeout(cloud.retry);cloud.retry=setTimeout(()=>{if(cloud.pending)cloudPush()},30000)}
   setSave();
 }
 function cloudQueue(){if(!cloud.user)return;cloud.pending=true;cloud.status='syncing';clearTimeout(cloud.timer);cloud.timer=setTimeout(cloudPush,1200)}
@@ -895,7 +906,7 @@ async function reconcile(remote){
 }
 async function cloudPull(){
   if(!cloud.user||cloud.pending||document.querySelector('dialog[open]')||document.activeElement?.matches('textarea,input'))return;
-  try{await reconcile(await fetchRemote())}catch{cloud.status='error';setSave()}
+  try{await reconcile(await fetchRemote())}catch(e){cloud.status='error';cloud.lastError=String(e?.message||e?.code||e||'lecture impossible').slice(0,200);console.warn('[aug.mente] lecture',e);setSave()}
 }
 const dropAnon=()=>{try{localStorage.removeItem(KEY)}catch{}};
 async function onSignedIn(user){
@@ -920,14 +931,14 @@ async function signOut(){
   if(cloud.pending&&!await ask('Modifications non synchronisées','Certaines modifications n’ont pas pu être envoyées (pas de réseau). Si vous vous déconnectez maintenant, elles seront perdues.','Me déconnecter quand même'))return;
   try{await cloud.sb.auth.signOut()}catch{}
   try{localStorage.removeItem(storeKey());localStorage.removeItem(UID_KEY)}catch{}
-  cloudUid=null;cloud.user=null;cloud.status='local';cloud.pending=false;profile=null;adminData=null;state=loadLocal(KEY);updateChrome();render();setSave();scheduleReminders();toast('Vous êtes déconnecté');
+  cloudUid=null;cloud.user=null;cloud.status='local';cloud.pending=false;profile=null;adminData=null;state=loadLocal(KEY);updateChrome();render();setSave();scheduleReminders();openAuth('login','Vous êtes déconnecté. À bientôt.',true);
 }
 let authMode='login';
 function openAuth(mode='login',msg='',ok=false){
   authMode=mode;$('#auth').hidden=false;document.body.classList.add('auth-open');syncAuth(msg,ok);
   setTimeout(()=>$(mode==='reset'?'#auth-pass':'#auth-email')?.focus(),60);
 }
-function closeAuth(){$('#auth').hidden=true;document.body.classList.remove('auth-open')}
+function closeAuth(force){if(cloud.enabled&&!cloud.user&&!force)return;$('#auth').hidden=true;document.body.classList.remove('auth-open','gate')}
 function syncAuth(msg='',ok=false){
   const m=authMode;
   $('#auth-title').textContent={login:'Bon retour',signup:'Créer votre espace',forgot:'Mot de passe oublié',reset:'Nouveau mot de passe'}[m];
@@ -939,7 +950,6 @@ function syncAuth(msg='',ok=false){
   $('#auth-submit').textContent={login:'Se connecter',signup:'Créer mon compte',forgot:'Recevoir le lien',reset:'Enregistrer le mot de passe'}[m];
   $('#auth-forgot').hidden=m!=='login';$('#auth-forgot').textContent='Mot de passe oublié ?';
   if(m==='forgot'){$('#auth-forgot').hidden=false;$('#auth-forgot').textContent='Revenir à la connexion';$('#auth-forgot').dataset.auth='login'}else $('#auth-forgot').dataset.auth='forgot';
-  $('#auth-skip-block').hidden=m==='reset';
   const el=$('#auth-msg');el.textContent=msg;el.classList.toggle('ok',ok);
 }
 function authError(e){
@@ -948,13 +958,14 @@ function authError(e){
   if(t.includes('already registered')||t.includes('already been registered'))return'Un compte existe déjà avec cet e-mail. Connectez-vous.';
   if(t.includes('not confirmed'))return'Confirmez d’abord votre e-mail : ouvrez le lien reçu (pensez aux spams).';
   if(t.includes('rate limit')||e?.status===429)return'Trop de tentatives. Réessayez dans quelques minutes.';
+  if(t.includes('different from the old')||t.includes('should be different'))return'Choisissez un mot de passe différent de l’actuel.';
+  if(t.includes('reauthentication')||t.includes('reauthenticate'))return'Par sécurité, déconnectez-vous puis utilisez « Mot de passe oublié » sur l’écran de connexion.';
   if(t.includes('password'))return'Mot de passe refusé : choisissez-en un plus long ou plus varié.';
   if(t.includes('fetch')||t.includes('network'))return'Pas de connexion internet. Réessayez dans un instant.';
   return'Une erreur est survenue. Réessayez dans un instant.';
 }
 document.addEventListener('click',e=>{
   const b=e.target.closest('[data-auth]');if(!b)return;const a=b.dataset.auth;
-  if(a==='skip'){ui.authSkipped=true;saveUI();closeAuth();maybeOnboard();return}
   authMode=a;syncAuth();$(a==='reset'?'#auth-pass':'#auth-email')?.focus();
 });
 $('#auth-form').addEventListener('submit',async e=>{
@@ -966,9 +977,9 @@ $('#auth-form').addEventListener('submit',async e=>{
   const label=btn.textContent;btn.disabled=true;btn.textContent='Un instant…';
   const back=location.origin+location.pathname;
   try{
-    if(m==='login'){const{data,error}=await cloud.sb.auth.signInWithPassword({email,password:pass});if(error)throw error;closeAuth();$('#auth-pass').value='';await onSignedIn(data.user);toast('Connecté')}
+    if(m==='login'){const{data,error}=await cloud.sb.auth.signInWithPassword({email,password:pass});if(error)throw error;cloud.user=data.user;closeAuth();$('#auth-pass').value='';await onSignedIn(data.user);toast('Connecté')}
     else if(m==='signup'){const{data,error}=await cloud.sb.auth.signUp({email,password:pass,options:{emailRedirectTo:back}});if(error)throw error;
-      if(data.session){closeAuth();$('#auth-pass').value='';await onSignedIn(data.user);toast('Compte créé')}
+      if(data.session){cloud.user=data.user;closeAuth();$('#auth-pass').value='';await onSignedIn(data.user);toast('Compte créé')}
       else{authMode='login';syncAuth('Compte créé. Ouvrez le lien reçu par e-mail pour l’activer, puis connectez-vous.',true)}}
     else if(m==='forgot'){const{error}=await cloud.sb.auth.resetPasswordForEmail(email,{redirectTo:back});if(error)throw error;syncAuth('Si un compte existe pour cette adresse, un lien vient de vous être envoyé.',true)}
     else if(m==='reset'){const{error}=await cloud.sb.auth.updateUser({password:pass});if(error)throw error;$('#auth-pass').value='';closeAuth();toast('Mot de passe modifié')}
@@ -977,17 +988,17 @@ $('#auth-form').addEventListener('submit',async e=>{
 });
 async function cloudInit(){
   if(!cloud.enabled)return;
-  try{await loadScript(SB_SRC)}catch{if(cloudUid){cloud.status='error';setSave()}return}
+  try{await loadScript(SB_SRC)}catch{if(cloudUid){cloud.status='error';closeAuth(true);setSave()}else openAuth('login','Connexion impossible pour le moment. Vérifiez votre réseau puis rechargez la page.');return}
   cloud.sb=window.supabase.createClient(CFG.supabaseUrl,CFG.supabaseAnonKey,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true,storageKey:'augmente.auth'}});
   cloud.sb.auth.onAuthStateChange((ev,session)=>{
     if(ev==='PASSWORD_RECOVERY')setTimeout(()=>openAuth('reset'),0);
     if(ev==='TOKEN_REFRESHED'&&session)cloud.user=session.user;
-    if(ev==='SIGNED_OUT'&&cloud.user){cloud.user=null;cloud.status='local';setSave()}
+    if(ev==='SIGNED_OUT'&&cloud.user){cloud.user=null;cloud.status='local';setSave();openAuth('login','Vous avez été déconnecté. Reconnectez-vous pour continuer.')}
   });
   let session=null;try{({data:{session}}=await cloud.sb.auth.getSession())}catch{}
-  if(session?.user)await onSignedIn(session.user);
-  else if(cloudUid)openAuth('login','Votre session a expiré. Reconnectez-vous pour synchroniser vos données.');
-  else if(!ui.authSkipped)openAuth('login');
+  if(session?.user){cloud.user=session.user;closeAuth();await onSignedIn(session.user)}
+  else if(cloudUid)openAuth('login','Votre session a expiré. Reconnectez-vous pour retrouver vos données.');
+  else openAuth('signup','Un compte gratuit est nécessaire pour utiliser aug.mente : vos données sont sauvegardées et vous les retrouvez sur tous vos appareils.',true);
 }
 
 /* ---------- Offres et administration ---------- */
@@ -1244,7 +1255,7 @@ function notices(){
   const ios=/iPhone|iPad|iPod/.test(navigator.userAgent),standalone=navigator.standalone||matchMedia('(display-mode: standalone)').matches;
   if(ios&&!standalone&&!ui.installHidden)out.push(`<div class="notice"><div>${ic('spark')}<span>Sur iPhone, ajoutez aug.mente à l’écran d’accueil : bouton Partager, puis « Sur l’écran d’accueil ». Vos données y sont mieux conservées.</span></div><button class="btn sm" data-act="hide-install">Compris</button></div>`);
   const days=state.lastExport?Math.floor((Date.now()-new Date(state.lastExport).getTime())/864e5):Infinity;
-  if(hasData&&days>=14)out.push(`<div class="notice"><div>${ic('down')}<span>${state.lastExport?`Dernière copie de sécurité il y a ${days} jours.`:'Aucune copie de sécurité pour l’instant.'} Vos données ne vivent que sur cet appareil.</span></div><button class="btn sm" data-act="export">Exporter une copie</button></div>`);
+  if(hasData&&days>=14&&!cloud.user)out.push(`<div class="notice"><div>${ic('down')}<span>${state.lastExport?`Dernière copie de sécurité il y a ${days} jours.`:'Aucune copie de sécurité pour l’instant.'} Vos données ne vivent que sur cet appareil.</span></div><button class="btn sm" data-act="export">Exporter une copie</button></div>`);
   return out.join('');
 }
 
@@ -1518,7 +1529,7 @@ function plans(){
 /* ---------- Réglages ---------- */
 function accountCard(){
   if(!cloud.enabled)return`<section class="card"><h2>Compte</h2><p class="lead" style="margin-top:8px">Mode aperçu : la connexion n’est pas activée sur cette version. Vos données restent sur cet appareil.</p><p class="cal-h">Aperçu des offres</p>${viewAsSeg()}<p class="help">Ce sélecteur permet de découvrir Free, Plus et Pro sans compte. Le coach IA ne répond qu’une fois l’app reliée à Supabase.</p><div class="btns"><button class="btn" data-act="demo">Charger la démonstration</button><button class="btn" data-act="replay-onboard">Rejouer le démarrage guidé</button></div></section>`;
-  if(cloud.user)return`<section class="card"><h2>Compte</h2><p class="lead" style="margin-top:8px">Connecté avec <b>${esc(cloud.user.email)}</b> · offre <b>${PLAN_NAME[plan()]}</b>${isAdmin()?' · administrateur':''}. Vos données se sauvegardent automatiquement et vous suivent sur tous vos appareils.</p><p class="help" id="account-status">${syncLabel()}</p><div class="btns"><button class="btn" data-act="sync-now">Synchroniser maintenant</button><button class="btn" data-act="sign-out">Se déconnecter</button>${isAdmin()?`<a class="btn" href="#admin">${ic('user',15)}Administration</a>`:''}</div>
+  if(cloud.user)return`<section class="card"><h2>Compte</h2><p class="lead" style="margin-top:8px">Connecté avec <b>${esc(cloud.user.email)}</b> · offre <b>${PLAN_NAME[plan()]}</b>${isAdmin()?' · administrateur':''}. Vos données se sauvegardent automatiquement et vous suivent sur tous vos appareils.</p><p class="help" id="account-status">${syncLabel()}</p><div class="btns"><button class="btn" data-act="sync-now">Synchroniser maintenant</button><button class="btn" data-act="change-pass">Modifier mon mot de passe</button><button class="btn" data-act="sign-out">Se déconnecter</button>${isAdmin()?`<a class="btn" href="#admin">${ic('user',15)}Administration</a>`:''}</div>
   ${state.aiConsent?`<label class="row toggle-row" style="margin-top:14px"><input class="chk sq" type="checkbox" id="ai-consent" checked><span class="copy"><span class="t">Coach IA activé</span><small>Décochez pour ne plus envoyer de données au coach</small></span></label>`:''}
   <p class="help"><button type="button" class="link link-btn" data-act="delete-account">Supprimer mon compte</button></p></section>`;
   return`<section class="card"><h2>Compte</h2><p class="lead" style="margin-top:8px">Créez un compte pour sauvegarder automatiquement vos données et les retrouver sur votre iPhone comme sur votre ordinateur.</p><div class="btns"><button class="btn primary" data-act="open-auth">${ic('user',15)}Se connecter ou créer un compte</button></div></section>`;
@@ -1561,8 +1572,7 @@ function adminPage(){
 /* ---------- Confidentialité ---------- */
 function privacy(){
   return heading('Confiance','Confidentialité.','Ce que l’app garde, où, et comment le reprendre.')
-  +`<div class="settings"><section class="card prose"><h2>Sans compte</h2><p>Vos rituels, actions, caps et bilans restent uniquement dans le navigateur de votre appareil. Rien n’est envoyé sur un serveur.</p>
-  <h2>Avec un compte</h2><p>Votre adresse e-mail et le contenu de votre espace sont stockés chez Supabase, dans la région choisie à la création du projet (Paris), pour les synchroniser entre vos appareils. Des règles d’accès garantissent que chacun ne voit que ses propres données. L’administrateur voit les adresses e-mail, les offres et le nombre de demandes au coach, jamais le contenu de votre espace.</p>
+  +`<div class="settings"><section class="card prose"><h2>Votre compte</h2><p>Un compte est nécessaire pour utiliser aug.mente. Votre adresse e-mail et le contenu de votre espace sont stockés chez Supabase, dans la région choisie à la création du projet (Paris), pour les synchroniser entre vos appareils. Des règles d’accès garantissent que chacun ne voit que ses propres données. L’administrateur voit les adresses e-mail, les offres et le nombre de demandes au coach, jamais le contenu de votre espace.</p>
   <h2>Coach IA (offre Pro)</h2><p>Uniquement si vous l’activez : pour chaque demande, un résumé des données utiles (titres, chiffres, notes de bilan) est transmis à Claude, le modèle d’IA d’Anthropic, via notre serveur. Vous pouvez le désactiver à tout moment dans les Réglages.</p>
   <h2>Rappels et calendrier</h2><p>Les rappels sont calculés sur votre appareil. Le fichier « Ajouter à mon calendrier » est créé localement et ouvert par votre application de calendrier.</p>
   <h2>Mesure d’audience</h2><p>L’app n’utilise aucun traceur ni outil de mesure d’audience.</p>
@@ -1667,7 +1677,7 @@ document.addEventListener('click',async e=>{
     if(!await ask('Confirmez la suppression','Cette action est définitive. Pensez à exporter une copie avant si vous souhaitez garder vos données.','Supprimer définitivement'))return;
     const{error}=await cloud.sb.rpc('delete_my_account');if(error){toast('Suppression impossible pour le moment. Réessayez.');return}
     try{await cloud.sb.auth.signOut()}catch{}try{localStorage.removeItem(storeKey());localStorage.removeItem(UID_KEY)}catch{}
-    cloudUid=null;cloud.user=null;cloud.status='local';profile=null;adminData=null;state=loadLocal(KEY);updateChrome();location.hash='#aujourdhui';render();toast('Votre compte a été supprimé');return}
+    cloudUid=null;cloud.user=null;cloud.status='local';profile=null;adminData=null;state=loadLocal(KEY);updateChrome();location.hash='#aujourdhui';render();openAuth('signup','Votre compte a été supprimé. Merci d’avoir essayé aug.mente.',true);return}
   if(a==='move'){const d=new Date();d.setDate(d.getDate()+(+b.dataset.to));moveTask(id,b.dataset.week,dateKey(d));if($('#rem').open)openRem();return}
   if(a==='late-done'){const t=week(b.dataset.week).tasks.find(x=>x.id===id);if(t){t.done=true;save();render();toast('Bravo, c’est fait')}if($('#rem').open)openRem();return}
   if(a==='move-pick'){const t=peek(b.dataset.week).tasks.find(x=>x.id===id);if(!t)return;const fw=b.dataset.week;
@@ -1677,6 +1687,19 @@ document.addEventListener('click',async e=>{
   if(a==='notif'){askNotifPermission();return}
   if(a==='open-auth'){openAuth('login');return}
   if(a==='sign-out'){signOut();return}
+  if(a==='change-pass'){
+    if(!cloud.user||!cloud.sb){toast('Connectez-vous d’abord.');return}
+    editor('Modifier mon mot de passe',`<p class="lead" style="margin-top:6px">Compte ${esc(cloud.user.email)}</p>`
+      +`<label class="field">Nouveau mot de passe (8 caractères minimum)<input name="p1" type="password" minlength="8" maxlength="200" autocomplete="new-password" required></label>`
+      +`<label class="field">Confirmer le nouveau mot de passe<input name="p2" type="password" minlength="8" maxlength="200" autocomplete="new-password" required></label><p class="field-err" id="field-err" role="alert"></p>`,
+      f=>{const p1=String(f.get('p1')||''),p2=String(f.get('p2')||''),err=$('#field-err');
+        if(p1.length<8){err.textContent='Le mot de passe doit faire au moins 8 caractères.';return false}
+        if(p1!==p2){err.textContent='Les deux mots de passe ne correspondent pas.';return false}
+        const btn=$('#editor button[type=submit]');btn.disabled=true;btn.textContent='Un instant…';
+        cloud.sb.auth.updateUser({password:p1}).then(({error})=>{if(error)throw error;$('#modal').close();toast('Mot de passe modifié')})
+          .catch(e=>{err.textContent=authError(e)}).finally(()=>{btn.disabled=false;btn.textContent='Enregistrer'});
+        return false},null,'Enregistrer');
+    return}
   if(a==='sync-now'){cloudPush().then(()=>cloudPull());return}
   if(a==='cal-prev'||a==='cal-next'){calMonth=new Date(calMonth.getFullYear(),calMonth.getMonth()+(a==='cal-prev'?-1:1),1,12);render();return}
   if(a==='cal-today'){const d=new Date();calMonth=new Date(d.getFullYear(),d.getMonth(),1,12);calSel=dateKey(d);render();return}
