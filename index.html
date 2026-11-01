@@ -5,8 +5,16 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>aug.mente — The Weekly System</title>
 <meta name="description" content="aug.mente — la vie, version augmentée. Un système hebdomadaire simple pour vos rituels, vos tâches et vos objectifs.">
-<meta name="theme-color" content="#0d0c0b">
-<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#0d0c0b" id="meta-theme">
+<meta name="color-scheme" content="dark light">
+<script>
+/* Thème appliqué avant l'affichage, pour éviter tout flash */
+(function(){var t='dark';try{t=(JSON.parse(localStorage.getItem('augmente.weekly.ui')||'{}')||{}).theme||'dark'}catch(e){}
+if(['dark','light','auto'].indexOf(t)<0)t='dark';document.documentElement.dataset.theme=t;
+var light=t==='light'||(t==='auto'&&matchMedia('(prefers-color-scheme: light)').matches);
+document.write('<meta name="apple-mobile-web-app-status-bar-style" content="'+(light?'default':'black-translucent')+'">');
+document.getElementById('meta-theme').content=light?'#f6f4ef':'#0d0c0b';})();
+</script>
 <meta property="og:type" content="website">
 <meta property="og:title" content="aug.mente — The Weekly System">
 <meta property="og:description" content="La vie, version augmentée. Rituels, tâches et objectifs, une semaine à la fois.">
@@ -16,7 +24,6 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="aug.mente">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
@@ -30,26 +37,33 @@
   --bg:#0d0c0b;--surface:#151412;--surface-2:#1c1a17;--line:#2a2724;--line-2:#3a3632;
   --ink:#f2eee7;--ink-2:#cfc9bf;--muted:#a49d92;--faint:#857e74;
   --wood-1:#2e2119;--wood-2:#1b140f;--wood-3:#4a3526;
-  --ivory:#efe8dc;--danger:#e0a39a;
+  --ivory:#efe8dc;--danger:#e0a39a;--danger-line:#5a3c37;--ok:#8fb59a;
+  --accent:#efe8dc;--on-accent:#16130f;--accent-hover:#fff;
+  --glass-bar:rgba(21,20,18,.94);--glass-top:rgba(13,12,11,.92);--backdrop:rgba(0,0,0,.6);
+  color-scheme:dark;
   --serif:'Cormorant Garamond','Cormorant',Garamond,'Times New Roman',serif;
   --sans:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
   --r:12px;--side:248px;
 }
+:root[data-theme=light]{--bg:#f6f4ef;--surface:#ffffff;--surface-2:#efebe4;--line:#e3ded5;--line-2:#cfc8bc;--ink:#16130f;--ink-2:#39342d;--muted:#625b51;--faint:#736c61;--accent:#16130f;--on-accent:#f6f4ef;--accent-hover:#000;--danger:#a3453a;--danger-line:#e3b9b2;--ok:#3d7a4e;--glass-bar:rgba(255,255,255,.92);--glass-top:rgba(246,244,239,.9);--backdrop:rgba(22,19,15,.35);color-scheme:light}
+@media (prefers-color-scheme:light){:root[data-theme=auto]{--bg:#f6f4ef;--surface:#ffffff;--surface-2:#efebe4;--line:#e3ded5;--line-2:#cfc8bc;--ink:#16130f;--ink-2:#39342d;--muted:#625b51;--faint:#736c61;--accent:#16130f;--on-accent:#f6f4ef;--accent-hover:#000;--danger:#a3453a;--danger-line:#e3b9b2;--ok:#3d7a4e;--glass-bar:rgba(255,255,255,.92);--glass-top:rgba(246,244,239,.9);--backdrop:rgba(22,19,15,.35);color-scheme:light}}
+body{transition:background .25s,color .25s}
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
 body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.5 var(--sans);-webkit-font-smoothing:antialiased}
 button,input,select,textarea{font:inherit;color:inherit}
 a{color:inherit;text-decoration:none}
-:focus-visible{outline:2px solid var(--ivory);outline-offset:3px;border-radius:6px}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:6px}
+main:focus,main:focus-visible{outline:none}
 .ic{flex-shrink:0;display:block}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
 
 /* Boutons */
 .btn{display:inline-flex;align-items:center;gap:8px;cursor:pointer;border:1px solid var(--line-2);border-radius:999px;background:transparent;padding:9px 16px;font-size:13px;color:var(--ink-2);transition:background .15s,border-color .15s,color .15s;white-space:nowrap}
 .btn:hover{border-color:var(--muted);color:var(--ink)}
-.btn.primary{background:var(--ivory);color:#16130f;border-color:var(--ivory);font-weight:500}
-.btn.primary:hover{background:#fff}
-.btn.danger{color:var(--danger);border-color:#5a3c37}
+.btn.primary{background:var(--accent);color:var(--on-accent);border-color:var(--accent);font-weight:500}
+.btn.primary:hover{background:var(--accent-hover);border-color:var(--accent-hover);color:var(--on-accent)}
+.btn.danger{color:var(--danger);border-color:var(--danger-line)}
 .btn.sm{padding:6px 12px;font-size:12px}
 .icon-btn{display:inline-grid;place-items:center;width:34px;height:34px;border:0;border-radius:50%;background:transparent;color:var(--faint);cursor:pointer}
 .icon-btn:hover{background:var(--surface-2);color:var(--ink)}
@@ -67,7 +81,7 @@ aside{position:fixed;inset:0 auto 0 0;width:var(--side);background:var(--surface
 .side-label b{font-weight:500;letter-spacing:1px;border:1px solid var(--line-2);border-radius:999px;padding:1px 8px;color:var(--muted)}
 nav a{display:flex;align-items:center;gap:13px;padding:11px 12px;margin:3px 0;border-radius:10px;color:var(--muted);font-size:13.5px}
 nav a:hover{color:var(--ink);background:var(--surface-2)}
-nav a.active{color:var(--ink);background:var(--surface-2);box-shadow:inset 2px 0 0 var(--ivory)}
+nav a.active{color:var(--ink);background:var(--surface-2);box-shadow:inset 2px 0 0 var(--accent)}
 .side-foot{margin-top:auto;display:grid;gap:4px}
 .side-foot a{display:flex;align-items:center;gap:13px;padding:10px 12px;border-radius:10px;color:var(--muted);font-size:13px}
 .side-foot a:hover,.side-foot a.active{color:var(--ink);background:var(--surface-2)}
@@ -77,8 +91,9 @@ nav a.active{color:var(--ink);background:var(--surface-2);box-shadow:inset 2px 0
 .shell{margin-left:var(--side);min-height:100vh;display:flex;flex-direction:column}
 header.top{height:68px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 44px;font-size:12px;color:var(--faint);gap:16px}
 .top-brand{display:none}
+.top-right{display:flex;align-items:center;gap:6px}
 .save{display:inline-flex;align-items:center;gap:8px}
-.save i{width:6px;height:6px;border-radius:50%;background:#8fb59a;display:inline-block}
+.save i{width:6px;height:6px;border-radius:50%;background:var(--ok);display:inline-block}
 .save.warn i{background:var(--danger)}
 main{width:100%;max-width:1240px;margin:0 auto;padding:44px 44px 40px;flex:1}
 footer.foot{margin:0 44px;padding:22px 0 28px;border-top:1px solid var(--line);color:var(--faint);font-size:12px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
@@ -117,9 +132,9 @@ h2{font-family:var(--serif);font-weight:500;font-size:25px;line-height:1.15;marg
 .hero p{color:#d6c7b6;margin:0;font-size:13.5px}
 .hero .btn{margin-top:18px;color:#efe3d4;border-color:rgba(239,227,212,.35)}
 .hero .btn:hover{border-color:#efe3d4;color:#fff}
-.ring{position:relative;z-index:1;flex-shrink:0;width:112px;height:112px;border-radius:50%;background:conic-gradient(var(--ivory) var(--p),rgba(255,255,255,.12) 0);display:grid;place-items:center}
+.ring{position:relative;z-index:1;flex-shrink:0;width:112px;height:112px;border-radius:50%;background:conic-gradient(#efe8dc var(--p),rgba(255,255,255,.12) 0);display:grid;place-items:center}
 .ring>div{width:100px;height:100px;border-radius:50%;background:#231910;display:grid;place-content:center;text-align:center}
-.ring b{font-family:var(--serif);font-weight:500;font-size:34px;line-height:1}
+.ring b{font-family:var(--serif);font-weight:500;font-size:34px;line-height:1;color:#fbf6ee}
 .ring small{font-size:9px;letter-spacing:1.8px;color:#c9b8a6;margin-top:4px}
 
 /* Avis */
@@ -133,7 +148,7 @@ h2{font-family:var(--serif);font-weight:500;font-size:25px;line-height:1.15;marg
 .kpi strong span{font-size:20px;color:var(--faint)}
 .kpi small{color:var(--faint);font-size:11.5px}
 .bar{height:3px;background:var(--line);border-radius:3px;overflow:hidden;margin-top:14px}
-.bar i{display:block;height:100%;background:var(--ivory);border-radius:3px;transition:width .3s}
+.bar i{display:block;height:100%;background:var(--accent);border-radius:3px;transition:width .3s}
 
 /* Colonnes */
 .columns{display:grid;grid-template-columns:1.35fr 1fr;gap:22px;align-items:start}
@@ -143,8 +158,8 @@ h2{font-family:var(--serif);font-weight:500;font-size:25px;line-height:1.15;marg
 /* Cases à cocher */
 .chk{appearance:none;-webkit-appearance:none;margin:0;width:22px;height:22px;border:1.5px solid var(--line-2);border-radius:50%;cursor:pointer;flex-shrink:0;display:grid;place-items:center;transition:background .15s,border-color .15s}
 .chk:hover{border-color:var(--muted)}
-.chk:checked{background:var(--ivory);border-color:var(--ivory)}
-.chk:checked::after{content:'';width:9px;height:5px;border:2px solid #16130f;border-top:0;border-right:0;transform:rotate(-45deg) translate(1px,-1px)}
+.chk:checked{background:var(--accent);border-color:var(--accent)}
+.chk:checked::after{content:'';width:9px;height:5px;border:2px solid var(--on-accent);border-top:0;border-right:0;transform:rotate(-45deg) translate(1px,-1px)}
 .chk.sq{border-radius:7px}
 
 /* Lignes */
@@ -157,7 +172,7 @@ h2{font-family:var(--serif);font-weight:500;font-size:25px;line-height:1.15;marg
 .row .acts{display:flex;opacity:.65}
 .row:hover .acts,.row:focus-within .acts{opacity:1}
 .pill{font-size:10.5px;letter-spacing:.6px;border:1px solid var(--line-2);border-radius:999px;padding:3px 9px;color:var(--muted);white-space:nowrap}
-.pill.high{border-color:var(--ivory);color:var(--ivory)}
+.pill.high{border-color:var(--accent);color:var(--accent)}
 label.row{cursor:pointer}
 
 .goal{padding:16px 0;border-top:1px solid var(--line)}
@@ -166,7 +181,7 @@ label.row{cursor:pointer}
 .goal-top b{font-family:var(--serif);font-weight:500;font-size:20px;line-height:1}
 .goal small{display:block;color:var(--faint);font-size:12px;margin-top:9px}
 
-.quote{border-left:1px solid var(--ivory);padding:6px 0 6px 22px;font-family:var(--serif);font-style:italic;font-size:22px;line-height:1.35;color:var(--ink-2)}
+.quote{border-left:1px solid var(--accent);padding:6px 0 6px 22px;font-family:var(--serif);font-style:italic;font-size:22px;line-height:1.35;color:var(--ink-2)}
 .quote small{display:block;font-family:var(--sans);font-style:normal;font-size:10px;letter-spacing:2px;color:var(--faint);margin-top:10px}
 
 .empty{padding:18px 0 6px;color:var(--muted);line-height:1.7}
@@ -204,7 +219,7 @@ textarea{resize:vertical;min-height:110px;line-height:1.6}
 .bilan{display:grid;gap:4px}
 .daychart{display:flex;gap:10px;height:160px;align-items:flex-end;margin-top:26px}
 .daychart>div{flex:1;text-align:center;font-size:11px;color:var(--faint);display:flex;flex-direction:column;justify-content:flex-end;height:100%}
-.daychart i{display:block;background:var(--ivory);width:100%;min-height:2px;border-radius:4px 4px 0 0;margin:6px 0 8px;opacity:.85}
+.daychart i{display:block;background:var(--accent);width:100%;min-height:2px;border-radius:4px 4px 0 0;margin:6px 0 8px;opacity:.85}
 .daychart b{font-family:var(--serif);font-weight:500;font-size:17px;color:var(--ink-2)}
 
 /* Offres */
@@ -212,19 +227,27 @@ textarea{resize:vertical;min-height:110px;line-height:1.6}
 .plans h2{font-size:34px;margin:14px 0 4px}
 .plans ul{padding-left:18px;margin:18px 0;color:var(--ink-2)}
 .plans li{margin:10px 0}
-.plans .featured{background:linear-gradient(160deg,var(--wood-1),var(--wood-2));border-color:#3b2b20}
+.plans .featured{background:linear-gradient(160deg,var(--wood-1),var(--wood-2));border-color:#3b2b20;color:#f2eee7}
+.plans .featured .lead,.plans .featured .help{color:#d6c7b6}.plans .featured ul{color:#e8ded1}.plans .featured .pill{border-color:rgba(239,227,212,.4);color:#e8ded1}
 
 .settings{max-width:720px;display:grid;gap:16px}
 .settings .btns{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
 
+/* Choix du thème */
+.seg{display:inline-flex;border:1px solid var(--line-2);border-radius:999px;padding:3px;gap:2px;margin-top:14px}
+.seg button{border:0;background:transparent;border-radius:999px;padding:8px 16px;font-size:13px;color:var(--muted);cursor:pointer;display:inline-flex;align-items:center;gap:7px}
+.seg button[aria-pressed=true]{background:var(--accent);color:var(--on-accent)}
+.seg button:not([aria-pressed=true]):hover{color:var(--ink)}
+:root[data-theme=light] .card,:root[data-theme=light] .week{box-shadow:0 1px 2px rgba(22,19,15,.04)}
+
 /* Dialogues */
 dialog{border:1px solid var(--line-2);border-radius:16px;padding:28px;width:min(460px,calc(100vw - 32px));max-height:90vh;background:var(--surface);color:var(--ink)}
-dialog::backdrop{background:rgba(0,0,0,.6);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px)}
+dialog::backdrop{background:var(--backdrop);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px)}
 .dialog-head{display:flex;justify-content:space-between;align-items:center;gap:12px}
 .dialog-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:24px}
 #ask-msg{color:var(--ink-2);margin:12px 0 0}
 
-#toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%) translateY(20px);opacity:0;pointer-events:none;background:var(--ivory);color:#16130f;padding:12px 20px;border-radius:999px;font-size:13px;transition:opacity .2s,transform .2s;z-index:50;max-width:calc(100vw - 32px);text-align:center}
+#toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%) translateY(20px);opacity:0;pointer-events:none;background:var(--accent);color:var(--on-accent);padding:12px 20px;border-radius:999px;font-size:13px;transition:opacity .2s,transform .2s;z-index:50;max-width:calc(100vw - 32px);text-align:center}
 #toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 
 /* Réactif */
@@ -236,14 +259,14 @@ dialog::backdrop{background:rgba(0,0,0,.6);backdrop-filter:blur(4px);-webkit-bac
 }
 @media (max-width:760px){
   :root{--side:0px}
-  aside{inset:auto 0 0 0;width:100%;height:auto;padding:6px 6px calc(6px + env(safe-area-inset-bottom));border-right:0;border-top:1px solid var(--line);flex-direction:row;background:rgba(21,20,18,.94);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+  aside{inset:auto 0 0 0;width:100%;height:auto;padding:6px 6px calc(6px + env(safe-area-inset-bottom));border-right:0;border-top:1px solid var(--line);flex-direction:row;background:var(--glass-bar);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
   aside .brand-block,.side-label,.side-foot{display:none}
   nav{display:flex;width:100%;justify-content:space-around}
   nav a{flex-direction:column;gap:4px;padding:7px 4px;margin:0;font-size:10px;flex:1;text-align:center;align-items:center}
   nav a.active{box-shadow:none;background:transparent;color:var(--ink)}
   nav a .full{display:none}
   .shell{margin-left:0;padding-bottom:calc(74px + env(safe-area-inset-bottom))}
-  header.top{height:auto;padding:calc(14px + env(safe-area-inset-top)) 18px 14px;position:sticky;top:0;background:rgba(13,12,11,.92);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);z-index:4}
+  header.top{height:auto;padding:calc(14px + env(safe-area-inset-top)) 18px 14px;position:sticky;top:0;background:var(--glass-top);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);z-index:4}
   .crumb{display:none}
   .top-brand{display:flex;align-items:center;gap:10px}
   .top-brand .brand{font-size:25px}
@@ -267,6 +290,7 @@ dialog::backdrop{background:rgba(0,0,0,.6);backdrop-filter:blur(4px);-webkit-bac
   .week{width:100%;justify-content:space-between}
   .notice{flex-direction:column;align-items:flex-start}
   .row .acts{opacity:1}
+  #toast{bottom:calc(86px + env(safe-area-inset-bottom))}
   .row{gap:10px}
   .row .pill{font-size:9.5px;padding:2px 7px}
   .row .icon-btn{width:30px;height:30px}
@@ -293,6 +317,7 @@ dialog::backdrop{background:rgba(0,0,0,.6);backdrop-filter:blur(4px);-webkit-bac
     <span class="crumb" id="crumb"></span>
     <div class="top-right">
       <span class="save" id="save" role="status"><i></i><span class="txt"></span></span>
+      <button class="icon-btn" id="theme-toggle" type="button"></button>
       <a class="icon-btn gear" href="#reglages" aria-label="Réglages et sauvegardes"></a>
     </div>
   </header>
@@ -335,6 +360,9 @@ const P={
   plus:'<path d="M12 5v14M5 12h14"/>',edit:'<path d="M4 20h4L19 9l-4-4L4 16z"/>',
   x:'<path d="M6 6l12 12M18 6L6 18"/>',arrow:'<path d="M7 17L17 7M9 7h8v8"/>',
   down:'<path d="M12 4v11M7 10.5l5 5 5-5M5 20h14"/>',up:'<path d="M12 20V9M7 13.5l5-5 5 5M5 4h14"/>',
+  sun:'<circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M5.3 18.7l1.4-1.4M17.3 6.7l1.4-1.4"/>',
+  moon:'<path d="M19.5 14.5A8 8 0 0 1 9.5 4.5a8 8 0 1 0 10 10z"/>',
+  auto:'<circle cx="12" cy="12" r="8"/><path d="M12 4a8 8 0 0 1 0 16z" fill="currentColor"/>',
   spark:'<path d="M12 3v4M12 17v4M3 12h4M17 12h4M6 6l2.5 2.5M15.5 15.5L18 18M6 18l2.5-2.5M15.5 8.5L18 6"/>'
 };
 const ic=(n,s=18)=>`<svg class="ic" width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${P[n]}</svg>`;
@@ -533,6 +561,7 @@ function plans(){
 function settings(){
   return heading('Votre espace','Réglages & sauvegardes.','Vos préférences, vos données, votre contrôle.')
   +`<div class="settings">
+  <section class="card"><h2>Apparence</h2><p class="lead" style="margin-top:8px">Interface noire ou blanche. « Automatique » suit le réglage de votre iPhone ou de votre ordinateur.</p><div class="seg" role="group" aria-label="Thème de l’interface">${[['dark','Sombre','moon'],['light','Clair','sun'],['auto','Automatique','auto']].map(([v,l,i])=>`<button type="button" data-act="theme" data-value="${v}" aria-pressed="${(ui.theme||'dark')===v}">${ic(i,15)}${l}</button>`).join('')}</div></section>
   <section class="card"><h2>Profil</h2><label class="field">Comment vous appeler ?<input id="name" maxlength="60" value="${esc(state.name)}" placeholder="Votre prénom" autocomplete="given-name"></label><button class="btn primary" data-act="profile">Enregistrer</button></section>
   <section class="card"><h2>Sauvegarder & restaurer</h2><p class="lead" style="margin-top:8px">Vos données restent dans ce navigateur, sur cet appareil. Rien n’est envoyé sur un serveur. Exportez une copie de temps en temps pour la garder ou la transférer.</p>
   <div class="btns"><button class="btn" data-act="export">${ic('down',15)}Exporter mes données</button><button class="btn" data-act="import">${ic('up',15)}Restaurer une sauvegarde</button></div><input type="file" id="import-file" accept="application/json,.json" hidden>
@@ -578,6 +607,7 @@ document.addEventListener('click',async e=>{
   if(a==='prev'||a==='next'){key=shift(key,a==='prev'?-7:7);render();return}
   if(a==='today'){key=monday();render();return}
   if(a==='hide-install'){ui.installHidden=true;saveUI();render();return}
+  if(a==='theme'){setTheme(b.dataset.value);render();return}
   if(a==='add-task'||a==='edit-task'){
     const w=peek(key),t=w.tasks.find(t=>t.id===id);
     editor(t?'Modifier la tâche':'Nouvelle tâche',field('Une action concrète','title',t?.title,'text','placeholder="Ex. Appeler le garage"')
@@ -627,6 +657,22 @@ document.addEventListener('input',e=>{
   if(t.dataset.review){week(key).review[t.dataset.review]=t.value;saveSoon()}
   if(t.id==='search'){search=t.value;$('#task-list').innerHTML=taskListHTML()}
 });
+
+/* ---------- Thème ---------- */
+const mqLight=matchMedia('(prefers-color-scheme: light)');
+const isLight=()=>{const t=ui.theme||'dark';return t==='light'||(t==='auto'&&mqLight.matches)};
+function applyTheme(){
+  document.documentElement.dataset.theme=ui.theme||'dark';
+  const light=isLight();
+  $('#meta-theme').content=light?'#f6f4ef':'#0d0c0b';
+  const tb=$('#theme-toggle');tb.innerHTML=ic(light?'moon':'sun',19);
+  const label=light?'Passer en interface sombre':'Passer en interface claire';tb.setAttribute('aria-label',label);tb.title=label;
+}
+function setTheme(t){ui.theme=['dark','light','auto'].includes(t)?t:'dark';saveUI();applyTheme();
+  toast(ui.theme==='auto'?'Thème automatique':ui.theme==='light'?'Interface claire':'Interface sombre')}
+$('#theme-toggle').onclick=()=>{setTheme(isLight()?'dark':'light');if(location.hash==='#reglages')render()};
+mqLight.addEventListener?.('change',()=>{if((ui.theme||'dark')==='auto')applyTheme()});
+applyTheme();
 
 window.addEventListener('hashchange',render);
 window.addEventListener('pagehide',()=>{clearTimeout(saveTimer);save()});
