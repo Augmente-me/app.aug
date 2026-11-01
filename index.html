@@ -240,6 +240,27 @@ textarea{resize:vertical;min-height:110px;line-height:1.6}
 .seg button:not([aria-pressed=true]):hover{color:var(--ink)}
 :root[data-theme=light] .card,:root[data-theme=light] .week{box-shadow:0 1px 2px rgba(22,19,15,.04)}
 
+/* Bibliothèque d’idées */
+dialog.wide{width:min(600px,calc(100vw - 32px))}
+.ideas{border:1px solid var(--line);border-radius:12px;padding:14px 14px 4px;margin-top:16px;background:var(--bg)}
+.ideas.locked{padding-bottom:14px}.ideas.locked .ideas-head{margin:0}
+.ideas-head{display:flex;align-items:center;gap:9px;font-size:12.5px;color:var(--ink-2);margin-bottom:12px}
+.plus-badge{font-size:9.5px;letter-spacing:1.6px;font-weight:600;padding:3px 8px;border-radius:999px;background:linear-gradient(135deg,var(--wood-3),var(--wood-1));color:#f2e8da;flex-shrink:0}
+.chips{display:flex;gap:6px;overflow-x:auto;padding-bottom:8px;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chip{border:1px solid var(--line-2);border-radius:999px;padding:5px 11px;font-size:12px;background:transparent;color:var(--muted);cursor:pointer;white-space:nowrap}
+.chip:hover{color:var(--ink)}
+.chip[aria-pressed=true]{background:var(--accent);color:var(--on-accent);border-color:var(--accent)}
+.idea-list{display:grid;gap:4px;max-height:212px;overflow-y:auto;margin:2px -4px 0;padding:0 4px}
+.idea{display:flex;justify-content:space-between;align-items:center;gap:12px;text-align:left;border:1px solid transparent;border-radius:9px;padding:9px 12px;background:var(--surface);color:var(--ink);cursor:pointer;font-size:13px;line-height:1.35}
+.idea:hover{border-color:var(--line-2)}
+.idea[aria-pressed=true]{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
+.idea small{color:var(--faint);font-size:11.5px;white-space:nowrap}
+.idea.has{opacity:.55}
+.idea[hidden]{display:none}
+.or{display:flex;align-items:center;gap:10px;color:var(--faint);font-size:11.5px;margin:10px 0 2px}
+.or::before,.or::after{content:'';flex:1;height:1px;background:var(--line)}
+
 /* Dialogues */
 dialog{border:1px solid var(--line-2);border-radius:16px;padding:28px;width:min(460px,calc(100vw - 32px));max-height:90vh;background:var(--surface);color:var(--ink)}
 dialog::backdrop{background:var(--backdrop);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px)}
@@ -439,15 +460,66 @@ function ask(title,msg,ok='Confirmer'){
   return new Promise(res=>{const d=$('#ask');$('#ask-title').textContent=title;$('#ask-msg').textContent=msg;$('#ask-ok').textContent=ok;
     d.returnValue='';d.onclose=()=>res(d.returnValue==='yes');d.showModal();});
 }
-function editor(title,fields,submit){
+/* ---------- Bibliothèque d’idées (version Plus) ---------- */
+const PLUS_PREVIEW=true; // Plus en avant-première : passer à false pour réserver la bibliothèque à l’offre Plus
+const IDEAS={
+  rituels:[
+    ['Bien-être','Boire un grand verre d’eau au réveil'],['Bien-être','Marcher 20 minutes'],['Bien-être','10 minutes d’étirements'],['Bien-être','Respirer 5 minutes au calme'],['Bien-être','Se coucher avant 23 h'],
+    ['Organisation','Préparer ma journée en 5 minutes'],['Organisation','Noter mes 3 priorités du jour'],['Organisation','Traiter mes mails en une fois'],['Organisation','Ranger mon bureau le soir'],
+    ['Tech & IA','30 minutes sans écran avant de dormir'],['Tech & IA','Tester une astuce IA'],['Tech & IA','1 heure en mode Concentration'],['Tech & IA','Trier 10 photos'],
+    ['Apprendre','Lire 10 minutes'],['Apprendre','Écouter un podcast inspirant'],['Apprendre','10 minutes de langue étrangère'],
+    ['Relations','Envoyer un message à un proche'],['Relations','Dire merci à quelqu’un'],
+    ['Esprit','Écrire 3 lignes dans mon carnet'],['Esprit','Noter une chose positive de la journée']
+  ].map(([c,t])=>({c,t})),
+  actions:[
+    ['Organisation','Planifier ma semaine en 15 minutes','Haute'],['Organisation','Bloquer trois créneaux pour moi','Haute'],['Organisation','Faire le point sur mes abonnements','Normale'],['Organisation','Trier mes papiers administratifs','Normale'],
+    ['Tech & IA','Ranger l’écran d’accueil de mon téléphone','Basse'],['Tech & IA','Sauvegarder mes photos','Normale'],['Tech & IA','Activer la double authentification sur un compte important','Haute'],['Tech & IA','Créer un raccourci iPhone qui me fait gagner du temps','Normale'],['Tech & IA','Demander à une IA de m’aider à planifier les repas de la semaine','Normale'],['Tech & IA','Couper les notifications inutiles','Normale'],['Tech & IA','Mettre à jour mes appareils','Basse'],
+    ['Bien-être','Prendre le rendez-vous que je repousse','Haute'],['Bien-être','Préparer mes repas de la semaine','Normale'],['Bien-être','Prévoir une vraie pause ce week-end','Normale'],
+    ['Maison','Désencombrer un tiroir','Basse'],['Maison','Réparer la petite chose qui traîne','Basse'],
+    ['Relations','Appeler quelqu’un que je n’ai pas eu depuis longtemps','Normale'],['Relations','Organiser un dîner entre amis','Basse'],
+    ['Apprendre','Choisir ma prochaine lecture','Basse'],['Apprendre','M’inscrire à un atelier ou un cours en ligne','Normale']
+  ].map(([c,t,p])=>({c,t,p})),
+  caps:[
+    ['Apprendre','Lire 12 livres cette année',12,'livres'],['Apprendre','Apprendre 300 mots d’anglais',300,'mots'],['Apprendre','Suivre une formation en ligne',10,'modules'],
+    ['Bien-être','Faire 30 séances de sport',30,'séances'],['Bien-être','Marcher 100 km',100,'km'],['Bien-être','Passer 20 soirées sans écran',20,'soirées'],['Bien-être','Dormir 7 h ou plus, 20 nuits',20,'nuits'],
+    ['Tech & IA','Tester 10 outils IA',10,'outils'],['Tech & IA','Créer 5 automatisations utiles',5,'automatisations'],['Tech & IA','Trier 1 000 photos',1000,'photos'],
+    ['Créer','Publier 12 contenus',12,'contenus'],['Créer','Écrire 30 pages de carnet',30,'pages'],['Créer','Cuisiner 10 nouvelles recettes',10,'recettes'],
+    ['Maison','Désencombrer 8 espaces de la maison',8,'espaces'],['Projets','Mettre de côté pour un projet',500,'€']
+  ].map(([c,t,target,unit])=>({c,t,target,unit}))
+};
+function ideasBlock(kind,taken){
+  if(!PLUS_PREVIEW)return `<div class="ideas locked"><div class="ideas-head"><span class="plus-badge">PLUS</span>Des idées prêtes à personnaliser arrivent avec l’offre Plus.</div></div>`;
+  const list=IDEAS[kind],cats=['Toutes',...new Set(list.map(i=>i.c))];
+  return `<div class="ideas"><div class="ideas-head"><span class="plus-badge">PLUS</span><span>Choisissez une idée, puis personnalisez-la</span></div>
+  <div class="chips" role="group" aria-label="Catégories">${cats.map((c,i)=>`<button type="button" class="chip" data-cat="${esc(c)}" aria-pressed="${i===0}">${esc(c)}</button>`).join('')}</div>
+  <div class="idea-list">${list.map((it,i)=>{const has=taken.has(it.t.toLocaleLowerCase('fr'));return `<button type="button" class="idea${has?' has':''}" data-idea="${i}" data-c="${esc(it.c)}"><span>${esc(it.t)}</span><small>${has?'Déjà ajouté':it.unit?num(it.target)+' '+esc(it.unit):esc(it.c)}</small></button>`}).join('')}</div>
+  <div class="or"><span>ou écrivez la vôtre</span></div></div>`;
+}
+function wireIdeas(kind){
+  const box=$('#fields .ideas');if(!box||box.classList.contains('locked'))return;
+  box.querySelectorAll('.chip').forEach(ch=>ch.onclick=()=>{
+    box.querySelectorAll('.chip').forEach(x=>x.setAttribute('aria-pressed',x===ch));
+    box.querySelectorAll('.idea').forEach(b=>b.hidden=ch.dataset.cat!=='Toutes'&&b.dataset.c!==ch.dataset.cat);
+  });
+  box.querySelectorAll('.idea').forEach(b=>b.onclick=()=>{
+    const it=IDEAS[kind][+b.dataset.idea],f=$('#editor');
+    box.querySelectorAll('.idea').forEach(x=>x.setAttribute('aria-pressed',x===b));
+    f.title.value=it.t;
+    if(it.p&&f.priority)f.priority.value=it.p;
+    if(it.unit){f.target.value=it.target;f.unit.value=it.unit;f.current.value=0}
+    f.title.focus();f.title.setSelectionRange(it.t.length,it.t.length);
+  });
+}
+function editor(title,fields,submit,kind){
   $('#modal-title').textContent=title;$('#fields').innerHTML=fields;
   $('#editor').onsubmit=e=>{e.preventDefault();if(submit(new FormData(e.target))===false)return;save();$('#modal').close();render()};
-  $('#modal').showModal();$('#fields input')?.focus();
+  $('#modal').classList.toggle('wide',!!kind);
+  $('#modal').showModal();if(kind)wireIdeas(kind);if(!(kind&&matchMedia('(pointer:coarse)').matches))$('#fields input[name=title]')?.focus();
 }
 const field=(label,name,value='',type='text',extra='')=>`<label class="field">${label}<input name="${name}" type="${type}" value="${esc(value)}" required ${type==='text'?'maxlength="160"':''} ${extra}></label>`;
 
 /* ---------- Navigation ---------- */
-const PAGES={dashboard:['Vue d’ensemble','Accueil','grid'],rituels:['Mes rituels','Rituels','ritual'],taches:['Mes tâches','Tâches','check'],objectifs:['Mes objectifs','Objectifs','goal'],bilan:['Bilan de semaine','Bilan','review']};
+const PAGES={dashboard:['Vue d’ensemble','Accueil','grid'],rituels:['Mes rituels','Rituels','ritual'],taches:['Mes tâches','Tâches','check'],objectifs:['Mes caps','Caps','goal'],bilan:['Bilan de semaine','Bilan','review']};
 const EXTRA={offres:'Les offres',reglages:'Réglages & sauvegardes'};
 $('#nav').innerHTML=Object.entries(PAGES).map(([h,[full,short,i]])=>`<a href="#${h}">${ic(i)}<span class="full">${full}</span><span class="short">${short}</span></a>`).join('');
 $('#side-foot').innerHTML=`<a href="#offres">${ic('spark')}<span>La suite, Plus & Pro</span></a><a href="#reglages">${ic('gear')}<span>Réglages & sauvegardes</span></a><div class="side-quote">Moins de bruit.<br>Plus d’essentiel.</div>`;
@@ -464,7 +536,7 @@ const heading=(eyebrow,title,sub,action='')=>`<div class="title-row"><div><p cla
 
 function taskRow(t){
   const g=state.goals.find(g=>g.id===t.goal);
-  return `<div class="row ${t.done?'done':''}"><input class="chk" type="checkbox" aria-label="Terminer : ${esc(t.title)}" data-task="${t.id}" ${t.done?'checked':''}><div class="copy"><span class="t">${esc(t.title)}</span><small>${g?'Objectif · '+esc(g.title):'Cette semaine'}</small></div><span class="pill ${t.priority==='Haute'?'high':''}">${esc(t.priority)}</span><span class="acts"><button class="icon-btn" data-act="edit-task" data-id="${t.id}" aria-label="Modifier ${esc(t.title)}">${ic('edit',16)}</button><button class="icon-btn" data-act="del-task" data-id="${t.id}" aria-label="Supprimer ${esc(t.title)}">${ic('x',16)}</button></span></div>`;
+  return `<div class="row ${t.done?'done':''}"><input class="chk" type="checkbox" aria-label="Terminer : ${esc(t.title)}" data-task="${t.id}" ${t.done?'checked':''}><div class="copy"><span class="t">${esc(t.title)}</span><small>${g?'Cap · '+esc(g.title):'Cette semaine'}</small></div><span class="pill ${t.priority==='Haute'?'high':''}">${esc(t.priority)}</span><span class="acts"><button class="icon-btn" data-act="edit-task" data-id="${t.id}" aria-label="Modifier ${esc(t.title)}">${ic('edit',16)}</button><button class="icon-btn" data-act="del-task" data-id="${t.id}" aria-label="Supprimer ${esc(t.title)}">${ic('x',16)}</button></span></div>`;
 }
 const sortTasks=l=>l.slice().sort((a,b)=>a.done-b.done||PRIOS.indexOf(a.priority)-PRIOS.indexOf(b.priority));
 
@@ -490,7 +562,7 @@ function dashboard(){
   +`<div class="kpis">
     <div class="card kpi"><span class="label">${ic('ritual',15)}Rituels accomplis</span><strong>${s.checks}<span> / ${s.total}</span></strong><small>${state.rituals.length} rituel${state.rituals.length>1?'s':''} × 7 jours</small>${bar(s.ritualPct,'Rituels')}</div>
     <div class="card kpi"><span class="label">${ic('check',15)}Tâches terminées</span><strong>${s.done}<span> / ${s.tasks}</span></strong><small>${s.taskPct} % de la liste</small>${bar(s.taskPct,'Tâches')}</div>
-    <div class="card kpi"><span class="label">${ic('goal',15)}Objectifs atteints</span><strong>${state.goals.filter(g=>goalPct(g)===100).length}<span> / ${state.goals.length}</span></strong><small>Avancement moyen ${goalsAvg} %</small>${bar(goalsAvg,'Objectifs')}</div>
+    <div class="card kpi"><span class="label">${ic('goal',15)}Caps atteints</span><strong>${state.goals.filter(g=>goalPct(g)===100).length}<span> / ${state.goals.length}</span></strong><small>Avancement moyen ${goalsAvg} %</small>${bar(goalsAvg,'Caps')}</div>
     <div class="card kpi"><span class="label">${ic('review',15)}Régularité</span><strong>${s.activeDays}<span> / 7</span></strong><small>Jours avec au moins un rituel</small>${bar(s.activeDays/7*100,'Régularité')}</div>
   </div>`
   +`<div class="columns">
@@ -503,7 +575,7 @@ function dashboard(){
         ${state.rituals.length?state.rituals.map(r=>`<label class="row"><input class="chk sq" type="checkbox" data-ritual="${r.id}" data-day="${ti}" data-week="${cur}" ${tw.checks[r.id]?.[ti]?'checked':''}><span class="copy"><span class="t">${esc(r.title)}</span></span></label>`).join(''):empty('Un rituel, c’est un geste simple.',`<a class="link" href="#rituels">Créer mon premier rituel ${ic('arrow',13)}</a>`)}
       </section>
       <section class="card"><div class="section-head"><h2>Le cap</h2><a class="link" href="#objectifs">Tout voir ${ic('arrow',13)}</a></div>
-        ${state.goals.length?state.goals.slice(0,3).map(goalLine).join(''):empty('Un objectif clair aide à avancer.',`<a class="link" href="#objectifs">Définir un objectif ${ic('arrow',13)}</a>`)}
+        ${state.goals.length?state.goals.slice(0,3).map(goalLine).join(''):empty('Un cap clair aide à avancer.',`<a class="link" href="#objectifs">Définir un cap ${ic('arrow',13)}</a>`)}
       </section>
       <div class="quote">« Le progrès commence par ce que l’on répète. »<small>LE RAPPEL AUG.MENTE</small></div>
     </div>
@@ -532,10 +604,10 @@ function tasks(){
 }
 
 function goals(){
-  return heading('Un cap, des pas concrets','Mes objectifs.','Une cible, une valeur actuelle, et la progression devient visible.',`<button class="btn primary" data-act="add-goal">${ic('plus',14)}Nouvel objectif</button>`)
+  return heading('Un cap, des pas concrets','Mes caps.','Une cible, une valeur actuelle, et la progression devient visible.',`<button class="btn primary" data-act="add-goal">${ic('plus',14)}Nouveau cap</button>`)
   +(state.goals.length?`<div class="goal-list">${state.goals.map(g=>{const p=goalPct(g);return `<section class="card goal-card"><h3>${esc(g.title)}</h3><p class="big">${p}%</p>${bar(p,g.title)}<p class="help" style="margin-top:10px">${num(g.current)} / ${num(g.target)} ${esc(g.unit)}</p><div class="acts"><button class="btn sm" data-act="edit-goal" data-id="${g.id}">Mettre à jour</button><button class="icon-btn" data-act="del-goal" data-id="${g.id}" aria-label="Supprimer ${esc(g.title)}">${ic('x',16)}</button></div></section>`}).join('')}</div>`
-  :`<section class="card">${empty('Quel projet mérite votre attention ?','Choisissez quelque chose de mesurable : 12 séances, 200 pages, 5 étapes…')}</section>`)
-  +`<p class="help">Les objectifs restent d’une semaine à l’autre. Leur progression suit la valeur que vous saisissez ; cocher une tâche liée ne la modifie pas.</p>`;
+  :`<section class="card">${empty('Quel cap voulez-vous vous donner ?','Choisissez quelque chose de mesurable : 12 séances, 200 pages, 5 étapes…')}</section>`)
+  +`<p class="help">Les caps restent d’une semaine à l’autre. Leur progression suit la valeur que vous saisissez ; cocher une tâche liée ne la modifie pas.</p>`;
 }
 
 function review(){
@@ -552,10 +624,10 @@ function review(){
 
 function plans(){
   return heading('La suite','Le système grandit avec vous.','Le cœur reste gratuit. Le reste est en préparation, je partagerai l’avancement en route.')
-  +`<div class="plans"><section class="card"><span class="pill high">Disponible</span><h2>Free</h2><p class="lead">Pour poser les bases.</p><ul><li>Rituels, tâches et objectifs</li><li>Navigation par semaine et bilans</li><li>Sauvegarde locale et export</li><li>Installation sur l’écran d’accueil</li></ul><p class="help">Votre offre actuelle · gratuite</p></section>
-  <section class="card featured"><span class="pill">À venir</span><h2>Plus</h2><p class="lead">Pour installer un rythme.</p><ul><li>Modèles de routines guidées</li><li>Régularité sur plusieurs mois</li><li>Bilans personnalisés</li></ul><p class="help">Tarif à définir · pas encore disponible</p></section>
+  +`<div class="plans"><section class="card"><span class="pill high">Disponible</span><h2>Free</h2><p class="lead">Pour poser les bases.</p><ul><li>Rituels, actions et caps</li><li>Navigation par semaine et bilans</li><li>Sauvegarde locale et export</li><li>Installation sur l’écran d’accueil</li></ul><p class="help">Votre offre actuelle · gratuite</p></section>
+  <section class="card featured"><span class="pill">${PLUS_PREVIEW?'En avant-première':'À venir'}</span><h2>Plus</h2><p class="lead">Pour installer un rythme.</p><ul><li>Bibliothèque d’idées prêtes à personnaliser : actions, caps et rituels${PLUS_PREVIEW?' <em>· déjà disponible</em>':''}</li><li>Modèles de routines guidées</li><li>Régularité sur plusieurs mois</li><li>Bilans personnalisés</li></ul><p class="help">Tarif à définir · pas encore disponible</p></section>
   <section class="card"><span class="pill">À venir</span><h2>Pro</h2><p class="lead">Pour aller plus loin à plusieurs.</p><ul><li>Espaces partagés</li><li>Synchronisation entre appareils</li><li>Suivi d’équipe</li></ul><p class="help">Tarif à définir · pas encore disponible</p></section></div>
-  <p class="help">Aucun paiement ni abonnement n’est actif dans cette version.</p>`;
+  <p class="help">Aucun paiement ni abonnement n’est actif dans cette version. Pendant cette période, la bibliothèque d’idées est ouverte à tous.</p>`;
 }
 
 function settings(){
@@ -567,7 +639,7 @@ function settings(){
   <div class="btns"><button class="btn" data-act="export">${ic('down',15)}Exporter mes données</button><button class="btn" data-act="import">${ic('up',15)}Restaurer une sauvegarde</button></div><input type="file" id="import-file" accept="application/json,.json" hidden>
   <p class="help">${state.lastExport?'Dernière copie : '+new Date(state.lastExport).toLocaleDateString('fr-FR',{day:'numeric',month:'long',year:'numeric'})+'.':'Aucune copie exportée pour l’instant.'} La restauration remplace toutes les données actuelles, après confirmation.</p></section>
   <section class="card"><h2>Découvrir avec un exemple</h2><p class="lead" style="margin-top:8px">Chargez une semaine de démonstration pour explorer le système. Vos données actuelles seront remplacées, après confirmation.</p><div class="btns"><button class="btn" data-act="demo">Charger la démonstration</button></div></section>
-  <section class="card"><h2>Effacer mes données</h2><p class="lead" style="margin-top:8px">Supprime rituels, objectifs, tâches et bilans de ce navigateur.</p><div class="btns"><button class="btn danger" data-act="reset">Tout effacer</button></div></section>
+  <section class="card"><h2>Effacer mes données</h2><p class="lead" style="margin-top:8px">Supprime rituels, caps, actions et bilans de ce navigateur.</p><div class="btns"><button class="btn danger" data-act="reset">Tout effacer</button></div></section>
   </div>`;
 }
 
@@ -610,32 +682,32 @@ document.addEventListener('click',async e=>{
   if(a==='theme'){setTheme(b.dataset.value);render();return}
   if(a==='add-task'||a==='edit-task'){
     const w=peek(key),t=w.tasks.find(t=>t.id===id);
-    editor(t?'Modifier la tâche':'Nouvelle tâche',field('Une action concrète','title',t?.title,'text','placeholder="Ex. Appeler le garage"')
+    editor(t?'Modifier la tâche':'Nouvelle action',(t?'':ideasBlock('actions',new Set(w.tasks.map(x=>x.title.toLocaleLowerCase('fr')))))+field('Une action concrète','title',t?.title,'text','placeholder="Ex. Appeler le garage"')
       +`<label class="field">Priorité<select name="priority">${PRIOS.map(p=>`<option ${p===(t?.priority??'Normale')?'selected':''}>${p}</option>`).join('')}</select></label>`
-      +`<label class="field">Objectif associé<select name="goal"><option value="">Aucun</option>${state.goals.map(g=>`<option value="${g.id}" ${g.id===t?.goal?'selected':''}>${esc(g.title)}</option>`).join('')}</select></label>`,
-      f=>{const title=f.get('title').trim();if(!title)return false;const v={title,priority:PRIOS.includes(f.get('priority'))?f.get('priority'):'Normale',goal:f.get('goal')||''};if(t)Object.assign(t,v);else week(key).tasks.push({id:uid(),done:false,...v})});
+      +`<label class="field">Cap associé<select name="goal"><option value="">Aucun</option>${state.goals.map(g=>`<option value="${g.id}" ${g.id===t?.goal?'selected':''}>${esc(g.title)}</option>`).join('')}</select></label>`,
+      f=>{const title=f.get('title').trim();if(!title)return false;const v={title,priority:PRIOS.includes(f.get('priority'))?f.get('priority'):'Normale',goal:f.get('goal')||''};if(t)Object.assign(t,v);else week(key).tasks.push({id:uid(),done:false,...v})},t?'':'actions');
     return;
   }
   if(a==='add-ritual'||a==='edit-ritual'){
     const r=state.rituals.find(r=>r.id===id);
-    editor(r?'Modifier le rituel':'Nouveau rituel',field('Un geste à répéter','title',r?.title,'text','placeholder="Ex. Marcher 20 minutes"'),f=>{const title=f.get('title').trim();if(!title)return false;if(r)r.title=title;else state.rituals.push({id:uid(),title})});
+    editor(r?'Modifier le rituel':'Nouveau rituel',(r?'':ideasBlock('rituels',new Set(state.rituals.map(x=>x.title.toLocaleLowerCase('fr')))))+field('Un geste à répéter','title',r?.title,'text','placeholder="Ex. Marcher 20 minutes"'),f=>{const title=f.get('title').trim();if(!title)return false;if(r)r.title=title;else state.rituals.push({id:uid(),title})},r?'':'rituels');
     return;
   }
   if(a==='add-goal'||a==='edit-goal'){
     const g=state.goals.find(g=>g.id===id);
-    editor(g?'Mettre à jour l’objectif':'Nouvel objectif',field('Mon objectif','title',g?.title,'text','placeholder="Ex. Lire 12 livres"')+field('Cible','target',g?.target??10,'number','min="0.01" step="any" inputmode="decimal"')+field('Où j’en suis','current',g?.current??0,'number','min="0" step="any" inputmode="decimal"')+field('Unité','unit',g?.unit??'étapes','text','placeholder="pages, séances, étapes…"'),
-      f=>{const v={title:f.get('title').trim(),target:Number(f.get('target')),current:Number(f.get('current')),unit:f.get('unit').trim()};if(!v.title||!v.unit||!(v.target>0)||!(v.current>=0))return false;if(g)Object.assign(g,v);else state.goals.push({id:uid(),...v})});
+    editor(g?'Mettre à jour le cap':'Nouveau cap',(g?'':ideasBlock('caps',new Set(state.goals.map(x=>x.title.toLocaleLowerCase('fr')))))+field('Mon cap','title',g?.title,'text','placeholder="Ex. Lire 12 livres"')+field('Cible','target',g?.target??10,'number','min="0.01" step="any" inputmode="decimal"')+field('Où j’en suis','current',g?.current??0,'number','min="0" step="any" inputmode="decimal"')+field('Unité','unit',g?.unit??'étapes','text','placeholder="pages, séances, étapes…"'),
+      f=>{const v={title:f.get('title').trim(),target:Number(f.get('target')),current:Number(f.get('current')),unit:f.get('unit').trim()};if(!v.title||!v.unit||!(v.target>0)||!(v.current>=0))return false;if(g)Object.assign(g,v);else state.goals.push({id:uid(),...v})},g?'':'caps');
     return;
   }
   if(a==='intention'){const w=peek(key);editor('Mon intention de la semaine',field('Cette semaine, je choisis de…','intention',w.intention,'text','placeholder="Ex. Ralentir le soir"').replace(' required',''),f=>{week(key).intention=f.get('intention').trim()});return}
   if(a==='del-task'){if(!await ask('Supprimer cette tâche ?','Elle disparaîtra de cette semaine.','Supprimer'))return;const w=week(key);w.tasks=w.tasks.filter(t=>t.id!==id)}
   if(a==='del-ritual'){if(!await ask('Supprimer ce rituel ?','Ses coches seront effacées dans toutes les semaines.','Supprimer'))return;state.rituals=state.rituals.filter(r=>r.id!==id);Object.values(state.weeks).forEach(w=>delete w.checks[id])}
-  if(a==='del-goal'){if(!await ask('Supprimer cet objectif ?','Les tâches associées sont conservées.','Supprimer'))return;state.goals=state.goals.filter(g=>g.id!==id);Object.values(state.weeks).forEach(w=>w.tasks.forEach(t=>{if(t.goal===id)t.goal=''}))}
+  if(a==='del-goal'){if(!await ask('Supprimer ce cap ?','Les tâches associées sont conservées.','Supprimer'))return;state.goals=state.goals.filter(g=>g.id!==id);Object.values(state.weeks).forEach(w=>w.tasks.forEach(t=>{if(t.goal===id)t.goal=''}))}
   if(a==='profile'){state.name=$('#name').value.trim().slice(0,60);toast('Prénom enregistré')}
   if(a==='export'){download();return}
   if(a==='import'){$('#import-file').click();return}
   if(a==='demo'){if(await ask('Charger la démonstration ?','Vos données actuelles seront remplacées. Exportez-les d’abord si besoin.','Charger'))demo();return}
-  if(a==='reset'){if(!await ask('Tout effacer ?','Rituels, objectifs, tâches et bilans seront supprimés de ce navigateur. Cette action est définitive.','Tout effacer'))return;state=fresh();toast('Votre espace a été réinitialisé')}
+  if(a==='reset'){if(!await ask('Tout effacer ?','Rituels, caps, actions et bilans seront supprimés de ce navigateur. Cette action est définitive.','Tout effacer'))return;state=fresh();toast('Votre espace a été réinitialisé')}
   save();render();
 });
 
