@@ -2,10 +2,10 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,interactive-widget=resizes-content">
 <title>aug.mente — The Weekly System</title>
 <meta name="description" content="aug.mente — la vie, version augmentée. Un système hebdomadaire simple pour vos rituels, vos tâches et vos objectifs.">
-<meta name="theme-color" content="#0d0c0b" id="meta-theme">
+<meta name="theme-color" content="#121110" id="meta-theme">
 <meta name="color-scheme" content="dark light">
 <script>
 /* Thème appliqué avant l'affichage, pour éviter tout flash */
@@ -13,7 +13,7 @@
 if(['dark','light','auto'].indexOf(t)<0)t='dark';document.documentElement.dataset.theme=t;
 var light=t==='light'||(t==='auto'&&matchMedia('(prefers-color-scheme: light)').matches);
 document.write('<meta name="apple-mobile-web-app-status-bar-style" content="'+(light?'default':'black-translucent')+'">');
-document.getElementById('meta-theme').content=light?'#f6f4ef':'#0d0c0b';})();
+document.getElementById('meta-theme').content=light?'#efe9df':'#121110';})();
 </script>
 <meta property="og:type" content="website">
 <meta property="og:title" content="aug.mente — The Weekly System">
@@ -60,13 +60,13 @@ main:focus,main:focus-visible{outline:none}
 
 /* Boutons */
 .btn{display:inline-flex;align-items:center;gap:8px;cursor:pointer;border:1px solid var(--line-2);border-radius:999px;background:transparent;padding:9px 16px;font-size:13px;color:var(--ink-2);transition:background .15s,border-color .15s,color .15s;white-space:nowrap}
-.btn:hover{border-color:var(--muted);color:var(--ink)}
+@media (hover:hover) and (pointer:fine){.btn:hover{border-color:var(--muted);color:var(--ink)}}
 .btn.primary{background:var(--accent);color:var(--on-accent);border-color:var(--accent);font-weight:500}
-.btn.primary:hover{background:var(--accent-hover);border-color:var(--accent-hover);color:var(--on-accent)}
+@media (hover:hover) and (pointer:fine){.btn.primary:hover{background:var(--accent-hover);border-color:var(--accent-hover);color:var(--on-accent)}}
 .btn.danger{color:var(--danger);border-color:var(--danger-line)}
 .btn.sm{padding:6px 12px;font-size:12px}
 .icon-btn{display:inline-grid;place-items:center;width:34px;height:34px;border:0;border-radius:50%;background:transparent;color:var(--faint);cursor:pointer}
-.icon-btn:hover{background:var(--surface-2);color:var(--ink)}
+@media (hover:hover) and (pointer:fine){.icon-btn:hover{background:var(--surface-2);color:var(--ink)}}
 
 /* Marque */
 .brand{font-family:var(--serif);font-weight:600;font-size:31px;letter-spacing:-.3px;line-height:1;color:var(--ink)}
@@ -80,15 +80,15 @@ aside{position:fixed;inset:0 auto 0 0;width:var(--side);background:var(--surface
 .side-label{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--faint);margin:44px 12px 12px;display:flex;justify-content:space-between}
 .side-label b{font-weight:500;letter-spacing:1px;border:1px solid var(--line-2);border-radius:999px;padding:1px 8px;color:var(--muted)}
 nav a{display:flex;align-items:center;gap:13px;padding:11px 12px;margin:3px 0;border-radius:10px;color:var(--muted);font-size:13.5px}
-nav a:hover{color:var(--ink);background:var(--surface-2)}
+@media (hover:hover) and (pointer:fine){nav a:hover{color:var(--ink);background:var(--surface-2)}}
 nav a.active{color:var(--ink);background:var(--surface-2);box-shadow:inset 2px 0 0 var(--accent)}
 .side-foot{margin-top:auto;display:grid;gap:4px}
 .side-foot a{display:flex;align-items:center;gap:13px;padding:10px 12px;border-radius:10px;color:var(--muted);font-size:13px}
-.side-foot a:hover,.side-foot a.active{color:var(--ink);background:var(--surface-2)}
+.side-foot a.active{color:var(--ink);background:var(--surface-2)}@media (hover:hover) and (pointer:fine){.side-foot a:hover{color:var(--ink);background:var(--surface-2)}}
 .side-quote{font-family:var(--serif);font-style:italic;font-size:16px;line-height:1.4;color:var(--faint);border-top:1px solid var(--line);margin-top:18px;padding:18px 12px 0}
 
 /* Coque */
-.shell{margin-left:var(--side);min-height:100vh;display:flex;flex-direction:column}
+.shell{margin-left:var(--side);min-height:100vh;min-height:100dvh;display:flex;flex-direction:column}
 header.top{height:68px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 44px;font-size:12px;color:var(--faint);gap:16px}
 .top-brand{display:none}
 .top-right{display:flex;align-items:center;gap:6px}
@@ -98,7 +98,7 @@ header.top{height:68px;border-bottom:1px solid var(--line);display:flex;align-it
 main{width:100%;max-width:1240px;margin:0 auto;padding:44px 44px 40px;flex:1}
 footer.foot{margin:0 44px;padding:22px 0 28px;border-top:1px solid var(--line);color:var(--faint);font-size:12px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
 footer.foot .fbrand{font-family:var(--serif);font-size:16px;font-weight:600;color:var(--ink-2)}footer.foot .fbrand em{font-weight:500}
-footer.foot a:hover{color:var(--ink)}
+@media (hover:hover) and (pointer:fine){footer.foot a:hover{color:var(--ink)}}
 
 /* Titres */
 .eyebrow{font-size:10.5px;letter-spacing:2.4px;text-transform:uppercase;color:var(--faint);margin:0 0 12px}
@@ -117,7 +117,7 @@ h2{font-family:var(--serif);font-weight:500;font-size:25px;line-height:1.15;marg
 .card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:26px}
 .section-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:18px}
 .link{font-size:12px;color:var(--muted);display:inline-flex;align-items:center;gap:6px}
-.link:hover{color:var(--ink)}
+@media (hover:hover) and (pointer:fine){.link:hover{color:var(--ink)}}
 
 /* Héros bois */
 .hero{position:relative;overflow:hidden;border-radius:16px;padding:34px 38px;margin-bottom:22px;display:flex;justify-content:space-between;align-items:center;gap:28px;
@@ -131,7 +131,7 @@ h2{font-family:var(--serif);font-weight:500;font-size:25px;line-height:1.15;marg
 .hero h2{font-size:34px;font-style:italic;font-weight:400;color:#fbf6ee;margin-bottom:8px;max-width:640px}
 .hero p{color:#d6c7b6;margin:0;font-size:13.5px}
 .hero .btn{margin-top:18px;color:#efe3d4;border-color:rgba(239,227,212,.35)}
-.hero .btn:hover{border-color:#efe3d4;color:#fff}
+@media (hover:hover) and (pointer:fine){.hero .btn:hover{border-color:#efe3d4;color:#fff}}
 .ring{position:relative;z-index:1;flex-shrink:0;width:112px;height:112px;border-radius:50%;background:conic-gradient(#efe8dc var(--p),rgba(255,255,255,.12) 0);display:grid;place-items:center}
 .ring>div{width:100px;height:100px;border-radius:50%;background:#231910;display:grid;place-content:center;text-align:center}
 .ring b{font-family:var(--serif);font-weight:500;font-size:34px;line-height:1;color:#fbf6ee}
@@ -157,7 +157,7 @@ h2{font-family:var(--serif);font-weight:500;font-size:25px;line-height:1.15;marg
 
 /* Cases à cocher */
 .chk{appearance:none;-webkit-appearance:none;margin:0;width:22px;height:22px;border:1.5px solid var(--line-2);border-radius:50%;cursor:pointer;flex-shrink:0;display:grid;place-items:center;transition:background .15s,border-color .15s}
-.chk:hover{border-color:var(--muted)}
+@media (hover:hover) and (pointer:fine){.chk:hover{border-color:var(--muted)}}
 .chk:checked{background:var(--accent);border-color:var(--accent)}
 .chk:checked::after{content:'';width:9px;height:5px;border:2px solid var(--on-accent);border-top:0;border-right:0;transform:rotate(-45deg) translate(1px,-1px)}
 .chk.sq{border-radius:7px}
@@ -170,7 +170,7 @@ h2{font-family:var(--serif);font-weight:500;font-size:25px;line-height:1.15;marg
 .row small{display:block;color:var(--faint);font-size:12px;margin-top:3px}
 .row.done .t{text-decoration:line-through;text-decoration-color:var(--faint);color:var(--faint)}
 .row .acts{display:flex;opacity:.65}
-.row:hover .acts,.row:focus-within .acts{opacity:1}
+.row:focus-within .acts{opacity:1}@media (hover:hover) and (pointer:fine){.row:hover .acts{opacity:1}}
 .pill{font-size:10.5px;letter-spacing:.6px;border:1px solid var(--line-2);border-radius:999px;padding:3px 9px;color:var(--muted);white-space:nowrap}
 .pill.high{border-color:var(--accent);color:var(--accent)}
 label.row{cursor:pointer}
@@ -237,7 +237,7 @@ textarea{resize:vertical;min-height:110px;line-height:1.6}
 .seg{display:inline-flex;border:1px solid var(--line-2);border-radius:999px;padding:3px;gap:2px;margin-top:14px}
 .seg button{border:0;background:transparent;border-radius:999px;padding:8px 16px;font-size:13px;color:var(--muted);cursor:pointer;display:inline-flex;align-items:center;gap:7px}
 .seg button[aria-pressed=true]{background:var(--accent);color:var(--on-accent)}
-.seg button:not([aria-pressed=true]):hover{color:var(--ink)}
+@media (hover:hover) and (pointer:fine){.seg button:not([aria-pressed=true]):hover{color:var(--ink)}}
 :root[data-theme=light] .card,:root[data-theme=light] .week{box-shadow:0 1px 2px rgba(22,19,15,.04)}
 
 /* Bibliothèque d’idées */
@@ -249,11 +249,11 @@ dialog.wide{width:min(600px,calc(100vw - 32px))}
 .chips{display:flex;gap:6px;overflow-x:auto;padding-bottom:8px;scrollbar-width:none}
 .chips::-webkit-scrollbar{display:none}
 .chip{border:1px solid var(--line-2);border-radius:999px;padding:5px 11px;font-size:12px;background:transparent;color:var(--muted);cursor:pointer;white-space:nowrap}
-.chip:hover{color:var(--ink)}
+@media (hover:hover) and (pointer:fine){.chip:hover{color:var(--ink)}}
 .chip[aria-pressed=true]{background:var(--accent);color:var(--on-accent);border-color:var(--accent)}
 .idea-list{display:grid;gap:4px;max-height:212px;overflow-y:auto;margin:2px -4px 0;padding:0 4px}
 .idea{display:flex;justify-content:space-between;align-items:center;gap:12px;text-align:left;border:1px solid transparent;border-radius:9px;padding:9px 12px;background:var(--surface);color:var(--ink);cursor:pointer;font-size:13px;line-height:1.35}
-.idea:hover{border-color:var(--line-2)}
+@media (hover:hover) and (pointer:fine){.idea:hover{border-color:var(--line-2)}}
 .idea[aria-pressed=true]{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
 .idea small{color:var(--faint);font-size:11.5px;white-space:nowrap}
 .idea.has{opacity:.55}
@@ -262,7 +262,7 @@ dialog.wide{width:min(600px,calc(100vw - 32px))}
 .or::before,.or::after{content:'';flex:1;height:1px;background:var(--line)}
 
 /* Dialogues */
-dialog{border:1px solid var(--line-2);border-radius:16px;padding:28px;width:min(460px,calc(100vw - 32px));max-height:90vh;background:var(--surface);color:var(--ink)}
+dialog{border:1px solid var(--line-2);border-radius:16px;padding:28px;width:min(460px,calc(100vw - 32px));max-height:90vh;max-height:90dvh;background:var(--surface);color:var(--ink)}
 dialog::backdrop{background:var(--backdrop);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px)}
 .dialog-head{display:flex;justify-content:space-between;align-items:center;gap:12px}
 .dialog-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:24px}
@@ -329,7 +329,7 @@ dialog::backdrop{background:var(--backdrop);backdrop-filter:blur(4px);-webkit-ba
 .cal-head{margin-bottom:8px}
 .cal-head span{text-align:center;font-size:10.5px;letter-spacing:1.5px;text-transform:uppercase;color:var(--faint)}
 .cal-day{position:relative;min-height:104px;display:flex;flex-direction:column;align-items:stretch;gap:6px;text-align:left;padding:9px 9px 8px;border-radius:12px;border:1px solid var(--glass-border);background:var(--glass-soft);color:var(--ink);cursor:pointer;transition:border-color .15s,background .15s;min-width:0}
-.cal-day:hover{border-color:var(--line-2)}
+@media (hover:hover) and (pointer:fine){.cal-day:hover{border-color:var(--line-2)}}
 .cal-day.out{opacity:.38}
 .cal-day.today .cal-num{background:var(--accent);color:var(--on-accent)}
 .cal-day.sel{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
@@ -459,14 +459,14 @@ dialog#wiz{width:min(660px,calc(100vw - 24px))}
 dialog#quick{width:min(560px,calc(100vw - 24px))}
 .menu-list{display:grid;gap:2px;margin-top:12px}
 .menu-list a{display:flex;align-items:center;gap:12px;padding:12px;border-radius:10px;color:var(--ink-2)}
-.menu-list a:hover{background:var(--glass-soft);color:var(--ink)}
+@media (hover:hover) and (pointer:fine){.menu-list a:hover{background:var(--glass-soft);color:var(--ink)}}
 #busy{position:fixed;inset:0;z-index:60;display:grid;place-items:center;background:var(--auth-veil);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
 #busy>div{display:flex;gap:12px;align-items:center;padding:16px 22px;border-radius:999px;background:var(--glass-strong);border:1px solid var(--glass-border)}
 .spin{width:16px;height:16px;border-radius:50%;border:2px solid var(--line-2);border-top-color:var(--accent);animation:spin .8s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
 .identity{margin-bottom:22px}
 .identity-row{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;font-family:var(--serif);font-size:22px;color:var(--ink-2)}
-.identity-row input{flex:1;min-width:220px;font-family:var(--serif)!important;font-size:21px!important;font-style:italic;background:transparent!important;border:0!important;border-bottom:1px solid var(--line-2)!important;border-radius:0!important;padding:6px 2px!important}
+.identity-row input,.identity-row textarea{flex:1;min-width:220px;font-family:var(--serif)!important;font-size:21px!important;font-style:italic;background:transparent!important;border:0!important;border-bottom:1px solid var(--line-2)!important;border-radius:0!important;padding:6px 2px!important}
 .insight{border-top:1px solid var(--line);padding:12px 0}
 .insight:first-of-type{border-top:0;padding-top:4px}
 .insight p{margin:4px 0 0;color:var(--ink-2)}
@@ -533,11 +533,11 @@ body::after{content:'';position:fixed;right:-6vw;bottom:-12vh;width:min(62vw,720
 .week,.seg{background:var(--glass);border-color:var(--glass-border);box-shadow:inset 0 1px 0 var(--glass-hi)}
 .ideas{background:var(--glass-soft);border-color:var(--glass-border);-webkit-backdrop-filter:none;backdrop-filter:none}
 .idea{background:var(--glass);border-color:var(--glass-border)}
-.idea:hover{border-color:var(--line-2)}
+@media (hover:hover) and (pointer:fine){.idea:hover{border-color:var(--line-2)}}
 .quote{-webkit-backdrop-filter:none;backdrop-filter:none}
 aside{background:var(--glass-strong);border-right:1px solid var(--glass-border);box-shadow:inset -1px 0 0 var(--glass-hi);-webkit-backdrop-filter:blur(var(--blur-strong)) saturate(160%);backdrop-filter:blur(var(--blur-strong)) saturate(160%)}
 nav a.active{background:var(--glass-soft);box-shadow:inset 2px 0 0 var(--accent),inset 0 0 0 1px var(--glass-border)}
-nav a:hover,.side-foot a:hover,.side-foot a.active{background:var(--glass-soft)}
+.side-foot a.active{background:var(--glass-soft)}@media (hover:hover) and (pointer:fine){nav a:hover,.side-foot a:hover{background:var(--glass-soft)}}
 header.top{position:sticky;top:0;z-index:4;background:var(--glass-top);border-bottom:1px solid var(--glass-border)}
 dialog{background:var(--glass-strong);border:1px solid var(--glass-border);border-radius:22px;box-shadow:inset 0 1px 0 var(--glass-hi),0 30px 80px -20px rgba(0,0,0,.5);-webkit-backdrop-filter:blur(var(--blur-strong)) saturate(160%);backdrop-filter:blur(var(--blur-strong)) saturate(160%)}
 dialog::backdrop{-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
@@ -546,7 +546,7 @@ input:not([type=checkbox]):not([type=file]),select,textarea{background:var(--fie
 input:not([type=checkbox]):not([type=file]):focus,select:focus,textarea:focus{border-color:var(--line-2)}
 .btn:not(.primary):not(.danger){background:var(--glass-soft)}
 .hero .btn:not(.primary){background:rgba(255,255,255,.06);color:#efe3d4;border-color:rgba(239,227,212,.35);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
-.icon-btn:hover{background:var(--glass-soft)}
+@media (hover:hover) and (pointer:fine){.icon-btn:hover{background:var(--glass-soft)}}
 .bar{background:var(--glass-border)}
 .chk{background:var(--field)}
 /* Bandeau bois : reflet de verre */
@@ -679,7 +679,7 @@ input:not([type=checkbox]):not([type=file]):focus,select:focus,textarea:focus{bo
 .rail-lines{display:grid;margin-top:20px;border-top:1px solid var(--glass-border)}
 .rail-line{display:grid;grid-template-columns:22px 1fr auto;align-items:center;gap:10px;padding:12px 2px;border-bottom:1px solid var(--glass-border);color:var(--ink);text-decoration:none;font-size:14px}
 .rail-line:last-child{border-bottom:0;padding-bottom:0}
-.rail-line:hover .l{text-decoration:underline;text-underline-offset:3px}
+@media (hover:hover) and (pointer:fine){.rail-line:hover .l{text-decoration:underline;text-underline-offset:3px}}
 .rail-line .mark{display:grid;place-items:center;width:20px;height:20px;border-radius:999px;border:1px solid var(--line-2);color:var(--mark-ink);font-size:11px;font-weight:700}
 .rail-line.ok .mark{background:var(--mark);border-color:var(--mark)}
 .rail-line.ok .mark svg{width:12px;height:12px;stroke-width:2.6}
@@ -766,7 +766,7 @@ html:root aside,html:root[data-theme] aside{background:radial-gradient(120% 60% 
   -webkit-backdrop-filter:blur(16px) saturate(180%);backdrop-filter:blur(16px) saturate(180%)}
 .pill:not(.done):not(.late){box-shadow:var(--lg-spec)}
 @media (max-width:1100px){.rail-line{background:var(--lg-fill);border-color:var(--lg-edge);box-shadow:var(--lg-spec);-webkit-backdrop-filter:blur(16px) saturate(180%);backdrop-filter:blur(16px) saturate(180%)}}
-.btn:not(.primary):not(.danger):hover,header.top .icon-btn:hover{filter:brightness(1.06);transform:translateY(-1px)}
+@media (hover:hover) and (pointer:fine){.btn:not(.primary):not(.danger):hover,header.top .icon-btn:hover{filter:brightness(1.06);transform:translateY(-1px)}}
 .btn,.icon-btn{transition:transform .18s cubic-bezier(.2,.8,.2,1),filter .18s,background .15s,color .15s}
 .btn:active,.icon-btn:active{transform:scale(.97)}
 header.top .icon-btn{width:38px;height:38px;border:1px solid var(--lg-edge);color:var(--ink-2)}
@@ -780,7 +780,7 @@ dialog::backdrop{background:rgba(10,8,6,.35)}
 #toast{background:linear-gradient(180deg,rgba(60,44,32,.78),rgba(24,18,13,.86));color:#f6eee3;border:1px solid rgba(255,255,255,.16);-webkit-backdrop-filter:blur(20px) saturate(170%);backdrop-filter:blur(20px) saturate(170%);box-shadow:inset 0 1px 0 rgba(255,255,255,.25),0 16px 34px -12px rgba(0,0,0,.6)}
 /* sur le bois : boutons et onglet actif en verre fumé */
 html:root aside nav a.active,html:root[data-theme] aside nav a.active,aside .side-foot a.active{background:linear-gradient(180deg,rgba(255,255,255,.17),rgba(255,255,255,.05));box-shadow:inset 0 1px 0 rgba(255,255,255,.32),inset 0 0 0 1px rgba(255,255,255,.14),0 8px 18px -10px rgba(0,0,0,.7);color:#fff;-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
-aside nav a:hover{background:rgba(255,255,255,.07)}
+@media (hover:hover) and (pointer:fine){aside nav a:hover{background:rgba(255,255,255,.07)}}
 aside .pill{background:linear-gradient(180deg,rgba(255,255,255,.14),rgba(255,255,255,.03))!important;border-color:rgba(255,255,255,.22)!important;color:#f2ece3!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.25)}
 /* mobile : barre d'onglets flottante en verre fumé */
 @media (max-width:760px){
@@ -816,18 +816,17 @@ aside .pill{background:linear-gradient(180deg,rgba(255,255,255,.14),rgba(255,255
 .fab-spacer{display:none}
 @media (max-width:760px){
   html:root aside,html:root[data-theme] aside{height:62px;padding:0 6px!important;align-items:center;overflow:visible;
-    clip-path:inset(-40px -14px -14px -14px round 31px);transition:left .8s cubic-bezier(.22,1,.36,1) .12s}
+    clip-path:inset(-40px -14px -14px -14px round 31px);transition:left 320ms var(--ease-drawer)}
   aside nav{position:relative;height:100%;align-items:center}
-  aside nav a{transition:opacity .38s ease .35s,scale .5s cubic-bezier(.22,1,.36,1) .35s}
+  aside nav a{transition:opacity 140ms ease 140ms,scale 200ms var(--ease-out) 140ms}
   .fab-spacer{display:block;flex:0 0 58px}
-  .fab{position:absolute;left:50%;top:-14px;translate:-50% 0;margin:0!important;transition:top .5s cubic-bezier(.22,1,.36,1)}
+  .fab{position:absolute;left:50%;top:-14px;translate:-50% 0;margin:0!important;transition:top 240ms var(--ease-out),transform 160ms var(--ease-out)}
   aside::after{content:'';position:absolute;top:0;bottom:0;left:-40%;width:40%;border-radius:31px;pointer-events:none;opacity:0;
     background:linear-gradient(100deg,transparent,rgba(255,255,255,.24),transparent)}
   body.bar-min aside{left:calc(100% - 74px)!important}
-  body.bar-min aside nav a{opacity:0;scale:.92;pointer-events:none;transition:opacity .38s ease,scale .5s cubic-bezier(.22,1,.36,1)}
-  body.bar-min .fab{top:5px;transition-delay:.2s}
-  body.bar-min aside::after{animation:sheen-in 1s cubic-bezier(.22,1,.36,1) .05s}
-  body:not(.bar-min) aside.was-min::after{animation:sheen-out 1s cubic-bezier(.22,1,.36,1)}
+  body.bar-min aside nav a{opacity:0;scale:.96;pointer-events:none;transition:opacity 140ms ease,scale 140ms var(--ease-out)}
+  body.bar-min .fab{top:5px;transition-delay:60ms}
+  
 }
 @keyframes sheen-in{0%{opacity:1;translate:0 0}100%{opacity:1;translate:330% 0}}
 @keyframes sheen-out{0%{opacity:1;translate:330% 0}100%{opacity:1;translate:0 0}}
@@ -840,7 +839,7 @@ aside .pill{background:linear-gradient(180deg,rgba(255,255,255,.14),rgba(255,255
 .win-dot{flex:none;width:7px;height:7px;border-radius:50%;background:var(--mark);margin-top:19px}
 .win-row textarea{flex:1;min-width:0;resize:none;overflow:hidden;line-height:1.45;min-height:46px;padding:11px 14px;field-sizing:content}
 .win-del{margin-top:6px;opacity:.55}
-.win-del:hover{opacity:1}
+@media (hover:hover) and (pointer:fine){.win-del:hover{opacity:1}}
 .win-add{justify-self:start;margin-top:2px}
 .win-line{white-space:pre-line}
 /* iPhone : pas de zoom automatique quand on touche un champ (texte à 16 px minimum) */
@@ -892,6 +891,71 @@ aside .pill{background:linear-gradient(180deg,rgba(255,255,255,.14),rgba(255,255
 .care b{font-weight:600}
 .private{display:flex;gap:6px;align-items:center;font-size:11.5px;color:var(--faint);margin:2px 0 0}
 @media (prefers-reduced-motion:reduce){.dump-item{transition:none}}
+
+/* ===== Audit design : sensation native, mouvement, données réelles ===== */
+:root{--ease-out:cubic-bezier(.23,1,.32,1);--ease-in-out:cubic-bezier(.77,0,.175,1);--ease-drawer:cubic-bezier(.32,.72,0,1)}
+html{-webkit-tap-highlight-color:transparent}
+button,a,[role=button],.chk,.chip,.dpill,.seg button,nav a,label.row,.cal-day{touch-action:manipulation}
+button,[role=button],.chip,.dpill,.seg,.pill,nav a,.btn,.icon-btn,.cal-day,.eyebrow{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+dialog,#wiz-body,#fields,.menu-list,#rem-body,#sheet-body{overscroll-behavior:contain}
+/* case cochée : retour immédiat au toucher */
+.chk{transition:transform 160ms var(--ease-out),background-color 120ms ease,border-color 120ms ease}
+.chk:active{transform:scale(.9)}
+.chk:checked::after{animation:chk-in 160ms var(--ease-out)}
+@keyframes chk-in{from{opacity:0;scale:.6}}
+.btn:active,.icon-btn:active,.dpill:active,.chip:active,.fab:active{transform:scale(.97)}
+.fab:active{transform:scale(.94)}
+/* fenêtres : fondu + léger zoom, sortie plus rapide */
+dialog{opacity:1;transform:none;transition:opacity 150ms ease,transform 150ms var(--ease-out),overlay 150ms allow-discrete,display 150ms allow-discrete}
+dialog:not([open]){opacity:0;transform:scale(.97)}
+dialog[open]{transition-duration:200ms}
+@starting-style{dialog[open]{opacity:0;transform:scale(.96)}}
+dialog::backdrop{transition:opacity 200ms ease,overlay 200ms allow-discrete,display 200ms allow-discrete;opacity:1}
+@starting-style{dialog[open]::backdrop{opacity:0}}
+/* message de confirmation : entre et sort par le bas */
+#toast{transition:opacity 150ms ease,transform 150ms var(--ease-out)}
+#toast.show{transition-duration:240ms}
+/* fond : pas d'animation continue sur téléphone */
+@media (pointer:coarse){body::before{animation:none}}
+@media (prefers-reduced-motion:reduce){dialog,dialog::backdrop,.chk{transition:none}.chk:checked::after{animation:none}}
+/* feuille d'options d'une action */
+.sheet-title{font-family:var(--serif);font-size:21px;line-height:1.3;margin:0;overflow-wrap:anywhere}
+.sheet-acts{display:grid;gap:8px}
+.sheet-acts .btn{justify-content:flex-start;padding:13px 16px;font-size:15px;gap:12px}
+.danger-soft{color:var(--danger)!important}
+.more{display:none}
+.m-only{display:none}
+.task-row .t{overflow-wrap:anywhere}
+.pdot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--danger);margin-right:7px;vertical-align:2px}
+@media (min-width:761px){.pdot{display:none}}
+@media (max-width:760px){
+  .task-row{align-items:flex-start}
+  .task-row .chk{margin-top:1px}
+  .columns,.cal-layout,.today-layout{grid-template-columns:minmax(0,1fr)!important}
+  .stack,.card,.today-flow,.today-rail{min-width:0}
+  .task-row .t{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  .task-row small{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .task-row>.pill,.task-row>.acts{display:none}
+  .step-card .row:not(.task-row) .t{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;overflow-wrap:anywhere}
+  .task-row .more{display:grid;flex:none;margin:-6px -6px 0 0;width:36px;height:36px;color:var(--muted)}
+  .task-row .m-only{display:inline;font-weight:500}
+  .copy{min-width:0}
+  /* Mes rituels : 7 cases sous chaque nom */
+  .rgrid-wrap{overflow:visible;margin:0;padding:0}
+  .rgrid{grid-template-columns:repeat(7,minmax(0,1fr)) 34px;min-width:0;gap:4px 6px;padding:14px 0}
+  .rgrid .rname{grid-column:1/-1}
+  .rgrid.head>div:first-child{display:none}
+  .rgrid.head span:last-child{display:none}
+  .rgrid.head span small{display:none}
+  .rgrid label{height:40px}
+  .rgrid label .chk.sq{width:30px;height:30px;border-radius:9px}
+  /* Calendrier : la commande du mois passe à la ligne si besoin */
+  .week{flex-wrap:wrap;row-gap:6px;justify-content:center}
+  .cal-month{min-width:0;flex:1}
+  /* Identité */
+  .identity-row textarea{resize:none;overflow:hidden;field-sizing:content}
+}
+.identity-row textarea{width:100%;resize:none;overflow:hidden;font:inherit;line-height:1.35;min-height:44px}
 </style>
 <script src="config.js"></script>
 </head>
@@ -955,7 +1019,7 @@ aside .pill{background:linear-gradient(180deg,rgba(255,255,255,.14),rgba(255,255
 <dialog id="quick" aria-labelledby="quick-title">
   <form id="quick-form" novalidate>
     <div class="dialog-head"><h2 id="quick-title">Saisie rapide</h2><button type="button" class="icon-btn" data-close-quick aria-label="Fermer"></button></div>
-    <div class="quick-row"><input id="quick-in" class="quick-input" autocomplete="off" maxlength="200" placeholder="Ex. Appeler Paul jeudi 18h rappel 30 min" aria-label="Nouvelle action" aria-describedby="quick-help">
+    <div class="quick-row"><input id="quick-in" class="quick-input" enterkeyhint="done" autocomplete="off" maxlength="200" placeholder="Ex. Appeler Paul jeudi 18h rappel 30 min" aria-label="Nouvelle action" aria-describedby="quick-help">
       <label class="icon-btn quick-tool" id="quick-date-btn" title="Choisir une date" aria-label="Choisir une date"><span class="qt-ic"></span><input type="date" id="quick-date" tabindex="-1" aria-hidden="true"></label>
       <button type="button" class="icon-btn quick-tool mic" id="quick-mic" aria-label="Dicter" aria-pressed="false"></button></div>
     <p class="mic-status" id="mic-status" aria-live="polite" hidden></p>
@@ -965,6 +1029,10 @@ aside .pill{background:linear-gradient(180deg,rgba(255,255,255,.14),rgba(255,255
   </form>
 </dialog>
 
+<dialog id="sheet" class="sheet" aria-labelledby="sheet-title">
+  <div class="dialog-head"><h2 id="sheet-title">Options</h2><button type="button" class="icon-btn" data-close-sheet aria-label="Fermer"></button></div>
+  <div id="sheet-body"></div>
+</dialog>
 <dialog id="menu" aria-labelledby="menu-title">
   <div class="dialog-head"><h2 id="menu-title">Menu</h2><button type="button" class="icon-btn" data-close-menu aria-label="Fermer"></button></div>
   <div class="menu-list" id="menu-list"></div>
@@ -988,8 +1056,8 @@ aside .pill{background:linear-gradient(180deg,rgba(255,255,255,.14),rgba(255,255
       <button type="button" data-auth="signup" aria-pressed="false">Créer un compte</button>
     </div>
     <form id="auth-form" novalidate>
-      <label class="field" id="auth-email-row">E-mail<input id="auth-email" name="email" type="email" autocomplete="email" inputmode="email" autocapitalize="off" spellcheck="false" maxlength="200"></label>
-      <label class="field" id="auth-pass-row"><span id="auth-pass-label">Mot de passe</span><input id="auth-pass" name="password" type="password" autocomplete="current-password" maxlength="200"></label>
+      <label class="field" id="auth-email-row">E-mail<input id="auth-email" enterkeyhint="next" autocapitalize="none" autocorrect="off" spellcheck="false" name="email" type="email" autocomplete="email" inputmode="email" autocapitalize="off" spellcheck="false" maxlength="200"></label>
+      <label class="field" id="auth-pass-row"><span id="auth-pass-label">Mot de passe</span><input id="auth-pass" enterkeyhint="go" name="password" type="password" autocomplete="current-password" maxlength="200"></label>
       <p id="auth-msg" class="auth-msg" role="alert"></p>
       <button class="btn primary auth-submit" id="auth-submit" type="submit">Se connecter</button>
     </form>
@@ -1077,7 +1145,7 @@ function stats(k){
     ritualPct:total?Math.round(checks/total*100):0,taskPct:w.tasks.length?Math.round(done/w.tasks.length*100):0,
     score:total+w.tasks.length?Math.round((checks+done)/(total+w.tasks.length)*100):0};
 }
-const goalPct=g=>Math.min(100,Math.max(0,Math.round(g.current/g.target*100)));
+const goalPct=g=>{const r=g.current/g.target*100;return g.current>=g.target?100:Math.min(99,Math.max(0,Math.floor(r)))};
 
 /* ---------- Utilitaires ---------- */
 const $=s=>document.querySelector(s);
@@ -1565,7 +1633,7 @@ function openMenu(){
 }
 $('.gear').innerHTML=ic('menu',20);$('#quick-mic').innerHTML='<svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21M8.5 21h7"/></svg>';$('#quick-date-btn .qt-ic').innerHTML=ic('cal',18);$('.burger').innerHTML=ic('menu',22);
 $('.side-quick').innerHTML=ic('plus',15)+'Saisie rapide';
-document.querySelectorAll('[data-close-wiz],[data-close-quick],[data-close-menu]').forEach(b=>{if(b.classList.contains('icon-btn'))b.innerHTML=ic('x');b.onclick=()=>b.closest('dialog').close()});
+document.querySelectorAll('[data-close-wiz],[data-close-quick],[data-close-menu],[data-close-sheet]').forEach(b=>{if(b.classList.contains('icon-btn'))b.innerHTML=ic('x');b.onclick=()=>b.closest('dialog').close()});
 document.querySelectorAll('[data-close]').forEach(b=>{if(b.classList.contains('icon-btn'))b.innerHTML=ic('x');b.onclick=()=>$('#modal').close()});
 const navStyle=document.createElement('style');navStyle.textContent='nav a .short{display:none}@media(max-width:760px){nav a .short{display:block}}';document.head.append(navStyle);
 
@@ -1576,11 +1644,12 @@ function weekControl(){
 }
 const heading=(eyebrow,title,sub,action='')=>`<div class="title-row"><div><p class="eyebrow">${eyebrow}</p><h1>${title}</h1><p class="lead">${sub}</p></div>${action}</div>`;
 
+const MORE_SVG='<svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><circle cx="5.5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="18.5" cy="12" r="1.6"/></svg>';
 function taskRow(t,wk){
   if(typeof wk!=='string')wk=key;
   const g=state.goals.find(g=>g.id===t.goal);
   const when=(Number.isInteger(t.day)?DAYS_LONG[t.day]+' '+fmt(shift(wk,t.day))+(t.time?' · '+t.time:''):'Cette semaine')+(t.remind!==null&&t.remind!==undefined&&!t.done?' · rappel '+remLabel(t.remind):''),late=isLate(t,wk);
-  return `<div class="row ${t.done?'done':''}"><input class="chk" type="checkbox" aria-label="Terminer : ${esc(t.title)}" data-task="${t.id}" data-week="${wk}" ${t.done?'checked':''}><div class="copy"><span class="t">${t.star?'<span class="star" title="Priorité de la semaine">★</span> ':''}${esc(t.title)}</span><small>${esc(when)}${g?' · Cap · '+esc(g.title):''}</small></div>${late?'<span class="pill late">En retard</span>':`<span class="pill ${t.priority==='Haute'?'high':''}">${esc(t.priority)}</span>`}<span class="acts"><button class="icon-btn" data-act="edit-task" data-id="${t.id}" data-week="${wk}" aria-label="Modifier ${esc(t.title)}">${ic('edit',16)}</button><button class="icon-btn" data-act="del-task" data-id="${t.id}" data-week="${wk}" aria-label="Supprimer ${esc(t.title)}">${ic('x',16)}</button></span></div>`;
+  return `<div class="row task-row ${t.done?'done':''}"><input class="chk" type="checkbox" aria-label="Terminer : ${esc(t.title)}" data-task="${t.id}" data-week="${wk}" ${t.done?'checked':''}><div class="copy"><span class="t">${t.priority==='Haute'&&!t.done?'<i class="pdot" aria-hidden="true"></i>':''}${t.star?'<span class="star" title="Priorité de la semaine">★</span> ':''}${esc(t.title)}</span><small>${late?'<b class="late-txt m-only">En retard · </b>':''}${esc(when)}${g?' · Cap · '+esc(g.title):''}</small></div>${late?'<span class="pill late">En retard</span>':`<span class="pill ${t.priority==='Haute'?'high':''}">${esc(t.priority)}</span>`}<span class="acts"><button class="icon-btn" data-act="edit-task" data-id="${t.id}" data-week="${wk}" aria-label="Modifier ${esc(t.title)}">${ic('edit',16)}</button><button class="icon-btn" data-act="del-task" data-id="${t.id}" data-week="${wk}" aria-label="Supprimer ${esc(t.title)}">${ic('x',16)}</button></span><button class="icon-btn more" data-act="task-more" data-id="${t.id}" data-week="${wk}" aria-label="Options pour ${esc(t.title)}">${MORE_SVG}</button></div>`;
 }
 const sortTasks=l=>l.slice().sort((a,b)=>a.done-b.done||PRIOS.indexOf(a.priority)-PRIOS.indexOf(b.priority));
 
@@ -1666,7 +1735,7 @@ function ritualTodayRow(r,wk,ti){
   return `<label class="row"><input class="chk sq" type="checkbox" data-ritual="${r.id}" data-day="${ti}" data-week="${wk}" ${done?'checked':''}><span class="copy"><span class="t">${esc(r.title)}</span>${sub?`<small>${sub}</small>`:''}${!done&&missedY&&streak>0?'<small class="gentle">Hier est passé. Aujourd’hui suffit pour garder le fil.</small>':''}</span></label>`;
 }
 const winList=v=>String(v||'').split('\n').map(x=>x.trim()).filter(Boolean);
-const winRow=(v,i)=>`<div class="win-row"><span class="win-dot" aria-hidden="true"></span><textarea class="autogrow" data-win="1" rows="1" maxlength="300" placeholder="${i?'Une autre victoire…':'Même petite, elle compte'}" aria-label="Victoire ${i+1}">${esc(v)}</textarea><button type="button" class="icon-btn win-del" data-act="win-del" aria-label="Retirer cette victoire">${ic('x',14)}</button></div>`;
+const winRow=(v,i)=>`<div class="win-row"><span class="win-dot" aria-hidden="true"></span><textarea class="autogrow" data-win="1" enterkeyhint="next" rows="1" maxlength="300" placeholder="${i?'Une autre victoire…':'Même petite, elle compte'}" aria-label="Victoire ${i+1}">${esc(v)}</textarea><button type="button" class="icon-btn win-del" data-act="win-del" aria-label="Retirer cette victoire">${ic('x',14)}</button></div>`;
 function saveWins(box){const w=week(box.dataset.week),arr=w.wins7??=Array(7).fill('');while(arr.length<7)arr.push('');
   arr[+box.dataset.day]=[...box.querySelectorAll('textarea[data-win]')].map(t=>t.value.replace(/\s+/g,' ').trim()).filter(Boolean).join('\n').slice(0,1500);saveSoon()}
 function autogrow(t){t.style.height='auto';t.style.height=t.scrollHeight+'px'}
@@ -1722,7 +1791,7 @@ function today(){
         ${(winList(win).length?winList(win):['']).map((v,i)=>winRow(v,i)).join('')}
         <button type="button" class="btn sm win-add" data-act="win-add">${ic('plus',14)}Ajouter une victoire</button></div>
       <div class="field dump-box" id="dump-box" data-week="${wk}" data-day="${ti}"><span>Je décharge <small>Ce qui pèse ce soir. Écrivez-le ou dites-le, puis choisissez quoi en faire.</small></span>
-        <div class="dump-row"><textarea id="dump-in" class="autogrow" rows="1" maxlength="1000" placeholder="Ce qui pèse ce soir…" aria-label="Ce qui pèse ce soir"></textarea>
+        <div class="dump-row"><textarea id="dump-in" class="autogrow" enterkeyhint="send" rows="1" maxlength="1000" placeholder="Ce qui pèse ce soir…" aria-label="Ce qui pèse ce soir"></textarea>
           <button type="button" class="icon-btn quick-tool mic" id="dump-mic" data-act="dump-mic" aria-label="Dicter" aria-pressed="false">${MIC_SVG}</button>
           <button type="button" class="icon-btn quick-tool dump-send" data-act="dump-add" aria-label="Déposer">${UP_SVG}</button></div>
         <p class="mic-status" id="dump-status" ${dumpMsg?'':'hidden'}>${esc(dumpMsg)}</p>
@@ -1733,7 +1802,7 @@ function today(){
     ${late.length?step(num(),'t-retard','À reprogrammer',`<span class="pill late">${late.length} en retard</span>`)+`<div class="late-wrap">${lateCard()}</div>`:''}
   </div>`;
   dumpMsg='';
-  return heading(dateLbl,`Aujourd’hui${state.name?', '+esc(state.name):''}.`,w.intention?`« ${esc(w.intention)} »`:'Trois actions, quelques rituels, et c’est une bonne journée.',`<button class="btn primary head-quick" data-act="quick">${ic('plus',15)}Saisie rapide</button>`)
+  return heading(dateLbl,`Aujourd’hui${state.name?', '+esc(state.name.trim().split(/\s+/)[0]):''}.`,w.intention?`« ${esc(w.intention)} »`:'Trois actions, quelques rituels, et c’est une bonne journée.',`<button class="btn primary head-quick" data-act="quick">${ic('plus',15)}Saisie rapide</button>`)
   +notices()+`<div class="today-layout">${flow}${rail}</div>`;
 }
 
@@ -1857,7 +1926,7 @@ function rituals(){
 /* ---------- Caps ---------- */
 function goals(){
   return heading('Un cap, des pas concrets','Mes caps.','Une direction mesurable, et des actions qui la font avancer toute seule.',`<button class="btn primary" data-act="add-goal">${ic('plus',14)}Nouveau cap</button>`)
-  +`<section class="card identity"><p class="eyebrow">Mon identité</p><label class="identity-row"><span>Je deviens quelqu’un qui</span><input id="identity" maxlength="160" value="${esc(state.identity||'')}" placeholder="prend soin de son énergie et tient ses engagements" aria-label="Je deviens quelqu’un qui…"></label><p class="help" style="margin-top:8px">Le cap donne la direction, l’identité donne le sens.</p></section>`
+  +`<section class="card identity"><p class="eyebrow">Mon identité</p><label class="identity-row"><span>Je deviens quelqu’un qui</span><textarea id="identity" class="autogrow" rows="1" maxlength="160" enterkeyhint="done" placeholder="prend soin de son énergie et tient ses engagements" aria-label="Je deviens quelqu’un qui…">${esc(state.identity||'')}</textarea></label><p class="help" style="margin-top:8px">Le cap donne la direction, l’identité donne le sens.</p></section>`
   +(state.goals.length?`<div class="goal-list">${state.goals.map(g=>{const p=goalPct(g);return `<section class="card goal-card"><h3>${esc(g.title)}</h3><p class="big">${p}%</p>${bar(p,g.title)}<p class="help" style="margin-top:10px">${num(g.current)} / ${num(g.target)} ${esc(g.unit)}${g.auto?' · avance avec les actions et rituels liés':''}</p>
     <div class="acts"><div class="btns" style="margin:0"><button class="btn sm" data-act="goal-inc" data-id="${g.id}" aria-label="Ajouter 1 à ${esc(g.title)}">+1</button><button class="btn sm" data-act="edit-goal" data-id="${g.id}">Mettre à jour</button><button class="btn sm" data-act="ai-split" data-id="${g.id}">${has('pro')?ic('spark',14):badge('pro')}Découper</button></div><button class="icon-btn" data-act="del-goal" data-id="${g.id}" aria-label="Supprimer ${esc(g.title)}">${ic('x',16)}</button></div></section>`}).join('')}</div>`
   :`<section class="card">${empty('Quel cap voulez-vous vous donner ?','Choisissez quelque chose de mesurable : 12 séances, 200 pages, 5 étapes…')}</section>`);
@@ -2044,6 +2113,7 @@ function demo(){
   save();location.hash='#aujourdhui';render();toast('Démonstration chargée');
 }
 
+document.addEventListener('click',e=>{const b=e.target.closest('#sheet [data-act]');if(b)$('#sheet').close()},true);
 document.addEventListener('click',async e=>{
   const b=e.target.closest('[data-act]');if(!b)return;
   const a=b.dataset.act,id=b.dataset.id;
@@ -2147,6 +2217,10 @@ document.addEventListener('click',async e=>{
     return;
   }
   if(a==='intention'){const w=peek(key);editor('Mon intention de la semaine',field('Cette semaine, je choisis de…','intention',w.intention,'text','placeholder="Ex. Ralentir le soir"').replace(' required',''),f=>{week(key).intention=f.get('intention').trim()});return}
+  if(a==='task-more'){const wk=b.dataset.week||key,t=peek(wk).tasks.find(x=>x.id===id);if(!t)return;const g=state.goals.find(x=>x.id===t.goal);
+    $('#sheet-body').innerHTML=`<p class="sheet-title">${esc(t.title)}</p><p class="help" style="margin:4px 0 14px">${Number.isInteger(t.day)?esc(DAYS_LONG[t.day]+' '+fmt(shift(wk,t.day))+(t.time?' · '+t.time:'')):'Cette semaine, sans jour précis'} · priorité ${esc(t.priority.toLowerCase())}${g?' · Cap · '+esc(g.title):''}</p>
+      <div class="sheet-acts"><button class="btn" data-act="edit-task" data-id="${t.id}" data-week="${wk}">${ic('edit',16)}Modifier</button>${t.done?'':`<button class="btn" data-act="move-pick" data-id="${t.id}" data-week="${wk}">${ic('cal',16)}Reprogrammer</button>`}<button class="btn danger-soft" data-act="del-task" data-id="${t.id}" data-week="${wk}">${ic('x',16)}Supprimer</button></div>`;
+    $('#sheet').showModal();return}
   if(a==='del-task'){if(!await ask('Supprimer cette action ?','Elle disparaîtra de cette semaine.','Supprimer'))return;const w=week(b.dataset.week||key);w.tasks=w.tasks.filter(t=>t.id!==id)}
   if(a==='del-ritual'){if(!await ask('Supprimer ce rituel ?','Ses coches seront effacées dans toutes les semaines.','Supprimer'))return;state.rituals=state.rituals.filter(r=>r.id!==id);Object.values(state.weeks).forEach(w=>delete w.checks[id])}
   if(a==='del-goal'){if(!await ask('Supprimer ce cap ?','Les tâches associées sont conservées.','Supprimer'))return;state.goals=state.goals.filter(g=>g.id!==id);Object.values(state.weeks).forEach(w=>w.tasks.forEach(t=>{if(t.goal===id)t.goal=''}))}
@@ -2182,12 +2256,12 @@ document.addEventListener('input',e=>{
   if(t.id==='dump-in'){autogrow(t);const c=$('#dump-care'),box=$('#dump-box');if(c&&box){const w=peek(box.dataset.week);c.hidden=!(CARE_RE.test(t.value)||dumpsOf(w,+box.dataset.day).some(d=>CARE_RE.test(d.t)))}}
   if(t.dataset.win){const box=t.closest('[data-wins]');if(box)saveWins(box);if(t.classList.contains('autogrow'))autogrow(t)}
   if(t.dataset.month){state.months??={};const m=state.months[t.dataset.ym]??={wins:'',lessons:'',next:''};m[t.dataset.month]=t.value.slice(0,5000);saveSoon()}
-  if(t.id==='identity'){state.identity=t.value.slice(0,160);saveSoon()}
+  if(t.id==='identity'){state.identity=t.value.replace(/\n/g,' ').slice(0,160);saveSoon();autogrow(t)}
   if(t.id==='quick-in'){$('#quick-prev').innerHTML=quickPreview(parseQuick(t.value))}
   if(t.id==='search'){search=t.value;$('#task-list').innerHTML=taskListHTML()}
 });
 
-function popAt(sel){const el=document.querySelector(sel);if(!el||matchMedia('(prefers-reduced-motion: reduce)').matches)return;el.classList.add('pop');setTimeout(()=>el.classList.remove('pop'),400)}
+function popAt(sel){return;const el=document.querySelector(sel);if(!el||matchMedia('(prefers-reduced-motion: reduce)').matches)return;el.classList.add('pop');setTimeout(()=>el.classList.remove('pop'),400)}
 /* dictée (reconnaissance vocale du navigateur, en français) */
 const SR=window.SpeechRecognition||window.webkitSpeechRecognition;let rec=null;
 function micState(on,msg=''){const b=$('#quick-mic');b.classList.toggle('on',on);b.setAttribute('aria-pressed',on);b.setAttribute('aria-label',on?'Arrêter la dictée':'Dicter');const st=$('#mic-status');st.hidden=!msg;st.textContent=msg}
@@ -2237,7 +2311,7 @@ const isLight=()=>{const t=ui.theme||'dark';return t==='light'||(t==='auto'&&mqL
 function applyTheme(){
   document.documentElement.dataset.theme=ui.theme||'dark';
   const light=isLight();
-  $('#meta-theme').content=light?'#f6f4ef':'#0d0c0b';
+  $('#meta-theme').content=light?'#efe9df':'#121110';
   const tb=$('#theme-toggle');tb.innerHTML=ic(light?'moon':'sun',19);
   const label=light?'Passer en interface sombre':'Passer en interface claire';tb.setAttribute('aria-label',label);tb.title=label;
 }
