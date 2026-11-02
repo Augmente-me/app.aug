@@ -581,6 +581,70 @@ input:not([type=checkbox]):not([type=file]):focus,select:focus,textarea:focus{bo
   body::before{display:none}
 }
 @media (prefers-reduced-motion:reduce){body::before{animation:none}}
+
+/* ===== Lisibilité des sections & journées accomplies ===== */
+:root{--mark:#c9a076;--mark-ink:#16130f;--tint-warm:rgba(201,160,118,.11);--tint-cool:rgba(150,160,185,.07);--tint-late:rgba(224,163,154,.08);--done-bg:rgba(201,160,118,.16);--done-line:rgba(201,160,118,.55);
+  --glass:rgba(32,29,26,.64);--glass-border:rgba(255,255,255,.11)}
+:root[data-theme=light]{--mark:#8d6239;--mark-ink:#fff;--tint-warm:rgba(176,128,84,.10);--tint-cool:rgba(90,104,130,.06);--tint-late:rgba(163,69,58,.06);--done-bg:rgba(176,128,84,.13);--done-line:rgba(141,98,57,.45);
+  --glass:rgba(255,255,255,.78);--glass-border:rgba(22,19,15,.11);--glass-shadow:rgba(70,48,28,.14)}
+@media (prefers-color-scheme:light){:root[data-theme=auto]{--mark:#8d6239;--mark-ink:#fff;--tint-warm:rgba(176,128,84,.10);--tint-cool:rgba(90,104,130,.06);--tint-late:rgba(163,69,58,.06);--done-bg:rgba(176,128,84,.13);--done-line:rgba(141,98,57,.45);
+  --glass:rgba(255,255,255,.78);--glass-border:rgba(22,19,15,.11);--glass-shadow:rgba(70,48,28,.14)}}
+/* chaque section : un repère vertical devant son titre, plus d'air entre les blocs */
+.card>.section-head h2::before,.card>h2:first-child::before{content:'';display:inline-block;width:3px;height:.78em;margin-right:12px;vertical-align:.02em;border-radius:2px;background:var(--mark)}
+.cal-detail h2::before,.settings .card>h2:first-child::before,.wiz-final h2::before{display:none!important}
+.stack,.columns,.kpis{gap:26px}
+.columns+.card,.card+.columns,.kpis+.columns,.hero+.kpis,.card+.kpis,.days+.columns{margin-top:26px}
+.card.tone-warm{background:linear-gradient(165deg,var(--tint-warm),transparent 62%),var(--glass)}
+.card.tone-cool{background:linear-gradient(165deg,var(--tint-cool),transparent 62%),var(--glass)}
+.card.late-card{background:linear-gradient(165deg,var(--tint-late),transparent 55%),var(--glass)}
+/* rituels du jour : tout est fait */
+.card.all-done{background:linear-gradient(160deg,var(--done-bg),transparent 75%),var(--glass);border-color:var(--done-line)!important}
+.pill.done{background:var(--mark);border-color:var(--mark);color:var(--mark-ink);display:inline-flex;align-items:center;gap:5px;font-weight:500}
+.pill.done svg{width:12px;height:12px}
+/* bandeau « Journée accomplie » */
+.day-done{display:flex;align-items:center;gap:22px;margin-bottom:26px;border-color:var(--done-line)!important;background:linear-gradient(120deg,var(--done-bg),transparent 80%),var(--glass)}
+.day-done .eyebrow{margin-bottom:6px;color:var(--mark)}
+.day-done h2{font-size:28px}
+.day-done .lead{margin:6px 0 0}
+.day-seal{flex:none;display:grid;place-items:center;width:58px;height:58px;border-radius:999px;background:var(--mark);color:var(--mark-ink);box-shadow:0 0 0 6px var(--tint-warm)}
+.day-seal svg{width:26px;height:26px;stroke-width:2.2}
+@media (max-width:760px){.day-done{gap:16px;padding:20px}.day-seal{width:46px;height:46px}.day-done h2{font-size:23px}}
+/* semaine jour par jour */
+.days-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:8px}
+.dayc{display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 4px 10px;border-radius:14px;border:1px solid var(--glass-border);background:var(--glass-soft);text-align:center;min-width:0}
+.dayc .dn{font-size:10.5px;letter-spacing:1.5px;text-transform:uppercase;color:var(--faint)}
+.dayc .dd{font-family:var(--serif);font-size:22px;line-height:1;font-variant-numeric:lining-nums}
+.dayc .ds{font-size:11px;color:var(--muted);min-height:22px;display:grid;place-items:center;width:100%}
+.dayc .cal-meter{width:70%}
+.dayc.today{border-color:var(--ink-2)}
+.dayc.today .dn{color:var(--ink)}
+.dayc.future{opacity:.55}
+.dayc.complete{background:linear-gradient(180deg,var(--done-bg),transparent 120%);border-color:var(--done-line)}
+.dayc.complete .dn{color:var(--mark)}
+.seal-sm{display:grid;place-items:center;width:22px;height:22px;border-radius:999px;background:var(--mark);color:var(--mark-ink)}
+.seal-sm svg{width:13px;height:13px;stroke-width:2.4}
+@media (max-width:760px){.days-grid{gap:4px}.dayc{padding:10px 2px 8px;border-radius:10px}.dayc .dd{font-size:18px}.dayc .ds small{display:none}}
+/* calendrier */
+.cal-day.complete{background:linear-gradient(170deg,var(--done-bg),transparent 110%);border-color:var(--done-line)}
+.cal-day.complete .cal-meter i{background:var(--mark)}
+.cal-seal{position:absolute;top:9px;right:9px;display:grid;place-items:center;width:20px;height:20px;border-radius:999px;background:var(--mark);color:var(--mark-ink)}
+.cal-seal svg{width:12px;height:12px;stroke-width:2.6}
+.cal-day.complete .cal-dot{display:none}
+.cal-legend .cal-seal{position:static;display:inline-grid}
+@media (max-width:760px){.cal-seal{top:3px;right:3px;width:14px;height:14px}.cal-seal svg{width:9px;height:9px}}
+/* rituels : colonne d'une journée complète */
+.rgrid.head span.full{color:var(--mark)}
+.rgrid.head span.full::after{content:'✓';display:block;font-size:12px;margin-top:2px}
+.rgrid label.full{background:var(--done-bg);border-radius:10px}
+/* fin du démarrage guidé */
+.wiz-final{text-align:center;padding:10px 4px 4px}
+.wiz-final-mono{width:56px;height:56px;margin:0 auto 18px;display:block}
+.wiz-final h2{font-size:32px;margin-bottom:14px}
+.wiz-final-key{font-family:var(--serif);font-style:italic;font-size:22px;line-height:1.4;color:var(--ink);margin:0 auto 14px;width:min(460px,100%);max-width:none;text-wrap:balance}
+@media (max-width:760px){.section-head{flex-wrap:wrap;row-gap:10px}.section-head h2{flex:1 1 auto;min-width:min(100%,210px)}}
+.wiz-final .lead{max-width:44ch;margin:0 auto}
+.wiz-final-recap{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-top:22px}
+.wiz-final-recap span{font-size:12px;padding:6px 12px;border-radius:999px;border:1px solid var(--glass-border);background:var(--glass-soft);color:var(--ink-2)}
 </style>
 <script src="config.js"></script>
 </head>
@@ -1040,6 +1104,9 @@ async function setUserPlan(uidv,p){
 /* ---------- Méthode : repères ---------- */
 const QUOTES=['Le progrès commence par ce que l’on répète.','Une petite action faite vaut mieux qu’un grand projet remis à demain.','Faire moins, mais le faire vraiment.','Un jour manqué n’est qu’un jour. Deux, c’est un signal.','Ce qui compte se planifie. Le reste peut attendre.','On ne trouve pas le temps, on le choisit.','La régularité bat l’intensité.','Avancer lentement, c’est encore avancer.','Une semaine posée, une tête plus légère.','Célébrer les petits pas donne envie des suivants.','Le minimum d’un jour difficile compte autant qu’un grand jour.','Ce que l’on note, on peut l’ajuster.'];
 const quoteOfWeek=()=>QUOTES.at(Math.floor(Date.parse(monday()+'T12:00:00')/6048e5)%QUOTES.length);
+function dayState(wk,di){const w=state.weeks[wk],nR=state.rituals.length,rd=w?state.rituals.filter(r=>w.checks[r.id]?.[di]).length:0,tasks=w?w.tasks.filter(t=>t.day===di):[],td=tasks.filter(t=>t.done).length,total=nR+tasks.length;
+  return{rd,nR,td,nT:tasks.length,done:rd+td,total,pct:total?(rd+td)/total:0,complete:total>0&&rd+td===total,ritualsFull:nR>0&&rd===nR}}
+function cheerIfComplete(wk,di){if(wk===monday()&&di===todayIdx()&&dayState(wk,di).complete)setTimeout(()=>toast('Journée accomplie. Bravo, savourez-la.'),250)}
 function ritualDoneOn(r,d){const di=(d.getDay()+6)%7;return!!state.weeks[monday(d)]?.checks[r.id]?.[di]}
 function softStreak(r){
   const d=new Date();d.setHours(12,0,0,0);let n=0,miss=0;
@@ -1275,14 +1342,14 @@ function dashboard(){
     <div class="card kpi"><span class="label">${ic('check',15)}Tâches terminées</span><strong>${s.done}<span> / ${s.tasks}</span></strong><small>${s.taskPct} % de la liste</small>${bar(s.taskPct,'Tâches')}</div>
     <div class="card kpi"><span class="label">${ic('goal',15)}Caps atteints</span><strong>${state.goals.filter(g=>goalPct(g)===100).length}<span> / ${state.goals.length}</span></strong><small>Avancement moyen ${goalsAvg} %</small>${bar(goalsAvg,'Caps')}</div>
     <div class="card kpi"><span class="label">${ic('review',15)}Régularité</span><strong>${s.activeDays}<span> / 7</span></strong><small>Jours avec au moins un rituel</small>${bar(s.activeDays/7*100,'Régularité')}</div>
-  </div>`
+  </div>`+weekDays()
   +`<div class="columns">
     <section class="card"><div class="section-head"><h2>Vos prochains pas</h2><button class="btn sm" data-act="add-task">${ic('plus',14)}Ajouter</button></div>
       ${w.tasks.length?sortTasks(w.tasks).slice(0,5).map(taskRow).join(''):empty('Une page blanche, c’est bien aussi.','Ajoutez la première action de la semaine.')}
       ${w.tasks.length>5?`<p class="help"><a class="link" href="#taches">Voir les ${w.tasks.length} tâches ${ic('arrow',13)}</a></p>`:''}
     </section>
     <div class="stack">
-      <section class="card"><div class="section-head"><h2>Rituels du jour</h2><span class="pill">${DAYS_LONG[ti]} ${new Date().getDate()}</span></div>
+      <section class="card tone-warm${state.rituals.length&&state.rituals.every(r=>tw.checks[r.id]?.[ti])?' all-done':''}"><div class="section-head"><h2>Rituels du jour</h2>${state.rituals.length&&state.rituals.every(r=>tw.checks[r.id]?.[ti])?`<span class="pill done">${ic('check',12)}Tout est fait</span>`:`<span class="pill">${DAYS_LONG[ti]} ${new Date().getDate()}</span>`}</div>
         ${state.rituals.length?state.rituals.map(r=>`<label class="row"><input class="chk sq" type="checkbox" data-ritual="${r.id}" data-day="${ti}" data-week="${cur}" ${tw.checks[r.id]?.[ti]?'checked':''}><span class="copy"><span class="t">${esc(r.title)}</span></span></label>`).join(''):empty('Un rituel, c’est un geste simple.',`<a class="link" href="#rituels">Créer mon premier rituel ${ic('arrow',13)}</a>`)}
       </section>
       <section class="card"><div class="section-head"><h2>Le cap</h2><a class="link" href="#objectifs">Tout voir ${ic('arrow',13)}</a></div>
@@ -1293,6 +1360,14 @@ function dashboard(){
   </div>`;
 }
 
+function weekDays(){
+  const todayK=dateKey(new Date());let n=0;
+  const cells=DAYS.map((d,i)=>{const dt=shift(key,i),k=dateKey(new Date(dt+'T12:00:00')),ds=dayState(key,i),fut=k>todayK;if(ds.complete)n++;
+    const st=ds.complete?`<span class="seal-sm" aria-hidden="true">${ic('check',13)}</span>`:fut||!ds.total?'<small>—</small>':`<span class="cal-meter" style="--v:${ds.pct}"><i></i></span>`;
+    const lbl=`${DAYS_LONG[i]} ${fmt(dt)} : ${ds.complete?'journée accomplie':ds.total?ds.done+' sur '+ds.total+' fait'+(ds.done>1?'s':''):'rien de prévu'}`;
+    return `<div class="dayc${ds.complete?' complete':''}${k===todayK?' today':''}${fut&&!ds.complete?' future':''}" role="listitem" aria-label="${lbl}"><span class="dn">${d}</span><span class="dd">${new Date(dt+'T12:00:00').getDate()}</span><span class="ds">${st}</span></div>`}).join('');
+  return `<section class="card days"><div class="section-head"><h2>La semaine, jour par jour</h2><span class="pill${n?' done':''}">${n?ic('check',12):''}${n} journée${n>1?'s':''} accomplie${n>1?'s':''}</span></div><div class="days-grid" role="list">${cells}</div></section>`;
+}
 function filteredTasks(){
   const q=search.toLocaleLowerCase('fr');
   return sortTasks(peek(key).tasks.filter(t=>(filter==='Toutes'||(filter==='À faire'?!t.done:t.done))&&t.title.toLocaleLowerCase('fr').includes(q)));
@@ -1326,10 +1401,11 @@ function today(){
   const top=dayTasks.filter(t=>!t.done).slice(0,3),others=dayTasks.filter(t=>!top.includes(t));
   const loose=w.tasks.filter(t=>!Number.isInteger(t.day)&&!t.done);
   const tw=targetPlanWeek(),needPlan=!peek(tw).planned;
-  const allDone=state.rituals.length>0&&state.rituals.every(r=>w.checks[r.id]?.[ti]);
+  const allDone=state.rituals.length>0&&state.rituals.every(r=>w.checks[r.id]?.[ti]),ds=dayState(wk,ti);
   const en=(w.energy||[])[ti]||0,win=(w.wins7||[])[ti]||'';
   const dateLbl=now.toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long'});
   return heading(dateLbl,`Aujourd’hui${state.name?', '+esc(state.name):''}.`,w.intention?`« ${esc(w.intention)} »`:'Trois actions, quelques rituels, et c’est une bonne journée.',`<button class="btn primary head-quick" data-act="quick">${ic('plus',15)}Saisie rapide</button>`)
+  +(ds.complete?`<section class="card day-done" role="status"><span class="day-seal">${ic('check',26)}</span><div><p class="eyebrow">Journée accomplie</p><h2>Tout est fait pour aujourd’hui.</h2><p class="lead">${ds.nR?ds.nR+' rituel'+(ds.nR>1?'s':''):''}${ds.nR&&ds.nT?' et ':''}${ds.nT?ds.nT+' action'+(ds.nT>1?'s':''):''} : c’est une vraie journée. ${win?'Prenez le temps de la savourer.':'Notez votre victoire du jour, juste en dessous.'}</p></div></section>`:'')
   +notices()
   +(needPlan?`<section class="card plan-cta"><div><p class="eyebrow">${tw===monday()?'Cette semaine':'Semaine prochaine'} · 15 minutes</p><h2>Poser ma semaine</h2><p class="lead">Un regard sur la semaine écoulée, une intention, trois priorités, et chaque action à sa place.</p></div><button class="btn primary" data-act="wizard">${ic('spark',15)}Commencer</button></section>`:'')
   +`<div class="columns">
@@ -1339,10 +1415,10 @@ function today(){
       ${loose.length?`<h3 class="cal-h">À placer cette semaine</h3>${loose.slice(0,4).map(t=>`<div class="row"><div class="copy"><span class="t">${esc(t.title)}</span><small>Sans jour précis</small></div><button class="btn sm" data-act="move" data-id="${t.id}" data-week="${wk}" data-to="0">Aujourd’hui</button></div>`).join('')}`:''}
     </section>
     <div class="stack">
-      <section class="card${allDone?' all-done':''}" id="today-rituals"><div class="section-head"><h2>Rituels du jour</h2>${allDone?'<span class="pill high">Tout est fait</span>':''}</div>
+      <section class="card tone-warm${allDone?' all-done':''}" id="today-rituals"><div class="section-head"><h2>Rituels du jour</h2>${allDone?`<span class="pill done">${ic('check',12)}Tout est fait</span>`:''}</div>
         ${state.rituals.length?state.rituals.map(r=>ritualTodayRow(r,wk,ti)).join(''):empty('Un rituel, c’est un geste simple.',`<a class="link" href="#rituels">Créer mon premier rituel ${ic('arrow',13)}</a>`)}
       </section>
-      <section class="card"><h2>Le soir, en une minute</h2>
+      <section class="card tone-cool"><h2>Le soir, en une minute</h2>
         <p class="cal-h">Mon énergie aujourd’hui</p>
         <div class="seg energy" role="group" aria-label="Mon énergie aujourd’hui">${[[1,'Basse'],[2,'Correcte'],[3,'Haute']].map(([v,l])=>`<button type="button" data-act="energy" data-v="${v}" data-week="${wk}" data-day="${ti}" aria-pressed="${en===v}">${l}</button>`).join('')}</div>
         <label class="field">Ma victoire du jour<input id="win-today" data-win="1" data-week="${wk}" data-day="${ti}" maxlength="200" value="${esc(win)}" placeholder="Même petite, elle compte"></label>
@@ -1424,7 +1500,15 @@ function wizFinish(){
     [...wiz.sel].forEach(i=>{const t=IDEAS.rituels[i].t;if(!state.rituals.some(r=>r.title===t))state.rituals.push({id:uid(),title:t})});
     if(wiz.custom)state.rituals.push({id:uid(),title:wiz.custom});
     if(wiz.cap>=0){const c=IDEAS.caps[wiz.cap];state.goals.push({id:uid(),title:c.t,current:0,target:c.target,unit:c.unit,auto:true})}
-    state.onboarded=true;save();$('#wiz').close();location.hash='#aujourdhui';render();toast('Bienvenue. Votre espace est prêt.');return;
+    state.onboarded=true;save();wiz.final=true;
+    const nR=state.rituals.length,cap=wiz.cap>=0?IDEAS.caps[wiz.cap].t:'',int=peek(monday()).intention;
+    $('#wiz-title').textContent='Démarrage terminé';
+    $('#wiz-steps').innerHTML=WIZ_STEPS.onboard.map((x,i)=>`<span class="done">${i+1}. ${x}</span>`).join('');
+    $('#wiz-body').innerHTML=`<div class="wiz-final"><img class="wiz-final-mono" src="monogramme.svg" alt=""><p class="eyebrow">Votre espace est prêt</p><h2>Bienvenue${state.name?', '+esc(state.name):''}.</h2>
+      <p class="wiz-final-key">Une bonne organisation n’est pas une contrainte&nbsp;: c’est la clé pour avancer sereinement.</p>
+      <p class="lead">En posant vos rituels, votre cap et votre intention, vous venez de faire le premier pas vers le changement. Le reste se construit un jour après l’autre, à votre rythme.</p>
+      <div class="wiz-final-recap">${int?`<span>« ${esc(int)} »</span>`:''}${nR?`<span>${nR} rituel${nR>1?'s':''}</span>`:''}${cap?`<span>Cap · ${esc(cap)}</span>`:''}</div></div>`;
+    $('#wiz-back').hidden=true;$('#wiz-skip').hidden=true;$('#wiz-next').textContent='Entrer dans mon espace';$('#wiz-body').scrollTop=0;render();return;
   }
   week(wiz.wk).planned=true;save();$('#wiz').close();render();toast('Votre semaine est posée');
 }
@@ -1452,11 +1536,11 @@ function openRoutines(){
     f=>{let n=0;ROUTINES.forEach((r,i)=>{if(!f.get('r'+i))return;r.items.forEach(t=>{if(!state.rituals.some(x=>x.title===t)){state.rituals.push({id:uid(),title:t});n++}})});toast(n?`${n} rituel${n>1?'s':''} ajouté${n>1?'s':''}`:'Ces rituels sont déjà là')},null,'Ajouter');
 }
 function rituals(){
-  const w=peek(key),cur=key===monday(),ti=todayIdx();
+  const w=peek(key),cur=key===monday(),ti=todayIdx(),full=DAYS.map((_,i)=>state.rituals.length>0&&state.rituals.every(r=>w.checks[r.id]?.[i]));
   return heading('Les petits gestes','Ce que l’on répète.','Cochez vos rituels jour après jour. Un jour manqué n’est qu’un jour : seuls deux d’affilée cassent le fil.',weekControl())
   +`<section class="card"><div class="section-head"><h2>Mes rituels</h2><div class="btns" style="margin:0"><button class="btn sm" data-act="routines">${has('plus')?'':badge('plus')}Modèles de routines</button><button class="btn primary sm" data-act="add-ritual">${ic('plus',14)}Nouveau rituel</button></div></div>
-  ${state.rituals.length?`<div class="rgrid-wrap"><div class="rgrid head"><div>Rituel</div>${DAYS.map((d,i)=>`<span class="${cur&&i===ti?'today':''}">${d}<small>${fmt(shift(key,i))}</small></span>`).join('')}<span></span></div>
-  ${state.rituals.map(r=>{const st=softStreak(r),g=state.goals.find(x=>x.id===r.goal);return `<div class="rgrid"><div class="rname"><button class="icon-btn" data-act="edit-ritual" data-id="${r.id}" aria-label="Modifier ${esc(r.title)}">${ic('edit',15)}</button><div><span class="t">${esc(r.title)}</span><small>${(w.checks[r.id]??[]).filter(Boolean).length}/7 · régularité ${st} j${r.min?' · min. '+esc(r.min):''}${g?' · Cap · '+esc(g.title):''}</small>${r.cue?`<small class="cue">${esc(r.cue)}</small>`:''}</div></div>${DAYS.map((d,i)=>`<label><input class="chk sq" type="checkbox" aria-label="${esc(r.title)}, ${DAYS_LONG[i]}" data-ritual="${r.id}" data-day="${i}" ${w.checks[r.id]?.[i]?'checked':''}></label>`).join('')}<button class="icon-btn" data-act="del-ritual" data-id="${r.id}" aria-label="Supprimer ${esc(r.title)}">${ic('x',16)}</button></div>`}).join('')}</div>`
+  ${state.rituals.length?`<div class="rgrid-wrap"><div class="rgrid head"><div>Rituel</div>${DAYS.map((d,i)=>`<span class="${cur&&i===ti?'today':''}${full[i]?' full':''}" ${full[i]?'title="Tous les rituels faits"':''}>${d}<small>${fmt(shift(key,i))}</small></span>`).join('')}<span></span></div>
+  ${state.rituals.map(r=>{const st=softStreak(r),g=state.goals.find(x=>x.id===r.goal);return `<div class="rgrid"><div class="rname"><button class="icon-btn" data-act="edit-ritual" data-id="${r.id}" aria-label="Modifier ${esc(r.title)}">${ic('edit',15)}</button><div><span class="t">${esc(r.title)}</span><small>${(w.checks[r.id]??[]).filter(Boolean).length}/7 · régularité ${st} j${r.min?' · min. '+esc(r.min):''}${g?' · Cap · '+esc(g.title):''}</small>${r.cue?`<small class="cue">${esc(r.cue)}</small>`:''}</div></div>${DAYS.map((d,i)=>`<label${full[i]?' class="full"':''}><input class="chk sq" type="checkbox" aria-label="${esc(r.title)}, ${DAYS_LONG[i]}" data-ritual="${r.id}" data-day="${i}" ${w.checks[r.id]?.[i]?'checked':''}></label>`).join('')}<button class="icon-btn" data-act="del-ritual" data-id="${r.id}" aria-label="Supprimer ${esc(r.title)}">${ic('x',16)}</button></div>`}).join('')}</div>`
   :empty('Aucun rituel pour l’instant.','Commencez par un geste facile à répéter : lire 10 minutes, marcher, préparer sa journée.')}
   <p class="help">La régularité compte les jours sans deux manques d’affilée. La version minimum compte autant qu’un grand jour.</p></section>`;
 }
@@ -1590,9 +1674,9 @@ function calendar(){
     if(i===35&&d.getMonth()!==m)break;
     const done=w?state.rituals.filter(r=>w.checks[r.id]?.[di]).length:0;
     const tasksDay=w?w.tasks.filter(t=>t.day===di):[];
-    const pct=nR?done/nR:0;
-    cells+=`<button type="button" class="cal-day${d.getMonth()!==m?' out':''}${k===today?' today':''}${k===calSel?' sel':''}" data-act="cal-pick" data-date="${k}" aria-label="${d.toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long'})} : ${done} rituel${done>1?'s':''} sur ${nR}, ${tasksDay.length} action${tasksDay.length>1?'s':''}" aria-pressed="${k===calSel}">
-      <span class="cal-num">${d.getDate()}</span>
+    const pct=nR?done/nR:0,dst=dayState(wk,di);
+    cells+=`<button type="button" class="cal-day${dst.complete?' complete':''}${d.getMonth()!==m?' out':''}${k===today?' today':''}${k===calSel?' sel':''}" data-act="cal-pick" data-date="${k}" aria-label="${d.toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long'})} : ${done} rituel${done>1?'s':''} sur ${nR}, ${tasksDay.length} action${tasksDay.length>1?'s':''}${dst.complete?', journée accomplie':''}" aria-pressed="${k===calSel}">
+      <span class="cal-num">${d.getDate()}</span>${dst.complete?`<span class="cal-seal" title="Journée accomplie">${ic('check',12)}</span>`:''}
       ${nR?`<span class="cal-meter" style="--v:${pct}"><i></i></span>`:''}
       <span class="cal-tasks">${tasksDay.slice(0,2).map(t=>`<span class="cal-chip${t.done?' done':''}${isLate(t,wk)?' late':''}">${t.time?t.time+' ':''}${esc(t.title)}</span>`).join('')}${tasksDay.length>2?`<span class="cal-more">+${tasksDay.length-2}</span>`:''}</span>
       ${tasksDay.length?`<span class="cal-dot" aria-hidden="true">${tasksDay.length}</span>`:''}
@@ -1612,7 +1696,7 @@ function calendar(){
   return heading('Une vue d’ensemble','Calendrier.','Vos rituels jour après jour et les actions que vous avez placées dans la semaine.',
     `<div class="week" role="group" aria-label="Choisir le mois"><button class="icon-btn" data-act="cal-prev" aria-label="Mois précédent">${ic('left')}</button><span class="label cal-month">${monthLbl}</span><button class="icon-btn" data-act="cal-next" aria-label="Mois suivant">${ic('right')}</button><button class="btn sm now" data-act="cal-today">Aujourd’hui</button></div>`)
   +`<div class="cal-layout"><section class="card cal-card"><div class="cal-grid cal-head">${DAYS.map(d=>`<span>${d}</span>`).join('')}</div><div class="cal-grid">${cells}</div>
-    <p class="help cal-legend"><span class="cal-meter" style="--v:.66"><i></i></span> Rituels accomplis &nbsp;·&nbsp; <span class="cal-dot">2</span> Actions prévues</p></section>${detail}</div>`;
+    <p class="help cal-legend"><span class="cal-meter" style="--v:.66"><i></i></span> Rituels accomplis &nbsp;·&nbsp; <span class="cal-dot">2</span> Actions prévues &nbsp;·&nbsp; <span class="cal-seal">${ic('check',12)}</span> Journée accomplie</p></section>${detail}</div>`;
 }
 
 const VIEWS={aujourdhui:today,dashboard,calendrier:calendar,rituels:rituals,taches:tasks,objectifs:goals,bilan:review,offres:plans,reglages:settings,admin:adminPage,confidentialite:privacy};
@@ -1748,8 +1832,8 @@ document.addEventListener('click',async e=>{
 
 document.addEventListener('change',async e=>{
   const t=e.target;
-  if(t.dataset.task){const task=week(t.dataset.week||key).tasks.find(x=>x.id===t.dataset.task);if(task&&task.done!==t.checked){task.done=t.checked;if(task.goal)goalAdjust(task.goal,t.checked?1:-1)}save();render();popAt(`[data-task="${t.dataset.task}"]`);return}
-  if(t.dataset.ritual){const w=week(t.dataset.week||key),arr=w.checks[t.dataset.ritual]??=Array(7).fill(false);while(arr.length<7)arr.push(false);const d=Number(t.dataset.day);if(!!arr[d]!==t.checked){arr[d]=t.checked;const r=state.rituals.find(x=>x.id===t.dataset.ritual);if(r?.goal)goalAdjust(r.goal,t.checked?1:-1)}save();render();popAt(`[data-ritual="${t.dataset.ritual}"][data-day="${d}"]`);
+  if(t.dataset.task){const task=week(t.dataset.week||key).tasks.find(x=>x.id===t.dataset.task);if(task&&task.done!==t.checked){task.done=t.checked;if(task.goal)goalAdjust(task.goal,t.checked?1:-1)}save();render();popAt(`[data-task="${t.dataset.task}"]`);if(t.checked&&task&&Number.isInteger(task.day))cheerIfComplete(t.dataset.week||key,task.day);return}
+  if(t.dataset.ritual){const w=week(t.dataset.week||key),arr=w.checks[t.dataset.ritual]??=Array(7).fill(false);while(arr.length<7)arr.push(false);const d=Number(t.dataset.day);if(!!arr[d]!==t.checked){arr[d]=t.checked;const r=state.rituals.find(x=>x.id===t.dataset.ritual);if(r?.goal)goalAdjust(r.goal,t.checked?1:-1)}save();render();popAt(`[data-ritual="${t.dataset.ritual}"][data-day="${d}"]`);if(t.checked)cheerIfComplete(t.dataset.week||key,d);
     const tw=peek(monday()),ti=todayIdx();if(t.checked&&(t.dataset.week||key)===monday()&&d===ti&&state.rituals.length&&state.rituals.every(r=>tw.checks[r.id]?.[ti])){$('#today-rituals')?.classList.add('halo');toast('Tous vos rituels du jour sont faits. Bravo.')}return}
   if(t.dataset.planUser){setUserPlan(t.dataset.planUser,t.value);return}
   if(t.id==='ai-consent'){state.aiConsent=t.checked;save();toast(t.checked?'Coach IA activé':'Coach IA désactivé');return}
@@ -1776,7 +1860,7 @@ document.addEventListener('input',e=>{
 
 function popAt(sel){const el=document.querySelector(sel);if(!el||matchMedia('(prefers-reduced-motion: reduce)').matches)return;el.classList.add('pop');setTimeout(()=>el.classList.remove('pop'),400)}
 $('#quick-form').addEventListener('submit',e=>{e.preventDefault();if(addQuick(parseQuick($('#quick-in').value)))$('#quick').close();else $('#quick-in').focus()});
-$('#wiz-form').addEventListener('submit',e=>{e.preventDefault();wizApply();if(wiz.step===WIZ_STEPS[wiz.kind].length-1)wizFinish();else{wiz.step++;save();drawWiz()}});
+$('#wiz-form').addEventListener('submit',e=>{e.preventDefault();if(wiz?.final){$('#wiz').close();location.hash='#aujourdhui';render();return}wizApply();if(wiz.step===WIZ_STEPS[wiz.kind].length-1)wizFinish();else{wiz.step++;save();drawWiz()}});
 $('#wiz-back').onclick=()=>{wizApply();wiz.step=Math.max(0,wiz.step-1);drawWiz()};
 $('#wiz-skip').onclick=()=>{state.onboarded=true;save();$('#wiz').close()};
 $('#wiz').addEventListener('close',()=>{if(wiz?.kind==='onboard'&&!state.onboarded){state.onboarded=true;save()}render()});
