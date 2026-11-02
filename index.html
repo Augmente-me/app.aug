@@ -832,6 +832,66 @@ aside .pill{background:linear-gradient(180deg,rgba(255,255,255,.14),rgba(255,255
 @keyframes sheen-in{0%{opacity:1;translate:0 0}100%{opacity:1;translate:330% 0}}
 @keyframes sheen-out{0%{opacity:1;translate:330% 0}100%{opacity:1;translate:0 0}}
 @media (max-width:760px) and (prefers-reduced-motion:reduce){html:root aside,html:root[data-theme] aside,aside nav a,.fab{transition:none!important}aside::after{animation:none!important}}
+
+/* Victoires du jour : plusieurs, texte long visible */
+.wins{display:grid;gap:8px}
+.wins>span{font-size:13px;color:var(--ink-2)}
+.win-row{display:flex;align-items:flex-start;gap:10px}
+.win-dot{flex:none;width:7px;height:7px;border-radius:50%;background:var(--mark);margin-top:19px}
+.win-row textarea{flex:1;min-width:0;resize:none;overflow:hidden;line-height:1.45;min-height:46px;padding:11px 14px;field-sizing:content}
+.win-del{margin-top:6px;opacity:.55}
+.win-del:hover{opacity:1}
+.win-add{justify-self:start;margin-top:2px}
+.win-line{white-space:pre-line}
+/* iPhone : pas de zoom automatique quand on touche un champ (texte à 16 px minimum) */
+@media (pointer:coarse){input:not([type=checkbox]):not([type=radio]),select,textarea{font-size:16px!important}}
+
+/* ===== Pastilles d'avancement (proposition E) ===== */
+:root{--p1:#f1e9dc;--p2:#d8b086;--p3:#a8734f;--p-trk:.16}
+:root[data-theme=light]{--p1:#1b1511;--p2:#8d6239;--p3:#c49a6c;--p-trk:.13}
+@media (prefers-color-scheme:light){:root[data-theme=auto]{--p1:#1b1511;--p2:#8d6239;--p3:#c49a6c;--p-trk:.13}}
+.day-pills{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:18px}
+.dpill{min-width:0;display:flex;flex-direction:column;align-items:center;gap:6px;padding:11px 4px 10px;border-radius:20px;text-decoration:none;color:var(--ink);
+  background:var(--lg-fill);border:1px solid var(--lg-edge);box-shadow:var(--lg-spec);-webkit-backdrop-filter:blur(16px) saturate(170%);backdrop-filter:blur(16px) saturate(170%);transition:transform .18s}
+.dpill:active{transform:scale(.97)}
+.dpill b{font-size:12.5px;font-weight:500;white-space:nowrap}
+.dp-ring{position:relative;width:46px;height:46px}
+.dp-ring svg{width:46px;height:46px;display:block;overflow:visible}
+.dp-ring circle{fill:none;stroke-width:3}
+.dp-trk{opacity:var(--p-trk)}
+.dp-arc{stroke-linecap:round;transition:stroke-dasharray .9s cubic-bezier(.22,1,.36,1)}
+.p1{stroke:var(--p1)}.p2{stroke:var(--p2)}.p3{stroke:var(--p3)}
+.dp-ring>span{position:absolute;inset:0;display:grid;place-items:center;font-size:11px;font-weight:500;font-variant-numeric:tabular-nums}
+.dp-ring>span svg{width:14px;height:14px;stroke-width:2.4}
+.late-link{display:flex;align-items:center;gap:9px;margin-top:14px;font-size:13px;color:var(--danger);text-decoration:none}
+.late-link .mark{display:grid;place-items:center;width:20px;height:20px;border-radius:50%;border:1px solid var(--danger);font-size:11px;font-weight:700}
+@media (max-width:1100px){
+  .day-card:not(.complete){background:none!important;border:0!important;box-shadow:none!important;padding:0!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+  .day-card:not(.complete) .day-top{display:none}
+  .day-card:not(.complete) .day-pills{margin-top:0}
+  .day-card.complete{padding:16px}
+  .day-card.complete .day-sub{display:none}
+}
+@media (prefers-reduced-motion:reduce){.dp-arc{transition:none}}
+/* ===== Je décharge ===== */
+.dump-box{display:grid;gap:8px;margin-top:20px;padding-top:18px;border-top:1px solid var(--glass-border)}
+.dump-box>span{font-size:13px;color:var(--ink-2);display:grid;gap:2px}
+.dump-box>span small{font-size:12px;color:var(--muted)}
+.dump-row{display:flex;gap:8px;align-items:flex-end}
+.dump-row textarea{flex:1;min-width:0;resize:none;overflow:hidden;min-height:48px;line-height:1.45;padding:12px 14px;field-sizing:content}
+.dump-send{background:var(--lg-pressed)!important;color:var(--lg-pressed-ink)!important}
+.dumps{display:grid;gap:8px;margin-top:4px}
+.dump-item{border:1px solid var(--glass-border);border-radius:16px;padding:12px 13px 10px;background:color-mix(in srgb,var(--mark) 6%,transparent);max-height:600px;overflow:hidden;
+  transition:opacity .9s ease,filter .9s ease,translate .9s cubic-bezier(.22,1,.36,1),max-height .4s ease .6s,padding .4s ease .6s,margin .4s ease .6s}
+.dump-item p{margin:0 0 6px;font-size:14.5px;line-height:1.5;white-space:pre-wrap;overflow-wrap:anywhere}
+.dump-item small{font-size:11.5px;color:var(--faint)}
+.dump-item .acts{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.dump-item .chip{font-size:12.5px;padding:6px 11px;border-radius:999px;cursor:pointer;color:var(--ink-2)}
+.dump-item.gone{opacity:0;filter:blur(8px);translate:0 -14px;max-height:0;padding-top:0;padding-bottom:0;margin-top:-8px;border-width:0}
+.care{font-size:13px;line-height:1.5;border-radius:14px;padding:12px 14px;background:color-mix(in srgb,var(--mark) 10%,transparent);border:1px solid color-mix(in srgb,var(--mark) 40%,transparent)}
+.care b{font-weight:600}
+.private{display:flex;gap:6px;align-items:center;font-size:11.5px;color:var(--faint);margin:2px 0 0}
+@media (prefers-reduced-motion:reduce){.dump-item{transition:none}}
 </style>
 <script src="config.js"></script>
 </head>
@@ -1008,7 +1068,7 @@ const saveUI=()=>{try{localStorage.setItem(UI_KEY,JSON.stringify(ui))}catch{}};
 /* Lecture sans création : naviguer ne crée plus de semaines vides */
 const peek=k=>state.weeks[k]??blankWeek();
 const week=k=>state.weeks[k]??=blankWeek();
-const isEmptyWeek=w=>!w.tasks.length&&!w.intention&&!w.planned&&!Object.values(w.review).some(Boolean)&&!Object.values(w.checks).some(a=>a.some(Boolean))&&!(w.energy||[]).some(Boolean)&&!(w.wins7||[]).some(Boolean);
+const isEmptyWeek=w=>!w.tasks.length&&!w.intention&&!w.planned&&!Object.values(w.review).some(Boolean)&&!Object.values(w.checks).some(a=>a.some(Boolean))&&!(w.energy||[]).some(Boolean)&&!(w.wins7||[]).some(Boolean)&&!(w.dumps7||[]).some(a=>(a||[]).length);
 
 function stats(k){
   const w=peek(k),checks=state.rituals.reduce((n,r)=>n+(w.checks[r.id]??[]).filter(Boolean).length,0),total=state.rituals.length*7,done=w.tasks.filter(t=>t.done).length;
@@ -1605,6 +1665,22 @@ function ritualTodayRow(r,wk,ti){
   const sub=[r.cue?esc(r.cue):'',r.min?'Minimum : '+esc(r.min):'',streak>1?`Régularité : ${streak} jours`:''].filter(Boolean).join(' · ');
   return `<label class="row"><input class="chk sq" type="checkbox" data-ritual="${r.id}" data-day="${ti}" data-week="${wk}" ${done?'checked':''}><span class="copy"><span class="t">${esc(r.title)}</span>${sub?`<small>${sub}</small>`:''}${!done&&missedY&&streak>0?'<small class="gentle">Hier est passé. Aujourd’hui suffit pour garder le fil.</small>':''}</span></label>`;
 }
+const winList=v=>String(v||'').split('\n').map(x=>x.trim()).filter(Boolean);
+const winRow=(v,i)=>`<div class="win-row"><span class="win-dot" aria-hidden="true"></span><textarea class="autogrow" data-win="1" rows="1" maxlength="300" placeholder="${i?'Une autre victoire…':'Même petite, elle compte'}" aria-label="Victoire ${i+1}">${esc(v)}</textarea><button type="button" class="icon-btn win-del" data-act="win-del" aria-label="Retirer cette victoire">${ic('x',14)}</button></div>`;
+function saveWins(box){const w=week(box.dataset.week),arr=w.wins7??=Array(7).fill('');while(arr.length<7)arr.push('');
+  arr[+box.dataset.day]=[...box.querySelectorAll('textarea[data-win]')].map(t=>t.value.replace(/\s+/g,' ').trim()).filter(Boolean).join('\n').slice(0,1500);saveSoon()}
+function autogrow(t){t.style.height='auto';t.style.height=t.scrollHeight+'px'}
+const MIC_SVG='<svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21M8.5 21h7"/></svg>',UP_SVG='<svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M6 11l6-6 6 6"/></svg>',LOCK_SVG='<svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>';
+const CARE_RE=/(n['’]en peux plus|plus envie de rien|envie d['’]en finir|en finir avec|me faire du mal|mourir|dispara[iî]tre|suicid|plus la force de vivre)/i;
+const dumpsOf=(w,ti)=>((w.dumps7||[])[ti])||[];
+function eveningParts(w,ti){const en=(w.energy||[])[ti]?1:0,wi=winList((w.wins7||[])[ti]).length?1:0,du=(dumpsOf(w,ti).length+(((w.released7||[])[ti])||0))?1:0;return{en,wi,du,n:en+wi+du}}
+let dumpMsg='';
+const dumpItem=d=>`<div class="dump-item" data-dump="${d.id}"><p>${esc(d.t)}</p><small>Déposé à ${esc(d.at||'')}${d.mode==='action'?' · devenu une action pour demain':d.mode==='keep'?' · gardé dans le Bilan':''}</small>
+  <div class="acts">${d.mode==='action'?'':`<button type="button" class="chip" data-act="dump-action">→ Action pour demain</button>`}<button type="button" class="chip" data-act="dump-keep" aria-pressed="${d.mode==='keep'}">Garder</button><button type="button" class="chip" data-act="dump-free">Laisser partir</button></div></div>`;
+function dayPills(ds,nR,ev){
+  return `<div class="day-pills" role="list">${[['t-actions','Priorités',ds.td,ds.nT,'p1'],['t-rituels','Rituels',ds.rd,nR,'p2'],['t-soir','Ce soir',ev.n,3,'p3']].map(([id,l,a,b,c])=>{const p=b?a/b:0,ok=b>0&&a===b;
+    return `<a class="dpill${ok?' ok':''}" href="#${id}" data-jump="${id}" role="listitem" aria-label="${l} : ${b?a+' sur '+b:'rien de prévu'}"><span class="dp-ring"><svg viewBox="0 0 30 30" aria-hidden="true"><circle class="dp-trk ${c}" cx="15" cy="15" r="12.5" pathLength="100"/><circle class="dp-arc ${c}" cx="15" cy="15" r="12.5" pathLength="100" transform="rotate(-90 15 15)" stroke-dasharray="${(p*100).toFixed(1)} 100" style="opacity:${p>0?1:0}"/></svg><span>${ok?ic('check',13):b?a+'/'+b:'–'}</span></span><b>${l}</b></a>`}).join('')}</div>`;
+}
 function today(){
   const now=new Date(),wk=monday(),ti=todayIdx(),w=peek(wk);
   const dayTasks=w.tasks.filter(t=>t.day===ti).sort((a,b)=>a.done-b.done||(b.star?1:0)-(a.star?1:0)||PRIOS.indexOf(a.priority)-PRIOS.indexOf(b.priority)||(a.time||'99').localeCompare(b.time||'99'));
@@ -1612,20 +1688,17 @@ function today(){
   const loose=w.tasks.filter(t=>!Number.isInteger(t.day)&&!t.done);
   const tw=targetPlanWeek(),needPlan=!peek(tw).planned,late=lateTasks();
   const ds=dayState(wk,ti),nR=state.rituals.length;
-  const en=(w.energy||[])[ti]||0,win=(w.wins7||[])[ti]||'',evening=!!(en&&win.trim());
+  const en=(w.energy||[])[ti]||0,win=(w.wins7||[])[ti]||'',ev=eveningParts(w,ti),evening=ev.n===3,dumps=dumpsOf(w,ti),care=dumps.some(d=>CARE_RE.test(d.t));
   const dateLbl=now.toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long'});
   const pct=Math.round(ds.pct*100);
   const line=(id,label,a,b,ok)=>`<a class="rail-line${ok?' ok':''}" href="#${id}" data-jump="${id}"><span class="mark">${ok?ic('check',12):''}</span><span class="l">${label}</span><span class="v">${a}</span></a>`;
-  const rail=`<div class="today-rail"><section class="card day-card${ds.complete?' complete':''}" aria-label="Ma journée">
-      ${ds.complete
-        ?`<div class="day-top"><span class="day-seal">${ic('check',26)}</span><div><p class="eyebrow">Journée accomplie</p><p class="day-big">Tout est fait.</p></div></div><p class="day-sub">${evening?'Prenez le temps de la savourer.':'Notez votre victoire du jour pour la garder en mémoire.'}</p>`
-        :`<div class="day-top"><div class="dring" style="--p:${pct}"><span>${pct}<small>%</small></span></div><div><p class="eyebrow">Ma journée</p><p class="day-big">${ds.total?`${ds.done} sur ${ds.total}`:'Rien de prévu'}</p><p class="day-sub">${ds.total?(ds.done?'Continuez, pas à pas.':'Un premier geste suffit pour lancer la journée.'):'Ajoutez une action ou un rituel.'}</p></div></div>`}
-      <div class="rail-lines">
-        ${line('t-actions','Priorités',`${ds.td} / ${ds.nT}`,0,ds.nT>0&&ds.td===ds.nT)}
-        ${line('t-rituels','Rituels',`${ds.rd} / ${nR}`,0,nR>0&&ds.rd===nR)}
-        ${line('t-soir','Ce soir',evening?'Fait':'À faire',0,evening)}
-        ${late.length?`<a class="rail-line warn" href="#t-retard" data-jump="t-retard"><span class="mark">!</span><span class="l">En retard</span><span class="v">${late.length}</span></a>`:''}
-      </div></section>
+  const rail=`<div class="today-rail"><section class="card day-card${ds.complete&&evening?' complete':''}" aria-label="Ma journée">
+      ${ds.complete&&evening
+        ?`<div class="day-top"><span class="day-seal">${ic('check',26)}</span><div><p class="eyebrow">Journée accomplie</p><p class="day-big">Tout est fait.</p></div></div><p class="day-sub">${evening?'Prenez le temps de la savourer.':'Il reste le moment du soir : votre énergie, vos victoires, et ce que vous voulez déposer.'}</p>`
+        :`<div class="day-top"><div class="dring" style="--p:${pct}"><span>${pct}<small>%</small></span></div><div><p class="eyebrow">Ma journée</p><p class="day-big">${ds.complete?'Presque fini.':ds.total?`${ds.done} sur ${ds.total}`:'Rien de prévu'}</p><p class="day-sub">${ds.complete?'Il reste le moment du soir : votre énergie, vos victoires, ce que vous voulez déposer.':ds.total?(ds.done?'Continuez, pas à pas.':'Un premier geste suffit pour lancer la journée.'):'Ajoutez une action ou un rituel.'}</p></div></div>`}
+      ${dayPills(ds,nR,ev)}
+      ${late.length?`<a class="late-link" href="#t-retard" data-jump="t-retard"><span class="mark">!</span>${late.length} action${late.length>1?'s':''} en retard à reprogrammer</a>`:''}
+      </section>
     <div class="quote">« ${esc(quoteOfWeek())} »<small>LE RAPPEL DE LA SEMAINE</small></div></div>`;
   const step=(n,id,title,extra='')=>`<div class="step-label" id="${id}"><span class="n">${n}</span><h2>${title}</h2>${extra}</div>`;
   let n=0;const num=()=>String(++n).padStart(2,'0');
@@ -1641,14 +1714,25 @@ function today(){
     <section class="card step-card${nR&&ds.rd===nR?' all-done':''}" id="today-rituals">
       ${nR?state.rituals.map(r=>ritualTodayRow(r,wk,ti)).join(''):empty('Un rituel, c’est un geste simple.',`<a class="link" href="#rituels">Créer mon premier rituel ${ic('arrow',13)}</a>`)}
     </section>
-    ${step(num(),'t-soir','Ce soir, en une minute',evening?`<span class="pill done">${ic('check',12)}Fait</span>`:'')}
+    ${step(num(),'t-soir','Ce soir, en une minute',evening?`<span class="pill done">${ic('check',12)}Fait</span>`:ev.n?`<span class="pill">${ev.n} / 3</span>`:'')}
     <section class="card step-card">
       <p class="cal-h" style="margin-top:0">Mon énergie aujourd’hui</p>
       <div class="seg energy" role="group" aria-label="Mon énergie aujourd’hui">${[[1,'Basse'],[2,'Correcte'],[3,'Haute']].map(([v,l])=>`<button type="button" data-act="energy" data-v="${v}" data-week="${wk}" data-day="${ti}" aria-pressed="${en===v}">${l}</button>`).join('')}</div>
-      <label class="field">Ma victoire du jour<input id="win-today" data-win="1" data-week="${wk}" data-day="${ti}" maxlength="200" value="${esc(win)}" placeholder="Même petite, elle compte"></label>
+      <div class="field wins" data-wins data-week="${wk}" data-day="${ti}"><span>Mes victoires du jour</span>
+        ${(winList(win).length?winList(win):['']).map((v,i)=>winRow(v,i)).join('')}
+        <button type="button" class="btn sm win-add" data-act="win-add">${ic('plus',14)}Ajouter une victoire</button></div>
+      <div class="field dump-box" id="dump-box" data-week="${wk}" data-day="${ti}"><span>Je décharge <small>Ce qui pèse ce soir. Écrivez-le ou dites-le, puis choisissez quoi en faire.</small></span>
+        <div class="dump-row"><textarea id="dump-in" class="autogrow" rows="1" maxlength="1000" placeholder="Ce qui pèse ce soir…" aria-label="Ce qui pèse ce soir"></textarea>
+          <button type="button" class="icon-btn quick-tool mic" id="dump-mic" data-act="dump-mic" aria-label="Dicter" aria-pressed="false">${MIC_SVG}</button>
+          <button type="button" class="icon-btn quick-tool dump-send" data-act="dump-add" aria-label="Déposer">${UP_SVG}</button></div>
+        <p class="mic-status" id="dump-status" ${dumpMsg?'':'hidden'}>${esc(dumpMsg)}</p>
+        <div class="care" id="dump-care" role="status" ${care?'':'hidden'}><b>Ça a l’air lourd ce soir.</b> Vous n’êtes pas obligé de le porter seul : parlez-en à un proche, ou appelez le <b>3114</b>, gratuit, 24 h/24.</div>
+        ${dumps.length?`<div class="dumps">${dumps.map(dumpItem).join('')}</div>`:''}
+        <p class="private">${LOCK_SVG}Visible par vous seul.</p></div>
     </section>
     ${late.length?step(num(),'t-retard','À reprogrammer',`<span class="pill late">${late.length} en retard</span>`)+`<div class="late-wrap">${lateCard()}</div>`:''}
   </div>`;
+  dumpMsg='';
   return heading(dateLbl,`Aujourd’hui${state.name?', '+esc(state.name):''}.`,w.intention?`« ${esc(w.intention)} »`:'Trois actions, quelques rituels, et c’est une bonne journée.',`<button class="btn primary head-quick" data-act="quick">${ic('plus',15)}Saisie rapide</button>`)
   +notices()+`<div class="today-layout">${flow}${rail}</div>`;
 }
@@ -1796,7 +1880,8 @@ function review(){
   return heading('Prendre du recul','Bilan de semaine.','Reconnaître le chemin parcouru, puis repartir.',`<div class="btns" style="margin:0">${reviewSwitch()}${weekControl()}</div>`)
   +`<div class="columns"><section class="card bilan"><h2>Mes notes</h2>
   ${[['wins','Ce qui a bien marché','Une victoire, même petite…'],['lessons','Ce que j’ai appris','Ce que j’ajusterais…'],['next','Mon prochain pas','La priorité de la semaine prochaine…']].map(([f,l,p])=>`<label class="field">${l}<textarea data-review="${f}" placeholder="${p}" maxlength="5000">${esc(w.review[f])}</textarea></label>`).join('')}
-  ${(w.wins7||[]).some(Boolean)?`<h3 class="cal-h">Mes victoires du soir</h3>${(w.wins7||[]).map((v,i)=>v?`<p class="win-line"><b>${DAYS[i]}</b> ${esc(v)}</p>`:'').join('')}`:''}
+  ${(w.dumps7||[]).some(a=>(a||[]).some(d=>d.mode==='keep'))?`<h3 class="cal-h">Ce qui m’a pesé</h3>${(w.dumps7||[]).map((a,i)=>(a||[]).filter(d=>d.mode==='keep').map(d=>`<p class="win-line"><b>${DAYS[i]}</b> ${esc(d.t)}</p>`).join('')).join('')}`:''}
+  ${(w.wins7||[]).some(Boolean)?`<h3 class="cal-h">Mes victoires du soir</h3>${(w.wins7||[]).map((v,i)=>winList(v).map(x=>`<p class="win-line"><b>${DAYS[i]}</b> ${esc(x)}</p>`).join('')).join('')}`:''}
   <p class="help" style="margin-top:0">Enregistré au fil de la saisie.</p></section>
   <div class="stack"><section class="card"><h2>La semaine en un regard</h2>
   <p class="lead" style="margin-top:8px">${s.checks} rituel${s.checks>1?'s':''} ${has('plus')?delta(s.checks,prev.checks):''} · ${s.done} action${s.done>1?'s':''} faite${s.done>1?'s':''} ${has('plus')?delta(s.done,prev.done):''}</p>
@@ -1933,6 +2018,7 @@ function render(){
   document.title=(page==='aujourdhui'?'':title+' · ')+'aug.mente';
   document.querySelectorAll('nav a,.side-foot a').forEach(a=>{const on=a.hash==='#'+page;a.classList.toggle('active',on);on?a.setAttribute('aria-current','page'):a.removeAttribute('aria-current')});
   $('#app').innerHTML=VIEWS[page]();
+  $('#app').querySelectorAll('textarea.autogrow').forEach(autogrow);
   if(page!==lastPage){if(lastPage){window.scrollTo(0,0);$('#app').focus({preventScroll:true})}lastPage=page}
   setSave();
 }
@@ -1994,6 +2080,16 @@ document.addEventListener('click',async e=>{
       f=>{const dt=f.get('date');if(!/^\d{4}-\d{2}-\d{2}$/.test(dt))return false;moveTask(id,fw,dt,f.get('time')||null);if($('#rem').open)openRem()});return}
   if(a==='ics'){const t=peek(b.dataset.week).tasks.find(x=>x.id===id);if(t&&Number.isInteger(t.day))icsFor(t,b.dataset.week);return}
   if(a==='notif'){askNotifPermission();return}
+  if(a==='dump-add'){addDump();return}
+  if(a==='dump-mic'){dumpDictate();return}
+  if(a==='dump-action'||a==='dump-keep'||a==='dump-free'){
+    const box=$('#dump-box'),it=b.closest('[data-dump]'),w=week(box.dataset.week),di=+box.dataset.day,list=((w.dumps7??=Array(7).fill(null).map(()=>[]))[di]??=[]),d=list.find(x=>x.id===it.dataset.dump);if(!d)return;
+    if(a==='dump-free'){it.classList.add('gone');setTimeout(()=>{const i=list.indexOf(d);if(i>=0)list.splice(i,1);const r=(w.released7??=Array(7).fill(0));r[di]=(r[di]||0)+1;save();render()},matchMedia('(prefers-reduced-motion:reduce)').matches?10:1000);toast('C’est déposé. Bonne nuit.');return}
+    if(a==='dump-keep'){d.mode=d.mode==='keep'?null:'keep';save();render();toast(d.mode==='keep'?'Gardé dans le Bilan de la semaine':'Retiré du Bilan');return}
+    const tm=new Date();tm.setDate(tm.getDate()+1);const wk2=monday(tm),day=(tm.getDay()+6)%7;
+    week(wk2).tasks.push({id:uid(),title:d.t.replace(/\s+/g,' ').slice(0,160),done:false,priority:'Normale',goal:'',day,time:null,remind:null});d.mode='action';save();render();toast('Ajoutée aux priorités de demain');return}
+  if(a==='win-add'){const box=b.closest('[data-wins]'),n=box.querySelectorAll('.win-row').length;if(n>=10)return;b.insertAdjacentHTML('beforebegin',winRow('',n));box.querySelectorAll('textarea')[n].focus();return}
+  if(a==='win-del'){const box=b.closest('[data-wins]'),rows=box.querySelectorAll('.win-row');if(rows.length>1)b.closest('.win-row').remove();else{const t=rows[0].querySelector('textarea');t.value='';autogrow(t)}saveWins(box);return}
   if(a==='open-auth'){openAuth('login');return}
   if(a==='sign-out'){signOut();return}
   if(a==='change-pass'){
@@ -2083,7 +2179,8 @@ document.addEventListener('change',async e=>{
 document.addEventListener('input',e=>{
   const t=e.target;
   if(t.dataset.review){week(key).review[t.dataset.review]=t.value;saveSoon()}
-  if(t.dataset.win){const w=week(t.dataset.week),arr=w.wins7??=Array(7).fill('');arr[+t.dataset.day]=t.value.slice(0,200);saveSoon()}
+  if(t.id==='dump-in'){autogrow(t);const c=$('#dump-care'),box=$('#dump-box');if(c&&box){const w=peek(box.dataset.week);c.hidden=!(CARE_RE.test(t.value)||dumpsOf(w,+box.dataset.day).some(d=>CARE_RE.test(d.t)))}}
+  if(t.dataset.win){const box=t.closest('[data-wins]');if(box)saveWins(box);if(t.classList.contains('autogrow'))autogrow(t)}
   if(t.dataset.month){state.months??={};const m=state.months[t.dataset.ym]??={wins:'',lessons:'',next:''};m[t.dataset.month]=t.value.slice(0,5000);saveSoon()}
   if(t.id==='identity'){state.identity=t.value.slice(0,160);saveSoon()}
   if(t.id==='quick-in'){$('#quick-prev').innerHTML=quickPreview(parseQuick(t.value))}
@@ -2107,6 +2204,24 @@ function toggleDictation(){
   try{rec.start();micState(true,'Je vous écoute… dites par exemple « Appeler Paul jeudi à 18 h ».')}catch{rec=null;micState(false,'Impossible de lancer la dictée. Réessayez.')}
 }
 $('#quick-mic').addEventListener('click',toggleDictation);
+function addDump(){const inp=$('#dump-in'),box=$('#dump-box');if(!inp||!box)return;const t=inp.value.trim().slice(0,1000);if(!t){inp.focus();return}
+  if(dumpRec){try{dumpRec.stop()}catch{}}
+  const w=week(box.dataset.week),di=+box.dataset.day,all=(w.dumps7??=Array(7).fill(null).map(()=>[]));while(all.length<7)all.push([]);(all[di]??=[]).unshift({id:uid(),t,at:new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'}),mode:null});
+  dumpMsg='Déposé. Que voulez-vous en faire ?';save();render();$('#dump-box')?.scrollIntoView({block:'nearest',behavior:'smooth'})}
+let dumpRec=null;
+function dumpDictate(){const b=$('#dump-mic'),inp=$('#dump-in'),st=$('#dump-status');if(!b||!inp)return;
+  const state_=(on,msg='')=>{b.classList.toggle('on',on);b.setAttribute('aria-pressed',on);st.hidden=!msg;st.textContent=msg};
+  if(dumpRec){try{dumpRec.stop()}catch{}return}
+  if(!SR){state_(false,'La dictée n’est pas disponible sur ce navigateur. Utilisez le micro de votre clavier.');return}
+  const base=inp.value.trim();let fin='';dumpRec=new SR();dumpRec.lang='fr-FR';dumpRec.interimResults=true;dumpRec.continuous=true;
+  dumpRec.onresult=e=>{let it='';for(let i=e.resultIndex;i<e.results.length;i++){const r=e.results[i];if(r.isFinal)fin+=r[0].transcript;else it+=r[0].transcript}inp.value=((base?base+' ':'')+fin+it).replace(/\s+/g,' ').trim().slice(0,1000);inp.dispatchEvent(new Event('input',{bubbles:true}))};
+  dumpRec.onerror=e=>{const m={'not-allowed':'Autorisez l’accès au micro pour dicter.','service-not-allowed':'Autorisez l’accès au micro pour dicter.','no-speech':'Je n’ai rien entendu. Touchez le micro et parlez.','audio-capture':'Aucun micro détecté.','network':'La dictée a besoin d’une connexion internet.'}[e.error];if(m)state_(false,m)};
+  dumpRec.onend=()=>{dumpRec=null;if(b.classList.contains('on'))state_(false,inp.value.trim()?'Touchez ↑ pour déposer.':'')};
+  try{dumpRec.start();state_(true,'Je vous écoute… prenez votre temps. Touchez le micro pour arrêter.')}catch{dumpRec=null;state_(false,'Impossible de lancer la dictée. Réessayez.')}}
+document.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey&&!e.isComposing&&e.target.id==='dump-in'){e.preventDefault();addDump()}});
+document.addEventListener('keydown',e=>{const t=e.target;if(e.key!=='Enter'||e.shiftKey||e.isComposing||!t.matches?.('textarea[data-win]'))return;e.preventDefault();
+  const box=t.closest('[data-wins]'),row=t.closest('.win-row');if(!t.value.trim()||box.querySelectorAll('.win-row').length>=10)return;
+  row.insertAdjacentHTML('afterend',winRow('',[...box.querySelectorAll('.win-row')].indexOf(row)+1));row.nextElementSibling.querySelector('textarea').focus()});
 $('#quick-date').addEventListener('change',e=>{qDate=e.target.value||'';$('#quick-date-btn').classList.toggle('on',!!qDate);$('#quick-prev').innerHTML=quickPreview(parseQuick($('#quick-in').value))});
 $('#quick-date-btn').addEventListener('click',e=>{const i=$('#quick-date');if(e.target===i)return;e.preventDefault();try{i.showPicker()}catch{i.focus();i.click()}});
 $('#quick').addEventListener('close',stopDictation);
