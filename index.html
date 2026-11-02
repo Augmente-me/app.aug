@@ -811,6 +811,27 @@ aside .pill{background:linear-gradient(180deg,rgba(255,255,255,.14),rgba(255,255
 .when-chips{display:flex;gap:6px;flex-wrap:wrap}
 .when-chips .chip{font-size:12.5px;padding:7px 12px;border-radius:999px;cursor:pointer;color:var(--ink-2)}
 .when-help::first-letter{text-transform:uppercase}
+
+/* ===== Barre du bas mobile : repli « Souffle » ===== */
+.fab-spacer{display:none}
+@media (max-width:760px){
+  html:root aside,html:root[data-theme] aside{height:62px;padding:0 6px!important;align-items:center;overflow:visible;
+    clip-path:inset(-40px -14px -14px -14px round 31px);transition:left .8s cubic-bezier(.22,1,.36,1) .12s}
+  aside nav{position:relative;height:100%;align-items:center}
+  aside nav a{transition:opacity .38s ease .35s,scale .5s cubic-bezier(.22,1,.36,1) .35s}
+  .fab-spacer{display:block;flex:0 0 58px}
+  .fab{position:absolute;left:50%;top:-14px;translate:-50% 0;margin:0!important;transition:top .5s cubic-bezier(.22,1,.36,1)}
+  aside::after{content:'';position:absolute;top:0;bottom:0;left:-40%;width:40%;border-radius:31px;pointer-events:none;opacity:0;
+    background:linear-gradient(100deg,transparent,rgba(255,255,255,.24),transparent)}
+  body.bar-min aside{left:calc(100% - 74px)!important}
+  body.bar-min aside nav a{opacity:0;scale:.92;pointer-events:none;transition:opacity .38s ease,scale .5s cubic-bezier(.22,1,.36,1)}
+  body.bar-min .fab{top:5px;transition-delay:.2s}
+  body.bar-min aside::after{animation:sheen-in 1s cubic-bezier(.22,1,.36,1) .05s}
+  body:not(.bar-min) aside.was-min::after{animation:sheen-out 1s cubic-bezier(.22,1,.36,1)}
+}
+@keyframes sheen-in{0%{opacity:1;translate:0 0}100%{opacity:1;translate:330% 0}}
+@keyframes sheen-out{0%{opacity:1;translate:330% 0}100%{opacity:1;translate:0 0}}
+@media (max-width:760px) and (prefers-reduced-motion:reduce){html:root aside,html:root[data-theme] aside,aside nav a,.fab{transition:none!important}aside::after{animation:none!important}}
 </style>
 <script src="config.js"></script>
 </head>
@@ -1471,7 +1492,7 @@ const PAGES={aujourdhui:['Aujourd’hui','Aujourd’hui','sun',1],dashboard:['Ma
 const EXTRA={offres:'Les offres',reglages:'Réglages & sauvegardes',admin:'Administration',confidentialite:'Confidentialité'};
 function updateChrome(){
   let html='',mob=0;
-  for(const[h,[full,short,i,m]]of Object.entries(PAGES)){html+=`<a href="#${h}" class="${m?'':'m-hide'}">${ic(i)}<span class="full">${full}</span><span class="short">${short}</span></a>`;if(m&&++mob===2)html+=`<button type="button" class="fab" data-act="quick" aria-label="Saisie rapide">${ic('plus',22)}</button>`}
+  for(const[h,[full,short,i,m]]of Object.entries(PAGES)){html+=`<a href="#${h}" class="${m?'':'m-hide'}">${ic(i)}<span class="full">${full}</span><span class="short">${short}</span></a>`;if(m&&++mob===2)html+=`<span class="fab-spacer" aria-hidden="true"></span><button type="button" class="fab" data-act="quick" aria-label="Saisie rapide">${ic('plus',22)}</button>`}
   $('#nav').innerHTML=html;
   $('#side-foot').innerHTML=`${isAdmin()?`<a href="#admin">${ic('user')}<span>Administration</span></a>`:''}<a href="#offres">${ic('spark')}<span>Les offres · ${PLAN_NAME[plan()]}</span></a><a href="#reglages">${ic('gear')}<span>Réglages & sauvegardes</span></a><div class="side-quote">Moins de bruit.<br>Plus d’essentiel.</div>`;
   $('.side-label b').textContent=PLAN_NAME[plan()];
@@ -2112,6 +2133,13 @@ mqLight.addEventListener?.('change',()=>{if((ui.theme||'dark')==='auto')applyThe
 applyTheme();
 
 window.addEventListener('hashchange',render);
+/* Barre du bas : se replie dans le + quand on descend (animation « Souffle ») */
+(()=>{const mq=matchMedia('(max-width:760px)');let lastY=scrollY,ticking=false;
+  const set=on=>{const was=document.body.classList.contains('bar-min');if(was===on)return;document.body.classList.toggle('bar-min',on);const a=document.querySelector('aside');a.classList.remove('was-min');if(!on){void a.offsetWidth;a.classList.add('was-min')}};
+  addEventListener('scroll',()=>{if(ticking)return;ticking=true;requestAnimationFrame(()=>{ticking=false;const y=scrollY,d=y-lastY;
+    if(!mq.matches||y<40)set(false);else if(d>6)set(true);else if(d<-10)set(false);lastY=y})},{passive:true});
+  addEventListener('hashchange',()=>{set(false);lastY=scrollY});mq.addEventListener?.('change',()=>set(false));
+})();
 window.addEventListener('pagehide',()=>{if(saveTimer){clearTimeout(saveTimer);saveTimer=null;save()}if(cloud.pending)cloudPush()});
 window.addEventListener('online',()=>{cloud.pending?cloudPush():cloudPull()});
 setInterval(()=>{if(document.visibilityState==='visible'){updateBell();cloudPull()}},60000);
