@@ -9,11 +9,11 @@
 <meta name="color-scheme" content="dark light">
 <script>
 /* Thème appliqué avant l'affichage, pour éviter tout flash */
-(function(){var t='dark';try{t=(JSON.parse(localStorage.getItem('augmente.weekly.ui')||'{}')||{}).theme||'dark'}catch(e){}
+(function(){var t='dark',pl='ivoire';try{var u=JSON.parse(localStorage.getItem('augmente.weekly.ui')||'{}')||{};t=u.theme||'dark';pl=u.palette==='mono'?'mono':'ivoire'}catch(e){}document.documentElement.dataset.palette=pl;
 if(['dark','light','auto'].indexOf(t)<0)t='dark';document.documentElement.dataset.theme=t;
 var light=t==='light'||(t==='auto'&&matchMedia('(prefers-color-scheme: light)').matches);
 document.write('<meta name="apple-mobile-web-app-status-bar-style" content="'+(light?'default':'black-translucent')+'">');
-document.getElementById('meta-theme').content=light?'#efe9df':'#121110';})();
+document.getElementById('meta-theme').content=light?(pl==='mono'?'#f5f5f3':'#efe9df'):'#121110';})();
 </script>
 <meta property="og:type" content="website">
 <meta property="og:title" content="aug.mente — The Weekly System">
@@ -956,6 +956,72 @@ dialog::backdrop{transition:opacity 200ms ease,overlay 200ms allow-discrete,disp
   .identity-row textarea{resize:none;overflow:hidden;field-sizing:content}
 }
 .identity-row textarea{width:100%;resize:none;overflow:hidden;font:inherit;line-height:1.35;min-height:44px}
+
+/* ===== Idées du jour ===== */
+.sug-card{margin-top:18px;background:linear-gradient(165deg,var(--tint-warm),transparent 60%),var(--glass)}
+.sug-row{display:flex;gap:12px;align-items:center;padding:13px 0;border-top:1px solid var(--glass-border)}
+.sug-card .section-head+.sug-row{border-top:0}
+.sug-row .copy{flex:1;min-width:0;display:grid;gap:2px}
+.sug-row .t{overflow-wrap:anywhere}
+.sug-cat{font-size:10.5px;letter-spacing:1.5px;text-transform:uppercase;color:var(--mark)}
+.sug-row small{color:var(--muted);font-size:12px}
+.sug-acts{display:flex;gap:6px;align-items:center;flex:none}
+@media (max-width:760px){.sug-row{flex-wrap:wrap}.sug-acts{width:100%;justify-content:flex-start}}
+.dom-chips{display:flex;flex-wrap:wrap;gap:8px}
+.dom-chips .chip{padding:8px 14px;border-radius:999px;font-size:13px;cursor:pointer;color:var(--ink-2)}
+/* ===== Son de validation ===== */
+.sound-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:8px;margin:14px 0}
+.sound-opt{display:flex;gap:12px;align-items:center;text-align:left;padding:12px 14px;border-radius:16px;cursor:pointer;color:var(--ink);font:inherit;
+  background:var(--lg-fill);border:1px solid var(--lg-edge);box-shadow:var(--lg-spec);transition:transform 160ms var(--ease-out)}
+.sound-opt:active{transform:scale(.97)}
+.sound-opt b{display:block;font-weight:500}
+.sound-opt small{display:block;font-size:12px;color:var(--muted)}
+.so-ic{flex:none;display:grid;place-items:center;width:34px;height:34px;border-radius:50%;border:1px solid var(--glass-border);color:var(--mark);font-size:16px}
+.sound-opt[aria-checked=true]{background:var(--lg-pressed)!important;color:var(--lg-pressed-ink)}
+.sound-opt[aria-checked=true] small{color:inherit;opacity:.75}
+.sound-opt[aria-checked=true] .so-ic{border-color:currentColor;color:inherit}
+.switch-row{display:flex;gap:12px;align-items:flex-start;margin:10px 0;cursor:pointer}
+.switch-row span{display:grid;gap:2px}
+.switch-row small{font-size:12px;color:var(--muted)}
+
+/* ===== Mode clair « Blanc & noir » ===== */
+:root[data-theme=light][data-palette=mono] aside{--accent:#ffffff;--on-accent:#0e0e0e;--ink:#f5f5f5;--ink-2:#d9d9d9;--muted:#a8a8a8;--faint:#8a8a8a}
+:root[data-theme=light][data-palette=mono] #toast{background:linear-gradient(180deg,rgba(40,40,40,.86),rgba(10,10,10,.92))!important;color:#fff}
+:root[data-theme=light][data-palette=mono] .fab{background:#ffffff!important;color:#0e0e0e}
+@media (prefers-color-scheme:light){:root[data-theme=auto][data-palette=mono] aside{--accent:#ffffff;--on-accent:#0e0e0e;--ink:#f5f5f5;--ink-2:#d9d9d9;--muted:#a8a8a8;--faint:#8a8a8a}
+ :root[data-theme=auto][data-palette=mono] #toast{background:linear-gradient(180deg,rgba(40,40,40,.86),rgba(10,10,10,.92))!important;color:#fff}
+ :root[data-theme=auto][data-palette=mono] .fab{background:#ffffff!important;color:#0e0e0e}}
+html:root[data-theme=light][data-palette=mono] aside{background:linear-gradient(180deg,#171717 0%,#0b0b0b 100%)!important}
+@media (prefers-color-scheme:light){html:root[data-theme=auto][data-palette=mono] aside{background:linear-gradient(180deg,#171717 0%,#0b0b0b 100%)!important}}
+:root[data-theme=light][data-palette=mono]{--bg:#f5f5f3;--surface:#ffffff;--surface-2:#f2f2f0;--line:#e4e4e1;--line-2:#c8c8c4;--ink:#0e0e0e;--ink-2:#2c2c2c;--muted:#5c5c5c;--faint:#7c7c7c;
+  --accent:#0e0e0e;--on-accent:#ffffff;--accent-hover:#000;--danger:#a3392e;--danger-line:#e8c1bb;
+  --glass:#ffffff;--glass-strong:#ffffff;--glass-soft:rgba(0,0,0,.035);--glass-border:#e2e2df;--glass-hi:rgba(255,255,255,.9);--glass-shadow:rgba(0,0,0,.10);--field:#ffffff;
+  --glass-top:rgba(245,245,243,.92);--glass-bar:rgba(255,255,255,.94);--lg-bar:rgba(245,245,243,.7);--lg-dialog:rgba(255,255,255,.86);
+  --lg-fill:linear-gradient(180deg,rgba(255,255,255,.95),rgba(255,255,255,.6));--lg-spec:inset 0 1px 0 #fff,inset 0 -1px 0 rgba(0,0,0,.06),0 0 0 1px rgba(0,0,0,.09);--lg-drop:0 10px 24px -14px rgba(0,0,0,.28);--lg-pressed:#0e0e0e;--lg-pressed-ink:#fff;
+  --orb-1:rgba(0,0,0,0);--orb-2:rgba(0,0,0,0);--orb-3:rgba(0,0,0,0);--wm-op:.028;--auth-veil:rgba(245,245,243,.6);
+  --mark:#0e0e0e;--mark-ink:#ffffff;--tint-warm:rgba(0,0,0,.025);--tint-cool:rgba(0,0,0,.02);--tint-late:rgba(163,57,46,.05);--done-bg:rgba(0,0,0,.055);--done-line:rgba(0,0,0,.5);
+  --p1:#0e0e0e;--p2:#5c5c5c;--p3:#a6a6a6;--p-trk:.12;
+  --wood-base-v:linear-gradient(180deg,#151515 0%,#0e0e0e 100%);--wood-side:#0e0e0e}
+@media (prefers-color-scheme:light){:root[data-theme=auto][data-palette=mono]{--bg:#f5f5f3;--surface:#ffffff;--surface-2:#f2f2f0;--line:#e4e4e1;--line-2:#c8c8c4;--ink:#0e0e0e;--ink-2:#2c2c2c;--muted:#5c5c5c;--faint:#7c7c7c;
+  --accent:#0e0e0e;--on-accent:#ffffff;--accent-hover:#000;--danger:#a3392e;--danger-line:#e8c1bb;
+  --glass:#ffffff;--glass-strong:#ffffff;--glass-soft:rgba(0,0,0,.035);--glass-border:#e2e2df;--glass-hi:rgba(255,255,255,.9);--glass-shadow:rgba(0,0,0,.10);--field:#ffffff;
+  --glass-top:rgba(245,245,243,.92);--glass-bar:rgba(255,255,255,.94);--lg-bar:rgba(245,245,243,.7);--lg-dialog:rgba(255,255,255,.86);
+  --lg-fill:linear-gradient(180deg,rgba(255,255,255,.95),rgba(255,255,255,.6));--lg-spec:inset 0 1px 0 #fff,inset 0 -1px 0 rgba(0,0,0,.06),0 0 0 1px rgba(0,0,0,.09);--lg-drop:0 10px 24px -14px rgba(0,0,0,.28);--lg-pressed:#0e0e0e;--lg-pressed-ink:#fff;
+  --orb-1:rgba(0,0,0,0);--orb-2:rgba(0,0,0,0);--orb-3:rgba(0,0,0,0);--wm-op:.028;--auth-veil:rgba(245,245,243,.6);
+  --mark:#0e0e0e;--mark-ink:#ffffff;--tint-warm:rgba(0,0,0,.025);--tint-cool:rgba(0,0,0,.02);--tint-late:rgba(163,57,46,.05);--done-bg:rgba(0,0,0,.055);--done-line:rgba(0,0,0,.5);
+  --p1:#0e0e0e;--p2:#5c5c5c;--p3:#a6a6a6;--p-trk:.12;
+  --wood-base-v:linear-gradient(180deg,#151515 0%,#0e0e0e 100%);--wood-side:#0e0e0e}}
+:root[data-theme=light][data-palette=mono] aside,:root[data-theme=light][data-palette=mono] aside *{--mark:#ffffff}
+@media (prefers-color-scheme:light){:root[data-theme=auto][data-palette=mono] aside{--mark:#ffffff}}
+:root[data-theme=light][data-palette=mono] .hero{background:radial-gradient(80% 120% at 0% 0%,rgba(255,255,255,.08),transparent 60%),linear-gradient(135deg,#222 0%,#141414 50%,#0a0a0a 100%)!important}
+@media (prefers-color-scheme:light){:root[data-theme=auto][data-palette=mono] .hero{background:radial-gradient(80% 120% at 0% 0%,rgba(255,255,255,.08),transparent 60%),linear-gradient(135deg,#222 0%,#141414 50%,#0a0a0a 100%)!important}}
+@media (max-width:760px){
+  :root[data-theme=light][data-palette=mono] aside{background:linear-gradient(180deg,rgba(40,40,40,.62),rgba(10,10,10,.74))!important}
+}
+@media (max-width:760px) and (prefers-color-scheme:light){:root[data-theme=auto][data-palette=mono] aside{background:linear-gradient(180deg,rgba(40,40,40,.62),rgba(10,10,10,.74))!important}}
+.pal-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:8px;margin:10px 0}
+.pal-sw{flex:none;display:grid;grid-template-columns:repeat(2,14px);gap:3px;padding:4px;border-radius:10px;border:1px solid var(--glass-border)}
+.pal-sw i{width:14px;height:14px;border-radius:4px;box-shadow:inset 0 0 0 1px rgba(0,0,0,.1)}
 </style>
 <script src="config.js"></script>
 </head>
@@ -1425,7 +1491,7 @@ const QUOTES=['Le progrès commence par ce que l’on répète.','Une petite act
 const quoteOfWeek=()=>QUOTES.at(Math.floor(Date.parse(monday()+'T12:00:00')/6048e5)%QUOTES.length);
 function dayState(wk,di){const w=state.weeks[wk],nR=state.rituals.length,rd=w?state.rituals.filter(r=>w.checks[r.id]?.[di]).length:0,tasks=w?w.tasks.filter(t=>t.day===di):[],td=tasks.filter(t=>t.done).length,total=nR+tasks.length;
   return{rd,nR,td,nT:tasks.length,done:rd+td,total,pct:total?(rd+td)/total:0,complete:total>0&&rd+td===total,ritualsFull:nR>0&&rd===nR}}
-function cheerIfComplete(wk,di){if(wk===monday()&&di===todayIdx()&&dayState(wk,di).complete)setTimeout(()=>toast('Journée accomplie. Bravo, savourez-la.'),250)}
+function cheerIfComplete(wk,di){if(wk===monday()&&di===todayIdx()&&dayState(wk,di).complete)setTimeout(playDayDone,180);if(wk===monday()&&di===todayIdx()&&dayState(wk,di).complete)setTimeout(()=>toast('Journée accomplie. Bravo, savourez-la.'),250)}
 function ritualDoneOn(r,d){const di=(d.getDay()+6)%7;return!!state.weeks[monday(d)]?.checks[r.id]?.[di]}
 function softStreak(r){
   const d=new Date();d.setHours(12,0,0,0);let n=0,miss=0;
@@ -1443,6 +1509,40 @@ function weekSummary(wk){
 }
 
 /* ---------- Saisie rapide en langage naturel ---------- */
+
+/* ===== Son de validation : synthétisé, respecte le mode silencieux de l'iPhone ===== */
+const SOUNDS={cristal:'Cristal',bois:'Bois',plume:'Plume',goutte:'Goutte',carillon:'Carillon',off:'Aucun'};
+const SOUND_HINT={cristal:'Clair et léger, comme une coupe effleurée.',bois:'Un petit « toc » mat et chaleureux.',plume:'Presque un souffle. Le plus discret.',goutte:'Une goutte qui tombe, ronde et douce.',carillon:'Deux notes qui montent. Plus présent.',off:'Aucun son.'};
+let actx=null;
+function audio(){if(!actx){const C=window.AudioContext||window.webkitAudioContext;if(!C)return null;
+    try{if(navigator.audioSession)navigator.audioSession.type='ambient'}catch{} /* iPhone : suit l'interrupteur silencieux, ne coupe pas la musique */
+    actx=new C()}
+  if(actx.state==='suspended')actx.resume().catch(()=>{});return actx}
+const soundEnabled=()=>(ui.sound??'plume')!=='off'&&(matchMedia('(pointer:coarse)').matches||ui.soundDesktop);
+function tone(c,{f=880,f2=null,type='sine',t=0,dur=.12,vol=.18,attack=.004}){const o=c.createOscillator(),g=c.createGain(),n=c.currentTime+t;
+  o.type=type;o.frequency.setValueAtTime(f,n);if(f2)o.frequency.exponentialRampToValueAtTime(f2,n+dur*.6);
+  g.gain.setValueAtTime(0,n);g.gain.linearRampToValueAtTime(vol,n+attack);g.gain.exponentialRampToValueAtTime(.0001,n+dur);
+  o.connect(g).connect(c.destination);o.start(n);o.stop(n+dur+.02)}
+function knock(c,{f=1800,q=7,dur=.05,vol=.5,t=0}){const n=c.currentTime+t,len=Math.ceil(c.sampleRate*dur),buf=c.createBuffer(1,len,c.sampleRate),d=buf.getChannelData(0);
+  for(let i=0;i<len;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/len,4);
+  const src=c.createBufferSource(),bp=c.createBiquadFilter(),g=c.createGain();src.buffer=buf;bp.type='bandpass';bp.frequency.value=f;bp.Q.value=q;g.gain.value=vol;
+  src.connect(bp).connect(g).connect(c.destination);src.start(n)}
+function playSound(name,force){if(!force&&!soundEnabled()){if(matchMedia('(pointer:coarse)').matches)haptic();return}const c=audio();if(!c)return;name=name||ui.sound||'plume';
+  if(name==='cristal'){tone(c,{f:1568,dur:.16,vol:.12});tone(c,{f:2349,dur:.11,vol:.05})}
+  else if(name==='bois'){knock(c,{f:1500,q:5,dur:.045,vol:.7});tone(c,{f:520,f2:430,type:'triangle',dur:.07,vol:.10})}
+  else if(name==='plume'){tone(c,{f:1046,type:'triangle',dur:.07,vol:.06,attack:.008})}
+  else if(name==='goutte'){tone(c,{f:900,f2:1900,dur:.14,vol:.13,attack:.002})}
+  else if(name==='carillon'){tone(c,{f:1319,dur:.22,vol:.10});tone(c,{f:1976,t:.07,dur:.28,vol:.09})}
+  haptic()}
+/* vibration légère : Android (vibrate) et iPhone iOS 18+ (interrupteur natif caché) */
+let hapLabel=null;
+function haptic(){if(ui.haptic===false)return;
+  if(navigator.vibrate){try{navigator.vibrate(8)}catch{}return}
+  try{if(!hapLabel){hapLabel=document.createElement('label');hapLabel.setAttribute('aria-hidden','true');hapLabel.style.cssText='position:fixed;left:-9999px;top:0;width:1px;height:1px;overflow:hidden;opacity:0;pointer-events:none';
+      const i=document.createElement('input');i.type='checkbox';i.setAttribute('switch','');i.tabIndex=-1;hapLabel.append(i);document.body.append(hapLabel)}
+    hapLabel.click()}catch{}}
+function playDayDone(){if(!soundEnabled())return;const c=audio();if(!c)return;[1047,1319,1568,2093].forEach((f,i)=>tone(c,{f,t:i*.09,dur:.5,vol:.07}))}
+addEventListener('pointerdown',()=>{if(soundEnabled())audio()},{once:true,passive:true});
 let qDate='';
 function parseQuick(raw){
   let s=' '+String(raw||'').trim().replace(/[.。]+$/,'')+' ',date=null,time=null,remind=null,priority='Normale',goal='',wkOnly=null,m;
@@ -1556,7 +1656,14 @@ const IDEAS={
     ['Tech & IA','30 minutes sans écran avant de dormir'],['Tech & IA','Tester une astuce IA'],['Tech & IA','1 heure en mode Concentration'],['Tech & IA','Trier 10 photos'],
     ['Apprendre','Lire 10 minutes'],['Apprendre','Écouter un podcast inspirant'],['Apprendre','10 minutes de langue étrangère'],
     ['Relations','Envoyer un message à un proche'],['Relations','Dire merci à quelqu’un'],
-    ['Esprit','Écrire 3 lignes dans mon carnet'],['Esprit','Noter une chose positive de la journée']
+    ['Esprit','Écrire 3 lignes dans mon carnet'],['Esprit','Noter une chose positive de la journée'],
+    ['Bien-être','Monter les escaliers plutôt que l’ascenseur'],['Bien-être','Une vraie pause déjeuner, sans écran'],['Bien-être','Faire 5 minutes de gainage'],
+    ['Organisation','Vider ma boîte de réception le vendredi'],['Organisation','Préparer mes affaires la veille'],
+    ['Tech & IA','Ranger mes téléchargements'],['Tech & IA','Mode avion pendant le dîner'],
+    ['Apprendre','Noter une idée apprise aujourd’hui'],['Apprendre','Regarder un documentaire au lieu d’une série'],
+    ['Relations','Prendre des nouvelles d’un ami'],['Relations','Un repas sans téléphone en famille'],
+    ['Esprit','3 minutes de cohérence cardiaque'],['Esprit','Marcher sans écouteurs'],['Esprit','Écrire ce qui me rend reconnaissant'],
+    ['Maison','Ranger 10 minutes avant de dormir'],['Maison','Remettre une pièce en ordre']
   ].map(([c,t])=>({c,t})),
   actions:[
     ['Organisation','Planifier ma semaine en 15 minutes','Haute'],['Organisation','Bloquer trois créneaux pour moi','Haute'],['Organisation','Faire le point sur mes abonnements','Normale'],['Organisation','Trier mes papiers administratifs','Normale'],
@@ -1564,7 +1671,14 @@ const IDEAS={
     ['Bien-être','Prendre le rendez-vous que je repousse','Haute'],['Bien-être','Préparer mes repas de la semaine','Normale'],['Bien-être','Prévoir une vraie pause ce week-end','Normale'],
     ['Maison','Désencombrer un tiroir','Basse'],['Maison','Réparer la petite chose qui traîne','Basse'],
     ['Relations','Appeler quelqu’un que je n’ai pas eu depuis longtemps','Normale'],['Relations','Organiser un dîner entre amis','Basse'],
-    ['Apprendre','Choisir ma prochaine lecture','Basse'],['Apprendre','M’inscrire à un atelier ou un cours en ligne','Normale']
+    ['Apprendre','Choisir ma prochaine lecture','Basse'],['Apprendre','M’inscrire à un atelier ou un cours en ligne','Normale'],
+    ['Organisation','Ranger les fichiers de mon bureau d’ordinateur','Basse'],['Organisation','Préparer la réunion la plus importante de la semaine','Haute'],['Organisation','Dire non à une sollicitation qui ne compte pas','Normale'],
+    ['Tech & IA','Supprimer 5 applications que je n’utilise plus','Basse'],['Tech & IA','Demander à une IA de résumer un long document','Normale'],['Tech & IA','Nettoyer mes abonnements aux newsletters','Basse'],
+    ['Bien-être','Programmer une marche avec quelqu’un','Normale'],['Bien-être','Faire les courses avec une liste','Normale'],['Bien-être','Se coucher 30 minutes plus tôt ce soir','Normale'],
+    ['Maison','Lancer une machine et l’étendre aussitôt','Basse'],['Maison','Préparer un repas maison pour demain','Normale'],
+    ['Relations','Écrire un mot de remerciement','Normale'],['Relations','Proposer un café à un collègue','Basse'],['Relations','Prévoir une sortie à deux','Normale'],
+    ['Apprendre','Lire un article de fond','Basse'],['Apprendre','Revoir mes notes de la semaine','Normale'],
+    ['Esprit','Bloquer 20 minutes rien que pour moi','Normale'],['Esprit','Noter ce qui me pèse et une petite solution','Normale']
   ].map(([c,t,p])=>({c,t,p})),
   caps:[
     ['Apprendre','Lire 12 livres cette année',12,'livres'],['Apprendre','Apprendre 300 mots d’anglais',300,'mots'],['Apprendre','Suivre une formation en ligne',10,'modules'],
@@ -1750,6 +1864,53 @@ function dayPills(ds,nR,ev){
   return `<div class="day-pills" role="list">${[['t-actions','Priorités',ds.td,ds.nT,'p1'],['t-rituels','Rituels',ds.rd,nR,'p2'],['t-soir','Ce soir',ev.n,3,'p3']].map(([id,l,a,b,c])=>{const p=b?a/b:0,ok=b>0&&a===b;
     return `<a class="dpill${ok?' ok':''}" href="#${id}" data-jump="${id}" role="listitem" aria-label="${l} : ${b?a+' sur '+b:'rien de prévu'}"><span class="dp-ring"><svg viewBox="0 0 30 30" aria-hidden="true"><circle class="dp-trk ${c}" cx="15" cy="15" r="12.5" pathLength="100"/><circle class="dp-arc ${c}" cx="15" cy="15" r="12.5" pathLength="100" transform="rotate(-90 15 15)" stroke-dasharray="${(p*100).toFixed(1)} 100" style="opacity:${p>0?1:0}"/></svg><span>${ok?ic('check',13):b?a+'/'+b:'–'}</span></span><b>${l}</b></a>`}).join('')}</div>`;
 }
+
+/* ===== Idées du jour : personnalisées selon qui vous êtes, différentes chaque jour ===== */
+const DOMAINS=['Bien-être','Organisation','Tech & IA','Apprendre','Relations','Esprit','Maison'];
+const DOMAIN_WORDS={'Bien-être':/sant|sport|énergi|energi|dorm|sommeil|cour(ir|se)|march|corps|poids|mang|aliment|yoga|forme|muscl|nag/i,
+  'Organisation':/organis|temps|travail|projet|administr|planifi|priorit|efficac|réunion|dossier|boulot|carri|équipe/i,
+  'Tech & IA':/tech|\bia\b|numériq|téléphone|écran|digital|outil|appli|ordinateur|iphone/i,
+  'Apprendre':/lire|livre|lecture|apprend|langue|anglais|formation|cours|philosoph|savoir|étud|curios/i,
+  'Relations':/famil|ami|proche|enfant|couple|relation|partenaire|parent|sœur|soeur|frère|collègue/i,
+  'Esprit':/calme|sérén|seren|stress|médit|gratitude|mental|apais|confian|écri|journal|lâcher|bienveill|paix/i,
+  'Maison':/maison|range|désencomb|cuisin|jardin|logement|appart|ménage/i};
+function seedRand(seed){let h=2166136261;for(const c of seed)h=Math.imul(h^c.charCodeAt(0),16777619);return()=>{h=Math.imul(h^(h>>>15),2246822507);h=Math.imul(h^(h>>>13),3266489909);h^=h>>>16;return (h>>>0)/4294967296}}
+function profileDomains(){
+  const score=Object.fromEntries(DOMAINS.map(d=>[d,0]));
+  (state.domains||[]).forEach(d=>{if(d in score)score[d]+=5});
+  const txt=[state.identity,...state.goals.map(g=>g.title),...state.rituals.map(r=>r.title),peek(monday()).intention].join(' ');
+  for(const d of DOMAINS){const m=txt.match(new RegExp(DOMAIN_WORDS[d].source,'gi'));if(m)score[d]+=m.length*2}
+  state.rituals.forEach(r=>{const i=IDEAS.rituels.find(x=>x.t===r.title);if(i)score[i.c]+=1});
+  return score}
+function suggestions(){
+  const today=dateKey(new Date()),wk=monday(),ti=todayIdx(),w=peek(wk),dow=new Date().getDay(),weekend=dow===0||dow===6;
+  const pw=peek(shift(wk,-7)),yEn=ti?(w.energy||[])[ti-1]:(pw.energy||[])[6];
+  const sc=profileDomains(),off=(ui.sugSkip&&ui.sugSkip.d===today)?ui.sugSkip:{d:today,n:{},hide:false};
+  const have=new Set([...state.rituals.map(r=>r.title.toLowerCase()),...Object.values(state.weeks).flatMap(x=>x.tasks.map(t=>t.title.toLowerCase()))]);
+  const weight=it=>{let v=1+(sc[it.c]||0);if(weekend&&/Maison|Relations|Bien-être/.test(it.c))v+=2;if(!weekend&&it.c==='Organisation')v+=1.5;if(yEn===1&&/Esprit|Bien-être/.test(it.c))v+=3;if(yEn===1&&it.p==='Haute')v*=.4;return v};
+  const pick=(list,n,salt)=>{const rnd=seedRand(today+salt+(cloud.user?.id||'')),pool=list.filter(x=>!have.has(x.t.toLowerCase())).map(x=>({x,k:Math.pow(rnd(),1/weight(x))})).sort((a,b)=>b.k-a.k).map(o=>o.x);
+    const out=[];if(!pool.length)return out;for(let i=0;i<n;i++){let k=(i+n*(off.n[salt+i]||0))%pool.length,guard=0;while(out.includes(pool[k])&&guard++<pool.length)k=(k+1)%pool.length;if(!out.includes(pool[k]))out.push(pool[k])}return out};
+  const why=it=>{const g=state.goals.find(g=>DOMAIN_WORDS[it.c]&&DOMAIN_WORDS[it.c].test(g.title));
+    if(yEn===1&&/Esprit|Bien-être/.test(it.c))return 'Hier, votre énergie était basse : on y va doucement.';
+    if(g)return `Pour votre cap « ${g.title} ».`;
+    if(state.identity&&DOMAIN_WORDS[it.c].test(state.identity))return `Parce que vous devenez quelqu’un qui ${state.identity}.`;
+    if((state.domains||[]).includes(it.c))return `Ce qui compte pour vous : ${it.c.toLowerCase()}.`;
+    if(weekend&&/Maison|Relations|Bien-être/.test(it.c))return 'Une idée pour le week-end.';
+    return 'Une idée pour varier.'};
+  const late=lateTasks().length;
+  let acts=pick(IDEAS.actions,2,'a');
+  if(late>=3)acts=[{c:'Organisation',t:`Faire le tri dans mes ${late} actions en retard`,p:'Haute',special:'late'},...acts.slice(0,1)];
+  const rit=pick(IDEAS.rituels,1,'r');
+  const used=new Set(),uniq=r=>{if(used.has(r)){r=(state.domains||[]).length?'Une idée pour varier vos journées.':'Une idée pour varier.'}used.add(r);return r};
+  return{hide:off.hide,acts:acts.map(x=>({...x,why:x.special?'Elles s’accumulent : 10 minutes suffisent pour repartir léger.':uniq(why(x)),goal:(state.goals.find(g=>DOMAIN_WORDS[x.c]&&DOMAIN_WORDS[x.c].test(g.title))||{}).id||''})),rit:rit.map(x=>({...x,why:uniq(why(x))}))}}
+function suggestCard(){
+  const sg=suggestions();if(sg.hide||(!sg.acts.length&&!sg.rit.length))return '';
+  const row=(it,kind,i)=>`<div class="sug-row"><div class="copy"><span class="sug-cat">${esc(it.c)} · ${kind==='a'?'action':'rituel'}</span><span class="t">${esc(it.t)}</span><small>${esc(it.why)}</small></div>
+    <div class="sug-acts">${it.special==='late'?`<a class="btn sm" href="#t-retard" data-jump="t-retard">Voir</a>`:`<button class="btn sm primary" data-act="sug-add" data-kind="${kind}" data-t="${esc(it.t)}" data-p="${esc(it.p||'Normale')}" data-g="${esc(it.goal||'')}">${ic('plus',13)}${kind==='a'?'Aujourd’hui':'Mes rituels'}</button><button class="icon-btn" data-act="sug-next" data-slot="${kind}${i}" aria-label="Une autre idée">${SHUFFLE_SVG}</button>`}</div></div>`;
+  return `<section class="card sug-card" aria-label="Idées du jour"><div class="section-head"><h2>Idées du jour, pour vous</h2><button class="icon-btn" data-act="sug-hide" aria-label="Masquer pour aujourd’hui">${ic('x',15)}</button></div>
+    ${sg.acts.map((x,i)=>row(x,'a',i)).join('')}${sg.rit.map((x,i)=>row(x,'r',i)).join('')}
+    <p class="help" style="margin:10px 0 0">Choisies selon vos caps, votre identité et votre énergie. Elles changent chaque jour. <a class="link" href="#reglages" data-jump-settings>Ce qui compte pour moi</a></p></section>`}
+const SHUFFLE_SVG='<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h11l-3-3M20 17H9l3 3"/></svg>';
 function today(){
   const now=new Date(),wk=monday(),ti=todayIdx(),w=peek(wk);
   const dayTasks=w.tasks.filter(t=>t.day===ti).sort((a,b)=>a.done-b.done||(b.star?1:0)-(a.star?1:0)||PRIOS.indexOf(a.priority)-PRIOS.indexOf(b.priority)||(a.time||'99').localeCompare(b.time||'99'));
@@ -1779,6 +1940,7 @@ function today(){
       ${others.length?`<h3 class="cal-h">Déjà fait aujourd’hui</h3>${others.map(t=>taskRow(t,wk)).join('')}`:''}
       ${loose.length?`<h3 class="cal-h">À placer cette semaine</h3>${loose.slice(0,4).map(t=>`<div class="row"><div class="copy"><span class="t">${esc(t.title)}</span><small>Sans jour précis</small></div><button class="btn sm" data-act="move" data-id="${t.id}" data-week="${wk}" data-to="0">Aujourd’hui</button></div>`).join('')}`:''}
     </section>
+    ${suggestCard()}
     ${step(num(),'t-rituels','Mes rituels',nR&&ds.rd===nR?`<span class="pill done">${ic('check',12)}Tout est fait</span>`:nR?`<span class="pill">${ds.rd} / ${nR}</span>`:'')}
     <section class="card step-card${nR&&ds.rd===nR?' all-done':''}" id="today-rituals">
       ${nR?state.rituals.map(r=>ritualTodayRow(r,wk,ti)).join(''):empty('Un rituel, c’est un geste simple.',`<a class="link" href="#rituels">Créer mon premier rituel ${ic('arrow',13)}</a>`)}
@@ -2003,8 +2165,18 @@ function settings(){
   +`<div class="settings">
   ${accountCard()}
   ${remindersCard()}
-  <section class="card"><h2>Apparence</h2><p class="lead" style="margin-top:8px">Interface noire ou blanche. « Automatique » suit le réglage de votre iPhone ou de votre ordinateur.</p><div class="seg" role="group" aria-label="Thème de l’interface">${[['dark','Sombre','moon'],['light','Clair','sun'],['auto','Automatique','auto']].map(([v,l,i])=>`<button type="button" data-act="theme" data-value="${v}" aria-pressed="${(ui.theme||'dark')===v}">${ic(i,15)}${l}</button>`).join('')}</div></section>
-  <section class="card"><h2>Profil</h2><label class="field">Comment vous appeler ?<input id="name" maxlength="60" value="${esc(state.name)}" placeholder="Votre prénom" autocomplete="given-name"></label><button class="btn primary" data-act="profile">Enregistrer</button></section>
+  <section class="card"><h2>Son de validation</h2><p class="lead" style="margin-top:8px">Un petit son à chaque coche, sur téléphone. Touchez un son pour l’écouter.</p>
+    <div class="sound-list" role="radiogroup" aria-label="Son de validation">${Object.entries(SOUNDS).map(([k,l])=>`<button type="button" class="sound-opt" role="radio" data-act="sound" data-value="${k}" aria-checked="${(ui.sound??'plume')===k}"><span class="so-ic" aria-hidden="true">${k==='off'?'—':'♪'}</span><span><b>${l}</b><small>${SOUND_HINT[k]}</small></span></button>`).join('')}</div>
+    <label class="switch-row"><input type="checkbox" class="chk sq" data-pref="haptic" ${ui.haptic===false?'':'checked'}><span>Petite vibration légère <small>À chaque coche. Sur iPhone, nécessite iOS 18 ou plus récent.</small></span></label>
+    <label class="switch-row"><input type="checkbox" class="chk sq" data-pref="soundDesktop" ${ui.soundDesktop?'checked':''}><span>Aussi sur ordinateur</span></label>
+    <p class="help">Sur iPhone, le son se coupe tout seul quand le téléphone est en mode silencieux, et il ne coupe pas votre musique. Sur Android, il suit le volume multimédia.</p></section>
+  <section class="card"><h2>Apparence</h2><p class="lead" style="margin-top:8px">Interface noire ou blanche. « Automatique » suit le réglage de votre iPhone ou de votre ordinateur.</p><div class="seg" role="group" aria-label="Thème de l’interface">${[['dark','Sombre','moon'],['light','Clair','sun'],['auto','Automatique','auto']].map(([v,l,i])=>`<button type="button" data-act="theme" data-value="${v}" aria-pressed="${(ui.theme||'dark')===v}">${ic(i,15)}${l}</button>`).join('')}</div>
+    <p class="cal-h" style="margin-top:22px">Couleurs du mode clair</p>
+    <div class="pal-list" role="radiogroup" aria-label="Couleurs du mode clair">${[['ivoire','Ivoire & noyer','Papier ivoire, barre en brun très foncé, accents noyer. Chaleureux.',['#efe9df','#fffcf7','#211a15','#7a5234']],['mono','Blanc & noir','Blanc pur, noir encre, gris fins. Graphique et épuré.',['#f5f5f3','#ffffff','#0e0e0e','#5c5c5c']]].map(([v,l,h,c])=>`<button type="button" class="sound-opt pal-opt" role="radio" data-act="palette" data-value="${v}" aria-checked="${(ui.palette==='mono'?'mono':'ivoire')===v}"><span class="pal-sw" aria-hidden="true">${c.map(x=>`<i style="background:${x}"></i>`).join('')}</span><span><b>${l}</b><small>${h}</small></span></button>`).join('')}</div>
+    <p class="help">S’applique au mode clair et au mode automatique quand votre appareil est en clair.</p></section>
+  <section class="card"><h2>Profil</h2><label class="field">Comment vous appeler ?<input id="name" maxlength="60" value="${esc(state.name)}" placeholder="Votre prénom" autocomplete="given-name"></label><button class="btn primary" data-act="profile">Enregistrer</button>
+    <p class="cal-h" style="margin-top:22px">Ce qui compte pour moi</p><p class="help" style="margin:0 0 10px">Les idées du jour s’en inspirent, avec vos caps et votre identité.</p>
+    <div class="dom-chips">${DOMAINS.map(d=>`<button type="button" class="chip" data-act="domain" data-value="${esc(d)}" aria-pressed="${(state.domains||[]).includes(d)}">${esc(d)}</button>`).join('')}</div></section>
   <section class="card"><h2>Sauvegarder & restaurer</h2><p class="lead" style="margin-top:8px">${cloud.user?'Vos données sont sauvegardées sur votre compte. Une copie reste utile pour les archiver.':'Vos données restent dans ce navigateur, sur cet appareil. Exportez une copie de temps en temps pour la garder ou la transférer.'}</p>
   <div class="btns"><button class="btn" data-act="export">${ic('down',15)}Exporter mes données</button><button class="btn" data-act="import">${ic('up',15)}Restaurer une sauvegarde</button></div><input type="file" id="import-file" accept="application/json,.json" hidden>
   <p class="help">${state.lastExport?'Dernière copie : '+new Date(state.lastExport).toLocaleDateString('fr-FR',{day:'numeric',month:'long',year:'numeric'})+'.':'Aucune copie exportée pour l’instant.'} La restauration remplace toutes les données actuelles, après confirmation.</p></section>
@@ -2181,7 +2353,8 @@ document.addEventListener('click',async e=>{
   if(a==='cal-pick'){calSel=b.dataset.date;const d=new Date(calSel+'T12:00:00');if(d.getMonth()!==calMonth.getMonth())calMonth=new Date(d.getFullYear(),d.getMonth(),1,12);render();if(matchMedia('(max-width:1100px)').matches)$('.cal-detail')?.scrollIntoView({behavior:'smooth',block:'start'});return}
   if(a==='goto-week'){key=b.dataset.week;return}
   if(a==='hide-install'){ui.installHidden=true;saveUI();render();return}
-  if(a==='theme'){setTheme(b.dataset.value);render();return}
+  if(a==='palette'){ui.palette=b.dataset.value==='mono'?'mono':'ivoire';saveUI();applyTheme();document.querySelectorAll('[data-act=palette]').forEach(x=>x.setAttribute('aria-checked',x===b));if(!isLight())toast('Visible en mode clair');return}
+  if(a==='sound'){ui.sound=b.dataset.value;saveUI();document.querySelectorAll('[data-act=sound]').forEach(x=>x.setAttribute('aria-checked',x===b));if(ui.sound!=='off')playSound(ui.sound,true);return}if(a==='theme'){setTheme(b.dataset.value);render();return}
   if(a==='add-task'||a==='edit-task'){
     const wk=b.dataset.week||key,w=peek(wk),t=w.tasks.find(t=>t.id===id),preDay=t?t.day:(b.dataset.day!==undefined?+b.dataset.day:null);
     editor(t?'Modifier la tâche':'Nouvelle action',(t?'':ideasBlock('actions',new Set(w.tasks.map(x=>x.title.toLocaleLowerCase('fr')))))+field('Une action concrète','title',t?.title,'text','placeholder="Ex. Appeler le garage"')
@@ -2217,6 +2390,9 @@ document.addEventListener('click',async e=>{
     return;
   }
   if(a==='intention'){const w=peek(key);editor('Mon intention de la semaine',field('Cette semaine, je choisis de…','intention',w.intention,'text','placeholder="Ex. Ralentir le soir"').replace(' required',''),f=>{week(key).intention=f.get('intention').trim()});return}
+  if(a==='sug-add'){const t=b.dataset.t;if(b.dataset.kind==='a'){week(monday()).tasks.push({id:uid(),title:t.slice(0,160),done:false,priority:PRIOS.includes(b.dataset.p)?b.dataset.p:'Normale',goal:b.dataset.g||'',day:todayIdx(),time:null,remind:null});toast('Ajoutée à aujourd’hui')}
+    else{state.rituals.push({id:uid(),title:t.slice(0,80),cue:'',min:''});toast('Nouveau rituel ajouté')}save();render();return}
+  if(a==='sug-next'||a==='sug-hide'){const d=dateKey(new Date());if(!ui.sugSkip||ui.sugSkip.d!==d)ui.sugSkip={d,n:{},hide:false};if(a==='sug-hide')ui.sugSkip.hide=true;else ui.sugSkip.n[b.dataset.slot]=(ui.sugSkip.n[b.dataset.slot]||0)+1;saveUI();render();if(a==='sug-hide')toast('À demain pour de nouvelles idées');return}
   if(a==='task-more'){const wk=b.dataset.week||key,t=peek(wk).tasks.find(x=>x.id===id);if(!t)return;const g=state.goals.find(x=>x.id===t.goal);
     $('#sheet-body').innerHTML=`<p class="sheet-title">${esc(t.title)}</p><p class="help" style="margin:4px 0 14px">${Number.isInteger(t.day)?esc(DAYS_LONG[t.day]+' '+fmt(shift(wk,t.day))+(t.time?' · '+t.time:'')):'Cette semaine, sans jour précis'} · priorité ${esc(t.priority.toLowerCase())}${g?' · Cap · '+esc(g.title):''}</p>
       <div class="sheet-acts"><button class="btn" data-act="edit-task" data-id="${t.id}" data-week="${wk}">${ic('edit',16)}Modifier</button>${t.done?'':`<button class="btn" data-act="move-pick" data-id="${t.id}" data-week="${wk}">${ic('cal',16)}Reprogrammer</button>`}<button class="btn danger-soft" data-act="del-task" data-id="${t.id}" data-week="${wk}">${ic('x',16)}Supprimer</button></div>`;
@@ -2224,6 +2400,7 @@ document.addEventListener('click',async e=>{
   if(a==='del-task'){if(!await ask('Supprimer cette action ?','Elle disparaîtra de cette semaine.','Supprimer'))return;const w=week(b.dataset.week||key);w.tasks=w.tasks.filter(t=>t.id!==id)}
   if(a==='del-ritual'){if(!await ask('Supprimer ce rituel ?','Ses coches seront effacées dans toutes les semaines.','Supprimer'))return;state.rituals=state.rituals.filter(r=>r.id!==id);Object.values(state.weeks).forEach(w=>delete w.checks[id])}
   if(a==='del-goal'){if(!await ask('Supprimer ce cap ?','Les tâches associées sont conservées.','Supprimer'))return;state.goals=state.goals.filter(g=>g.id!==id);Object.values(state.weeks).forEach(w=>w.tasks.forEach(t=>{if(t.goal===id)t.goal=''}))}
+  if(a==='domain'){const d=b.dataset.value,arr=state.domains??=[];const i=arr.indexOf(d);i>=0?arr.splice(i,1):arr.push(d);b.setAttribute('aria-pressed',i<0);save();return}
   if(a==='profile'){state.name=$('#name').value.trim().slice(0,60);toast('Prénom enregistré')}
   if(a==='export'){download();return}
   if(a==='import'){$('#import-file').click();return}
@@ -2234,6 +2411,8 @@ document.addEventListener('click',async e=>{
 
 document.addEventListener('change',async e=>{
   const t=e.target;
+  if(t.dataset.pref){ui[t.dataset.pref]=t.checked;saveUI();if(t.dataset.pref==='haptic'&&t.checked&&navigator.vibrate)navigator.vibrate(8);return}
+  if((t.dataset.task||t.dataset.ritual)&&t.checked)playSound();
   if(t.dataset.task){const task=week(t.dataset.week||key).tasks.find(x=>x.id===t.dataset.task);if(task&&task.done!==t.checked){task.done=t.checked;if(task.goal)goalAdjust(task.goal,t.checked?1:-1)}save();render();popAt(`[data-task="${t.dataset.task}"]`);if(t.checked&&task&&Number.isInteger(task.day))cheerIfComplete(t.dataset.week||key,task.day);return}
   if(t.dataset.ritual){const w=week(t.dataset.week||key),arr=w.checks[t.dataset.ritual]??=Array(7).fill(false);while(arr.length<7)arr.push(false);const d=Number(t.dataset.day);if(!!arr[d]!==t.checked){arr[d]=t.checked;const r=state.rituals.find(x=>x.id===t.dataset.ritual);if(r?.goal)goalAdjust(r.goal,t.checked?1:-1)}save();render();popAt(`[data-ritual="${t.dataset.ritual}"][data-day="${d}"]`);if(t.checked)cheerIfComplete(t.dataset.week||key,d);
     const tw=peek(monday()),ti=todayIdx();if(t.checked&&(t.dataset.week||key)===monday()&&d===ti&&state.rituals.length&&state.rituals.every(r=>tw.checks[r.id]?.[ti])){$('#today-rituals')?.classList.add('halo');toast('Tous vos rituels du jour sont faits. Bravo.')}return}
@@ -2309,9 +2488,9 @@ $('#wiz').addEventListener('close',()=>{if(wiz?.kind==='onboard'&&!state.onboard
 const mqLight=matchMedia('(prefers-color-scheme: light)');
 const isLight=()=>{const t=ui.theme||'dark';return t==='light'||(t==='auto'&&mqLight.matches)};
 function applyTheme(){
-  document.documentElement.dataset.theme=ui.theme||'dark';
+  document.documentElement.dataset.theme=ui.theme||'dark';document.documentElement.dataset.palette=ui.palette==='mono'?'mono':'ivoire';
   const light=isLight();
-  $('#meta-theme').content=light?'#efe9df':'#121110';
+  $('#meta-theme').content=light?(ui.palette==='mono'?'#f5f5f3':'#efe9df'):'#121110';
   const tb=$('#theme-toggle');tb.innerHTML=ic(light?'moon':'sun',19);
   const label=light?'Passer en interface sombre':'Passer en interface claire';tb.setAttribute('aria-label',label);tb.title=label;
 }
