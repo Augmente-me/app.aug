@@ -2443,7 +2443,12 @@ document.addEventListener('click',async e=>{
   if(a==='brain-close'){$('#brain').close();return}
   if(a==='brain-dictate'){brainDictate();return}
   if(a==='brain-sort'){const v=($('#brain-in')?.value||'').trim();if(brain.rec){try{brain.rec.stop()}catch{}}brain.text=v;if(!v){brainMsg('Écrivez ou dictez ce que vous avez en tête.');$('#brain-in')?.focus();return}
-    brain.items=brainSort(v);if(!brain.items.length){brainMsg('Je n’ai rien trouvé à ranger. Ajoutez quelques mots.');return}brain.mode='range';drawBrain();$('#brain').scrollTop=0;return}
+    const go=$('[data-act=brain-sort]');if(go){go.disabled=true;go.innerHTML='<span class="spin" aria-hidden="true"></span> Je range…'}
+    let items=null,src='local';if(has('pro')&&cloud.user&&cloud.sb&&state.aiConsent){items=await brainAI(v);if(items&&items.length)src='ia'}
+    if(!items||!items.length)items=brainSort(v);
+    if(!$('#brain').open)return;
+    if(!items.length){if(go){go.disabled=false;go.innerHTML='Ranger pour moi '+ic('arrow',15)}brainMsg('Je n’ai rien trouvé à ranger. Ajoutez quelques mots.');return}
+    brain.items=items;brain.src=src;brain.mode='range';drawBrain();$('#brain').scrollTop=0;return}
   if(a==='brain-del'){brain.items.splice(+b.dataset.i,1);drawBrain();return}
   if(a==='brain-edit'){brain.mode='write';drawBrain();setTimeout(()=>$('#brain-in')?.focus(),40);return}
   if(a==='brain-add'){if(brain.items.length)brainAdd();return}
@@ -2883,12 +2888,24 @@ function drawBrain(){
     <div class="brain-list">${n?groups.map(([name,items],gi)=>`<div class="brain-group m-enter" style="--m-d:${gi*50}ms"><div class="bt-lbl"><span>${name}</span><span class="tnum">${items.length}</span></div><div class="bt-in">${items.map(it=>{const isT=!['rituel','cap','idee'].includes(it.cat),chips=[isT?brainDayLbl(it.date):'',isT&&it.week&&!it.date?'semaine du '+fmt(it.week):'',isT?it.time||'':'',it.priority==='Haute'?'important':'',it.cat==='rituel'?(it.when||'chaque jour'):''].filter(Boolean);
       return `<div class="brain-item"><div style="flex:1;min-width:0"><span class="bt-title">${esc(it.title)}</span>${chips.length?`<div class="brain-chips tnum">${chips.map(c=>`<span>${esc(c)}</span>`).join('')}</div>`:''}</div><button type="button" class="icon-btn" data-act="brain-del" data-i="${it.i}" aria-label="Retirer « ${esc(it.title)} »">${ic('x',15)}</button></div>`}).join('')}</div></div>`).join(''):'<p class="bt-empty">Tout a été retiré. Revenez au texte pour le modifier.</p>'}</div>
     <div class="brain-row"><button type="button" class="btn" data-act="brain-edit">Modifier</button><button type="button" class="btn primary brain-go" data-act="brain-add" ${n?'':'disabled'}>Tout ajouter</button></div>
-    <p class="help" style="margin:12px 0 0">Rangé sur l’appareil, sans rien envoyer.</p>`;
+    <p class="help" style="margin:12px 0 0">${brain.src==='ia'?'Rangé par l’IA. Rien n’est ajouté sans votre accord.':has('pro')&&cloud.user&&!state.aiConsent?'Rangé sur l’appareil. Activez le coach IA dans Réglages pour un tri par l’IA.':'Rangé sur l’appareil, sans rien envoyer.'}</p>`;
+}
+async function brainAI(text){
+  try{
+    const call=cloud.sb.functions.invoke('trier',{body:{text:text.slice(0,4000),today:dateKey(new Date())}});
+    const r=await Promise.race([call,new Promise(res=>setTimeout(()=>res(null),15000))]);
+    const L=r&&!r.error&&Array.isArray(r.data?.items)?r.data.items:null;if(!L)return null;
+    const todayK=dateKey(new Date()),ok=['agenda','aujourdhui','semaine','rituel','cap','idee'];
+    return L.filter(x=>x&&ok.includes(x.cat)&&String(x.title||'').trim()).slice(0,40).map(x=>{
+      const date=/^\d{4}-\d{2}-\d{2}$/.test(x.date||'')?x.date:null,time=/^([01]\d|2[0-3]):[0-5]\d$/.test(x.time||'')?x.time:null;
+      const t=String(x.title).trim().slice(0,160);
+      return{cat:x.cat,title:t.charAt(0).toUpperCase()+t.slice(1),date:date||((x.cat==='aujourdhui'||(x.cat==='agenda'&&time))?todayK:null),week:null,time,priority:'Normale',goal:'',remind:null,when:x.cat==='rituel'&&x.freq&&!/chaque jour/i.test(x.freq)?String(x.freq).slice(0,40):''}});
+  }catch{return null}
 }
 function openBrain(listen){
   if($('#menu').open)$('#menu').close();
   if(brain.rec){try{brain.rec.stop()}catch{}}
-  brain={mode:'write',text:'',items:[],rec:null};drawBrain();
+  brain={mode:'write',text:'',items:[],rec:null,src:'local'};drawBrain();
   if(!$('#brain').open)$('#brain').showModal();
   if(listen)brainDictate();else if(!matchMedia('(pointer:coarse)').matches)setTimeout(()=>$('#brain-in')?.focus(),60);
 }
