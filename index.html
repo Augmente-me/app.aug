@@ -911,6 +911,23 @@ body.m-nav aside nav a.active{background:transparent!important;box-shadow:none!i
 .bt-link{align-self:flex-start;display:inline-flex;align-items:center;gap:6px;min-height:32px;font-size:13px;font-weight:500;color:var(--ink-2);text-decoration:none;background:none;border:0;padding:0;font-family:inherit;cursor:pointer}
 @media (hover:hover) and (pointer:fine){.bt-link:hover{color:var(--ink)}}
 .bt-empty{margin:0;color:var(--muted);font-size:14px;line-height:1.45}
+/* Ce qui se touche est encadré ou plein ; le reste se lit */
+.bt-link{align-self:flex-start;white-space:nowrap;min-height:40px!important;padding:0 16px!important;border:1px solid var(--line-2)!important;border-radius:20px;background:var(--surface-2)!important;color:var(--ink)!important;font-size:14px!important;gap:8px!important;touch-action:manipulation;-webkit-user-select:none;user-select:none;transition:transform 140ms var(--ease-out),border-color 200ms ease}
+.bt-link:active,.bt-addrow:active,.bt-cta:active{transform:scale(.97)}
+.bt-addrow{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;min-height:50px;border:1.5px dashed var(--line-2);border-radius:16px;background:transparent;color:var(--ink);font:inherit;font-size:15px;font-weight:500;cursor:pointer;touch-action:manipulation;-webkit-user-select:none;user-select:none;transition:transform 140ms var(--ease-out),border-color 200ms ease,background-color 200ms ease}
+@media (hover:hover) and (pointer:fine){.bt-addrow:hover{border-style:solid;background:var(--surface-2)}.bt-link:hover{border-color:var(--ink-2)}}
+.bt-cta{width:100%;justify-content:center;min-height:50px;font-size:15px!important}
+.ev-steps{display:flex;flex-wrap:wrap;gap:8px}
+.ev-step{display:inline-flex;align-items:center;gap:8px;padding:8px 12px 8px 10px;border-radius:999px;background:var(--surface-2);font-size:13px;color:var(--ink-2)}
+.ev-step i{width:13px;height:13px;border-radius:50%;border:1.5px solid var(--line-2)}
+.ev-step.ok{color:var(--ink)}
+.bt .seg.energy{display:flex;width:100%;border:0!important;background:none!important;box-shadow:none!important;padding:0;gap:8px;margin-top:0}
+.bt .seg.energy button{flex:1;justify-content:center;min-height:46px;border:1px solid var(--line-2);background:var(--surface-2);color:var(--ink);font-size:14px}
+.bt .seg.energy button[aria-pressed=true]{background:var(--accent);color:var(--on-accent);border-color:var(--accent)}
+.bt textarea,.bt input:not([type=checkbox]){background:var(--surface-2);border-color:var(--line-2)}
+.bt-add{border-color:var(--ink-2)!important}
+.bt-add .icon-btn{flex:none}
+@media (max-width:760px){.shell{padding-bottom:calc(128px + env(safe-area-inset-bottom,0px))!important}}
 .bt-quote{font-family:var(--serif);font-style:italic;font-size:21px;line-height:1.25;margin:0;color:var(--ink-2)}
 .bt .dump-box,.bt .wins{margin-top:4px}
 .m-fresh{animation:m-fresh 1.8s var(--ease-out)}
@@ -2433,6 +2450,7 @@ document.addEventListener('click',async e=>{
   if(a==='prog-add'){progAdd=!progAdd;render();if(progAdd)setTimeout(()=>$('#prog-in')?.focus({preventScroll:true}),40);return}
   if(a==='rit-add'){ritAdd=!ritAdd;render();if(ritAdd)setTimeout(()=>$('#rit-in')?.focus({preventScroll:true}),40);return}
   if(a==='rit-when'){ritWhen=+b.dataset.v||0;b.closest('.bt-whens')?.querySelectorAll('[data-act=rit-when]').forEach(x=>x.setAttribute('aria-pressed',+x.dataset.v===ritWhen));return}
+  if(a==='evening-open'){eveningOpen=!eveningOpen;render();if(eveningOpen)setTimeout(()=>$('#t-soir')?.scrollIntoView({block:'start',behavior:'smooth'}),60);return}
   if(a==='ideas'){ideasSheet();return}
   if(a==='idea-del'){state.ideas=(state.ideas||[]).filter(x=>x.id!==id);save();render();if((state.ideas||[]).length)setTimeout(ideasSheet,60);return}
   if(a==='idea-act'){const x=(state.ideas||[]).find(i=>i.id===id);if(!x)return;const tid=uid();week(monday()).tasks.push({id:tid,title:x.t.slice(0,160),done:false,priority:'Normale',goal:'',day:todayIdx(),time:null,remind:null});state.ideas=state.ideas.filter(i=>i.id!==id);freshIds.add(tid);save();render();toast('Ajoutée au programme du jour');return}
@@ -2661,7 +2679,7 @@ document.addEventListener('visibilitychange',()=>{if(document.visibilityState===
 document.querySelectorAll('[data-close-rem]').forEach(b=>{b.innerHTML=ic('x');b.onclick=()=>$('#rem').close()});
 navigator.storage?.persist?.().catch(()=>{});
 /* ===== Accueil en tuiles : « Vide ta tête », Au programme, rituels, caps ===== */
-let progAdd=false,ritAdd=false,ritWhen=0;const freshIds=new Set();
+let progAdd=false,ritAdd=false,ritWhen=0,eveningOpen=false;const freshIds=new Set();
 const RIT_WHEN=[['Chaque jour',''],['Le matin','Le matin'],['Le soir','Le soir'],['En semaine','Du lundi au vendredi']];
 const DAY_L=['L','M','M','J','V','S','D'];
 const p2=n=>String(n).padStart(2,'0');
@@ -2727,43 +2745,47 @@ function today(){
   t.push(`<section class="card bt"><div class="bt-lbl"><span>Prochain</span>${ic('cal',16)}</div>
     ${nx?`<div style="display:flex;gap:10px;align-items:center"><div class="bt-date tnum"><b>${mon}</b><span>${p2(now.getDate())}</span></div><div style="min-width:0"><div class="tnum" style="font-size:11px;color:var(--muted)">${inLbl}</div><div class="tnum" style="font-size:17px;font-weight:500">${esc(nx.time)}</div></div></div>
       <p class="bt-title" title="${esc(nx.title)}">${esc(nx.title)}</p><p class="tnum" style="margin:0;font-size:11px;color:var(--muted)">${timed.length} rendez-vous aujourd’hui</p>`
-    :`<p class="bt-empty">Rien à l’agenda aujourd’hui. Dites « demain à 10 h… » pour en ajouter.</p>`}</section>`);
+    :`<p class="bt-empty">Rien à l’agenda aujourd’hui.</p><button type="button" class="bt-link" data-act="brain">${ic('plus',14)}Ajouter</button>`}</section>`);
   t.push(`<section class="card bt bt-inv" style="justify-content:space-between"><div class="bt-lbl"><span>Rituels</span><span class="tnum" style="font-size:11px">${nR?Math.round(rp)+' %':'—'}</span></div>
     <div class="bt-ring"><svg viewBox="0 0 92 92" aria-hidden="true"><circle class="trk" cx="46" cy="46" r="38" fill="none" stroke-width="7"/><circle class="bt-arc" cx="46" cy="46" r="38" fill="none" stroke-width="7" pathLength="100" stroke-dasharray="${rp.toFixed(1)} 100" style="opacity:${rp>0?1:0}"/></svg>
       <div class="c"><span class="bt-num" style="font-size:32px" aria-label="${rd} rituels faits sur ${nR}">${rd}</span><span class="tnum" style="font-size:12px;opacity:.6;margin-top:8px" aria-hidden="true">/${nR}</span></div></div>
     <p style="margin:0;font-size:12px;opacity:.75;text-align:center">${nR?(rd===nR?'Tout est fait':(nR-rd)+' rituel'+(nR-rd>1?'s':'')+' restant'+(nR-rd>1?'s':'')):'Aucun rituel'}</p></section>`);
   if(needPlan)t.push(`<section class="card bt s2 plan-cta"><div><p class="eyebrow">${tw===monday()?'Cette semaine':'Semaine prochaine'} · 15 minutes</p><h2>Poser ma semaine</h2><p class="lead">Un regard sur la semaine écoulée, une intention, trois priorités, et chaque action à sa place.</p></div><button class="btn primary" data-act="wizard">${ic('spark',15)}Commencer</button></section>`);
-  t.push(`<section class="card bt s2" id="t-actions"><div class="bt-lbl"><span>Au programme</span><span style="display:flex;align-items:center;gap:10px"><span class="tnum" style="font-size:12px">${dayTasks.length?doneT.length+' / '+dayTasks.length:'0'}</span><button type="button" class="bt-plus" data-act="prog-add" aria-expanded="${progAdd}" aria-label="Ajouter au programme">${ic('plus',16)}</button></span></div>
-    ${progAdd?`<form class="bt-in bt-add" data-form="prog"><label class="sr-only" for="prog-in">Une chose à régler aujourd’hui</label><input id="prog-in" maxlength="160" autocomplete="off" enterkeyhint="done" placeholder="Ex. Appeler le garage à 18 h"><button class="btn primary sm" type="submit">Ajouter</button></form>`:''}
-    ${top.length?`<div>${top.map(x=>taskRow(x,wk)).join('')}</div>`:`<p class="bt-empty">${dayTasks.length?'Tout est fait pour aujourd’hui. Savourez.':'Rien au programme. Touchez + ou videz votre tête, je le placerai ici.'}</p>`}
+  t.push(`<section class="card bt s2" id="t-actions"><div class="bt-lbl"><span>Au programme</span><span class="tnum" style="font-size:12px">${dayTasks.length?doneT.length+' / '+dayTasks.length:''}</span></div>
+    ${top.length?`<div>${top.map(x=>taskRow(x,wk)).join('')}</div>`:`<p class="bt-empty">${dayTasks.length?'Tout est fait pour aujourd’hui. Savourez.':'Rien au programme pour l’instant.'}</p>`}
     ${rest.length?`<p class="tnum" style="margin:0;font-size:12px;color:var(--muted)">+ ${rest.length} autre${rest.length>1?'s':''} aujourd’hui</p><div>${rest.map(x=>taskRow(x,wk)).join('')}</div>`:''}
     ${doneT.length?`<h3 class="cal-h">Déjà fait</h3><div>${doneT.map(x=>taskRow(x,wk)).join('')}</div>`:''}
     ${loose.length?`<h3 class="cal-h">À placer cette semaine</h3>${loose.slice(0,4).map(x=>`<div class="row"><div class="copy"><span class="t">${esc(x.title)}</span><small>Sans jour précis</small></div><button class="btn sm" data-act="move" data-id="${x.id}" data-week="${wk}" data-to="0">Aujourd’hui</button></div>`).join('')}`:''}
+    ${progAdd?`<form class="bt-in bt-add" data-form="prog"><label class="sr-only" for="prog-in">Une chose à régler aujourd’hui</label><input id="prog-in" maxlength="160" autocomplete="off" enterkeyhint="done" placeholder="Ex. Appeler le garage à 18 h"><button class="btn primary sm" type="submit">Ajouter</button><button type="button" class="icon-btn" data-act="prog-add" aria-label="Annuler">${ic('x',15)}</button></form>`
+      :`<button type="button" class="bt-addrow" data-act="prog-add">${ic('plus',16)}Ajouter au programme</button>`}
   </section>`);
-  t.push(`<section class="card bt s2${nR&&rd===nR?' all-done':''}" id="today-rituals"><div class="bt-lbl" id="t-rituels"><span>Rituels du jour</span><span style="display:flex;align-items:center;gap:10px"><span class="tnum" style="font-size:12px">${rd} / ${nR}</span><button type="button" class="bt-plus" data-act="rit-add" aria-expanded="${ritAdd}" aria-label="Ajouter un rituel">${ic('plus',16)}</button></span></div>
+  t.push(`<section class="card bt s2${nR&&rd===nR?' all-done':''}" id="today-rituals"><div class="bt-lbl" id="t-rituels"><span>Rituels du jour</span><span class="tnum" style="font-size:12px">${nR?rd+' / '+nR:''}</span></div>
+    ${nR?`<div>${state.rituals.map(r=>ritualTodayRow(r,wk,ti)).join('')}</div>`:`<p class="bt-empty">Aucun rituel pour l’instant. Un geste simple suffit : lire 10 minutes, marcher, préparer sa journée.</p>`}
     ${ritAdd?`<form class="bt-in bt-add-wrap" data-form="rit"><div class="bt-add"><label class="sr-only" for="rit-in">Un nouveau rituel</label><input id="rit-in" maxlength="80" autocomplete="off" enterkeyhint="done" placeholder="Un geste qui revient… Ex. Lire 10 minutes"><button class="btn primary sm" type="submit">Ajouter</button></div>
-      <div class="bt-whens" role="group" aria-label="Quand ?">${RIT_WHEN.map(([l],i)=>`<button type="button" class="bt-chip" data-act="rit-when" data-v="${i}" aria-pressed="${i===ritWhen}">${l}</button>`).join('')}</div></form>`:''}
-    ${nR?`<div>${state.rituals.map(r=>ritualTodayRow(r,wk,ti)).join('')}</div>`:`<p class="bt-empty">Aucun rituel. Touchez + ou dites « tous les matins dix minutes de lecture ».</p>`}
+      <div class="bt-whens" role="group" aria-label="Quand ?">${RIT_WHEN.map(([l],i)=>`<button type="button" class="bt-chip" data-act="rit-when" data-v="${i}" aria-pressed="${i===ritWhen}">${l}</button>`).join('')}<button type="button" class="bt-chip" data-act="rit-add" style="margin-left:auto">Annuler</button></div></form>`
+      :`<button type="button" class="bt-addrow" data-act="rit-add">${ic('plus',16)}Ajouter un rituel</button>`}
   </section>`);
   if(cap){const c=capInfo(cap);t.push(`<section class="card bt s2"><div class="bt-lbl"><span>Cap</span><span class="tnum" style="font-size:12px">${state.goals.filter(g=>!g.paused).length} en cours</span></div>
     <div class="bt-in" style="padding:14px;display:flex;flex-direction:column;gap:12px"><div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px"><div style="min-width:0;display:flex;flex-direction:column;gap:3px"><span class="bt-title" title="${esc(cap.title)}">${esc(cap.title)}</span><span class="tnum" style="font-size:11px;color:var(--muted)">${num(cap.current)} / ${num(cap.target)} ${esc(cap.unit)}</span></div><span class="bt-num" style="flex:none;font-size:30px">${c.p}<small class="tnum" style="font-size:12px;margin-left:2px">%</small></span></div>
       ${bar(c.p,cap.title)}
       <div style="display:flex;justify-content:space-between;align-items:center;gap:12px"><span style="font-size:12px;color:var(--muted)">Rythme : ${c.s} / ${c.r} cette semaine</span><div class="bt-dots sm" aria-hidden="true">${c.dots}</div></div>
-      <p class="tnum" style="margin:0;font-size:12px;color:var(--ink-2)">${esc(c.line)}</p></div>
+      <p class="${/^À ce rythme/.test(c.line)?'tnum':''}" style="margin:0;font-size:13px;color:var(--ink-2)">${esc(c.line)}</p></div>
     <a class="bt-link" href="#objectifs">Suivre mes caps ${ic('arrow',13)}</a></section>`)}
   else t.push(`<section class="card bt s2"><div class="bt-lbl"><span>Cap</span></div><p class="bt-empty">Aucun cap. Un objectif plus long ? Dites « d’ici juin, je veux… ».</p><button type="button" class="bt-link" data-act="add-goal">Créer un cap ${ic('arrow',13)}</button></section>`);
   t.push(`<section class="card bt" style="justify-content:space-between"><div class="bt-lbl"><span>Régularité</span></div>
     <div style="display:flex;align-items:baseline;gap:6px"><span class="bt-num" style="font-size:40px">${streak}</span><span style="font-size:12px;color:var(--muted)">${streak===0?'Commencez aujourd’hui':streak===1?'jour d’affilée':'jours d’affilée'}</span></div>
     <div class="bt-dots" aria-label="Rituels sur les 7 derniers jours">${l7.map(x=>`<i class="${x?'on':''}"></i>`).join('')}</div></section>`);
   t.push(`<section class="card bt"><div class="bt-lbl"><span>Semaine</span>${ic('grid',16)}</div>
-    <div class="bt-week tnum">${DAY_L.map((l,i)=>{const k=shift(wk,i),has=w.tasks.some(x=>x.day===i);return `<a href="#dashboard" class="${i===ti?'on':''}${has?' has':''}" aria-label="${DAYS_LONG[i]} ${fmt(k)}"><small>${l}</small><span>${new Date(k+'T12:00:00').getDate()}</span></a>`}).join('')}</div>
-    <a class="bt-link" href="#dashboard">Voir la semaine ${ic('arrow',13)}</a></section>`);
-  t.push(`<section class="card bt" style="justify-content:space-between"><div class="bt-lbl"><span>Idées</span>${ic('spark',16)}</div>
+    <div class="bt-week tnum">${DAY_L.map((l,i)=>{const k=shift(wk,i),has=w.tasks.some(x=>x.day===i);return `<a href="#dashboard" class="${i===ti?'on':''}${has?' has':''}" aria-label="${DAYS_LONG[i]} ${fmt(k)}"><small>${l}</small><span>${new Date(k+'T12:00:00').getDate()}</span></a>`}).join('')}</div></section>`);
+  if(ideas.length)t.push(`<section class="card bt s2" style="justify-content:space-between"><div class="bt-lbl"><span>Idées</span>${ic('spark',16)}</div>
     <div style="display:flex;align-items:baseline;gap:6px"><span class="bt-num" style="font-size:36px">${ideas.length}</span><span style="font-size:12px;color:var(--muted)">${ideas.length===1?'idée gardée':'idées gardées'}</span></div>
     <p class="bt-title" style="font-weight:400;font-size:13px;color:var(--ink-2)">${ideas.length?esc(ideas[0].t):'Une envie, un projet ? Dites-le, je le garde ici.'}</p>
     ${ideas.length?`<button type="button" class="bt-link" data-act="ideas">Voir mes idées ${ic('arrow',13)}</button>`:''}</section>`);
-  t.push(`<section class="card bt" style="justify-content:space-between"><div class="bt-lbl"><span>Le rappel</span></div><p class="bt-quote">« ${esc(quoteOfWeek())} »</p></section>`);
-  t.push(`<section class="card bt s2 r2" id="t-soir"><div class="bt-lbl"><span>Ce soir, en une minute</span>${evening?`<span class="pill done">${ic('check',12)}Fait</span>`:ev.n?`<span class="tnum" style="font-size:12px">${ev.n} / 3</span>`:''}</div>
+  const evStep=(ok,l)=>`<span class="ev-step${ok?' ok':''}">${ok?ic('check',13):'<i></i>'}${l}</span>`;
+  if(!eveningOpen)t.push(`<section class="card bt s2" id="t-soir"><div class="bt-lbl"><span>Ce soir, en une minute</span>${evening?`<span class="pill done">${ic('check',12)}Fait</span>`:''}</div>
+    <div class="ev-steps">${evStep(ev.en,'Mon énergie')}${evStep(ev.wi,'Mes victoires')}${evStep(ev.du,'Ce qui pèse')}</div>
+    <button type="button" class="btn ${evening?'':'primary '}bt-cta" data-act="evening-open">${evening?'Revoir mon soir':ev.n?'Continuer mon soir':'Faire le point du soir'}</button></section>`);
+  else t.push(`<section class="card bt s2 r2" id="t-soir"><div class="bt-lbl"><span>Ce soir, en une minute</span><button type="button" class="bt-link" data-act="evening-open" style="min-height:36px">Réduire</button></div>
       <p class="cal-h" style="margin:0">Mon énergie aujourd’hui</p>
       <div class="seg energy" role="group" aria-label="Mon énergie aujourd’hui">${[[1,'Basse'],[2,'Correcte'],[3,'Haute']].map(([v,l])=>`<button type="button" data-act="energy" data-v="${v}" data-week="${wk}" data-day="${ti}" aria-pressed="${en===v}">${l}</button>`).join('')}</div>
       <div class="field wins" data-wins data-week="${wk}" data-day="${ti}"><span>Mes victoires du jour</span>
@@ -2781,7 +2803,7 @@ function today(){
   const sug=suggestCard();if(sug)t.push(`<div class="full">${sug}</div>`);
   dumpMsg='';
   return heading(dateLbl,`Aujourd’hui${state.name?', '+esc(state.name.trim().split(/\s+/)[0]):''}.`,w.intention?`« ${esc(w.intention)} »`:'Trois actions, quelques rituels, et c’est une bonne journée.','')
-  +notices()+`<div class="bento">${t.join('')}</div>`;
+  +`<div class="bento">${t.join('')}</div>`+(notices()?`<div style="margin-top:14px">${notices()}</div>`:'');
 }
 const MONTH_UP=['JANV','FÉVR','MARS','AVR','MAI','JUIN','JUIL','AOÛT','SEPT','OCT','NOV','DÉC'];
 function markFresh(){if(!freshIds.size)return;freshIds.forEach(id=>{const el=document.querySelector(`[data-task="${id}"],[data-ritual="${id}"]`)?.closest('.row');el?.classList.add('m-fresh')});freshIds.clear()}
