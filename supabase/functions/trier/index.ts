@@ -11,6 +11,10 @@ const CORS = {
 const json = (body: unknown, status = 200) =>
   new Response(JSON.stringify(body), { status, headers: { ...CORS, "Content-Type": "application/json" } });
 
+// Clé serveur : ancienne (service_role) ou nouvelle (sb_secret_…)
+const SERVICE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? (() => {
+  try { const k = JSON.parse(Deno.env.get("SUPABASE_SECRET_KEYS") ?? "{}"); return String(Object.values(k)[0] ?? ""); } catch { return ""; }
+})();
 const MODEL = Deno.env.get("TRIER_MODEL") ?? "claude-haiku-5-5";
 const MONTHLY_LIMIT = Number(Deno.env.get("TRIER_LIMITE_MOIS") ?? "600");
 const CATS = ["agenda", "aujourdhui", "semaine", "rituel", "cap", "idee"];
@@ -22,7 +26,7 @@ Deno.serve(async (req) => {
 
   // 1. Qui appelle ?
   const token = (req.headers.get("Authorization") ?? "").replace(/^Bearer\s+/i, "");
-  const admin = createClient(Deno.env.get("SUPABASE_URL")!, Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!);
+  const admin = createClient(Deno.env.get("SUPABASE_URL")!, SERVICE_KEY);
   const { data: auth } = await admin.auth.getUser(token);
   const user = auth?.user;
   if (!user) return json({ error: "Connectez-vous pour utiliser le tri par l’IA." }, 401);
