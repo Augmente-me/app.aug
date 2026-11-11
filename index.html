@@ -2817,14 +2817,45 @@ $('#sheet').addEventListener('close',()=>{$('#sheet-title').textContent='Options
 /* « Vide ta tête » : dictée, tri sur l'appareil, ajout dans la semaine */
 let brain={mode:'write',text:'',items:[],rec:null};
 const BRAIN_CATS=[['agenda','Agenda'],['aujourdhui','Au programme'],['semaine','Cette semaine'],['rituel','Rituels'],['cap','Caps'],['idee','Idées']];
-function brainSplit(text){return String(text||'').replace(/\s+(?:et puis|ensuite|après ça|et aussi)\s+/gi,'. ').split(/(?<=[.!?;])\s+|\n+/).map(s=>s.trim().replace(/^(?:alors|bon|euh|et|puis|aussi|donc)\s+/i,'').replace(/[.;!?…]+$/,'').trim()).filter(s=>s.length>2)}
-function brainClean(t){let s=String(t||'').trim().replace(/^(?:il faut (?:absolument )?que je|faut que je|je dois|je voudrais|j['’]aimerais|je veux|penser à|pense à|ne pas oublier de|n['’]oublie pas de)\s+/i,'').replace(/^id[ée]e(?:\s+de)?\s*:?\s*/i,'').replace(/^(?:tous les (?:jours|matins|soirs)|chaque (?:jour|matin|soir))\s*,?\s*/i,'').replace(/\s+(?:tous les (?:jours|matins|soirs)|chaque (?:jour|matin|soir))$/i,'').trim();
+/* Découpe d'une dictée en éléments, même sans ponctuation */
+const BR_VERBS='rappeler|appeler|acheter|envoyer|réserver|payer|prendre|faire|finir|terminer|préparer|commander|écrire|répondre|ranger|nettoyer|lire|courir|aller|passer|récupérer|déposer|relancer|vérifier|organiser|planifier|réviser|regarder|contacter|confirmer|annuler|imprimer|signer|remplir|inscrire|chercher|trouver|laver|cuisiner|réparer|changer|renouveler|sortir|apporter|offrir|fêter|rencontrer|déclarer|résilier|demander|noter|mettre|poster|publier|filmer|tourner|monter|caler|bloquer|programmer|valider|lancer|rendre|rembourser|virer|régler|trier|jeter|vider|arroser|promener|réviser|télécharger|installer|mettre à jour|repasser|boire|méditer|marcher|nager|dormir|appeler';
+const BR_INTENT="il faut (?:absolument |vraiment )?que je|il faudrait que je|faut que je|je dois|je devrais|je voudrais|j['’]aimerais|je veux|j['’]ai besoin de|penser à|pense à|n['’]oublie pas(?: de)?|ne pas oublier(?: de)?|rappelle-moi(?: de)?|idée(?: de)?|une idée|tous les (?:jours|matins|soirs|lundis|mardis|mercredis|jeudis|vendredis|samedis|dimanches)|chaque (?:jour|matin|soir|semaine)|rendez-vous|rdv|réunion";
+const BR_DATE="(?:après-demain|demain|aujourd['’]hui|ce soir|ce matin|cet après-midi|ce midi|(?:lundi|mardi|mercredi|jeudi|vendredi|samedi|dimanche)(?: prochain)?|la semaine prochaine)";
+const BR_LEAD=new RegExp("^(?:(?:"+BR_INTENT+"|"+BR_DATE+"|à\\s?\\d{1,2}\\s?h\\d{0,2}|\\d{1,2}\\s?h\\d{0,2}|alors|bon|euh|et|puis|donc|ensuite|aussi|le|la|à)(?:\\s+|,\\s*|$))+","i");
+const brCore=t=>String(t||'').trim().replace(BR_LEAD,'').trim();
+const brWords=t=>{const c=brCore(t);return c?c.split(/\s+/).length:0};
+const brHasDate=t=>new RegExp("(?:^|\\s)"+BR_DATE+"(?=\\s|$|[,.])|\\d{1,2}\\s?h","i").test(t);
+function brNormalize(t){return String(t||'').replace(/\b(\d{1,2})\s*heures?(?:\s*(\d{2}))?\b/gi,(m,h,mi)=>h+'h'+(mi||'')).replace(/\b(\d{1,2}):(\d{2})\b/g,'$1h$2').replace(/\bmidi\b(?!\s*\d)/gi,'12h').replace(/[ \t]+/g,' ').trim()}
+function brMerge(parts){const out=[];let carry='';parts.forEach(p=>{p=p.trim();if(!p)return;const x=carry?carry+' '+p:p;if(!brWords(x)){carry=x;return}carry='';out.push(x)});if(carry){if(out.length)out[out.length-1]+=' '+carry;else out.push(carry)}return out}
+function brSplitAt(p,re,shouldSplit){const out=[];let last=0,cur='',m;re.lastIndex=0;
+  while((m=re.exec(p))){const head=p.slice(last,m.index);cur=cur?cur+head:head;if(shouldSplit(cur)){out.push(cur);cur=''}else cur+=m[0];last=m.index+m[0].length;if(m[0]==='')re.lastIndex++}
+  cur+=p.slice(last);if(cur.trim())out.push(cur);return out}
+function brainSplit(text){
+  let parts=brNormalize(text).replace(/\s+(?:et puis|ensuite|après ça|et aussi|sinon|par contre|enfin|et après)\s+/gi,'. ').split(/(?<=[.!?;])\s+|\n+/);
+  parts=brMerge(parts.flatMap(p=>brSplitAt(p,new RegExp("\\s+(?:et\\s+|puis\\s+|aussi\\s+)?(?=(?:"+BR_INTENT+")(?:\\s|$|,))","gi"),cur=>brWords(cur)>=1&&!/(?:^|\s)(?:une|un|mon|ma|mes|bonne)\s*$/i.test(cur))));
+  parts=brMerge(parts.flatMap(p=>brSplitAt(p,new RegExp("\\s+(?:et\\s+|puis\\s+)?(?="+BR_DATE+"(?:\\s|$|,))","gi"),cur=>brHasDate(cur)&&brWords(cur)>=1)));
+  const VERB=new RegExp("^(?:"+BR_VERBS+")$","i"),GLUE=/^(?:de|d|à|pour|le|la|les|l|me|m|te|se|nous|vous|faut|dois|doit|veux|aimerais|voudrais|va|vais|en|y|ne|pas|peux|sans|ou|devrais|penser|pense|oublier|oublie|besoin|faudrait|aller|venir|passer|faire|moi|bien|mieux)$/i;
+  parts=parts.flatMap(p=>{const w=p.split(/\s+/),out=[];let cur=[];
+    w.forEach((tok,i)=>{const x=tok.toLowerCase().replace(/[,;:]/g,''),prev=(w[i-1]||'').toLowerCase().replace(/[,;:]/g,'').replace(/^[jldmtsn]['’]/,'');
+      if(VERB.test(x)&&cur.length){
+        if(/^(?:et|puis|aussi)$/.test(prev)&&brWords(cur.slice(0,-1).join(' '))>=2){cur.pop();out.push(cur.join(' '));cur=[]}
+        else if(!GLUE.test(prev)&&!VERB.test(prev)&&!/^(?:je|il|on|et|puis|aussi)$/.test(prev)&&brWords(cur.join(' '))>=2){out.push(cur.join(' '));cur=[]}}
+      cur.push(tok)});
+    if(cur.length)out.push(cur.join(' '));return out});
+  return brMerge(parts).map(s=>s.trim().replace(/^(?:alors|bon|euh|et|puis|aussi|donc|ensuite|après)\s+/i,'').replace(/[,.;!?…]+$/,'').trim()).filter(s=>s.length>2);
+}
+const BR_CONJ={rappelle:'rappeler',appelle:'appeler',finisse:'finir',fasse:'faire',prenne:'prendre',envoie:'envoyer',achète:'acheter',passe:'passer',aille:'aller',réserve:'réserver',paye:'payer',paie:'payer',prépare:'préparer',commande:'commander',écrive:'écrire',réponde:'répondre',range:'ranger',lise:'lire',relance:'relancer',vérifie:'vérifier',organise:'organiser',termine:'terminer',récupère:'récupérer',dépose:'déposer'};
+function brainClean(t){let s=String(t||'').trim();
+  const CL=new RegExp("^(?:"+BR_INTENT.replace("|rendez-vous|rdv|réunion","")+")\\s*:?\\s*","i");for(let k=0;k<3;k++)s=s.replace(CL,'').replace(/^(?:alors|bon|euh|et|puis|aussi|donc|je|j['’]|me)\s+/i,'').replace(/^id[ée]e(?:\s+de)?\s*:?\s*/i,'').trim();
+  s=s.replace(/\s+(?:tous les (?:jours|matins|soirs)|chaque (?:jour|matin|soir))$/i,'').trim();
+  s=s.replace(/^(\S+)/,w=>BR_CONJ[w.toLowerCase()]||w);
   s=s.replace(/^finisse\b/i,'finir').replace(/^rappelle\b/i,'rappeler').replace(/^appelle\b/i,'appeler');return s.charAt(0).toUpperCase()+s.slice(1)}
 function brainSort(text){
   const todayK=dateKey(new Date());
   return brainSplit(text).map(seg=>{
     const s=seg.toLowerCase(),p=parseQuick(seg);let cat;
-    if(/\b(?:tous les|chaque) (?:jours?|matins?|soirs?|semaines?|lundis?|mardis?|mercredis?|jeudis?|vendredis?|samedis?|dimanches?)\b|\broutine\b|\bhabitude\b/.test(s))cat='rituel';
+    if(/^(?:une\s+)?id[ée]e\b/.test(s))cat='idee';
+    else if(/\b(?:tous les|chaque) (?:jours?|matins?|soirs?|semaines?|lundis?|mardis?|mercredis?|jeudis?|vendredis?|samedis?|dimanches?)\b|\broutine\b|\bhabitude\b/.test(s))cat='rituel';
     else if(/\bd['’]ici\b|\bobjectif\b|\bmon cap\b|(?:j['’]aimerais|je veux|je voudrais) (?:courir|réussir|arriver|perdre|apprendre|lire|lancer|économiser|atteindre)/.test(s))cat='cap';
     else if(/^id[ée]e\b|\bune idée\b|\bun jour\b|\bce serait bien\b/.test(s))cat='idee';
     else if(p.time)cat='agenda';
@@ -2844,12 +2875,12 @@ function drawBrain(){
       <textarea id="brain-in" maxlength="4000" enterkeyhint="done" placeholder="Parlez comme vous pensez : un rendez-vous, une envie, un truc à ne pas oublier…">${esc(brain.text)}</textarea>
       <p class="mic-status" id="brain-status" aria-live="polite" hidden></p>
       <div class="brain-row"><button type="button" class="brain-mic" id="brain-mic" data-act="brain-dictate" aria-pressed="false" aria-label="Dicter">${MIC_SVG}</button><span class="brain-wave" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span><button type="button" class="btn primary brain-go" data-act="brain-sort">Ranger pour moi ${ic('arrow',15)}</button></div>
-      <p class="help" style="margin:12px 0 0">Je range en six familles : agenda, au programme, cette semaine, rituels, caps et idées. Rien n’est ajouté sans votre accord.</p>`;
+      <p class="help" style="margin:12px 0 0">Dites tout d’un trait, même sans pause : je sépare chaque élément et je le range au bon endroit (agenda, au programme, cette semaine, rituels, caps, idées). Rien n’est ajouté sans votre accord.</p>`;
     return;
   }
   const n=brain.items.length,groups=BRAIN_CATS.map(([id,name])=>[name,brain.items.map((it,i)=>({...it,i})).filter(it=>it.cat===id)]).filter(g=>g[1].length);
   b.innerHTML=`<div class="brain-head"><div><h2 id="brain-title">Rangé <em>pour vous.</em></h2><p class="tnum" style="font-size:12px;color:var(--muted)">${n} élément${n>1?'s':''} · vérifiez, retirez, ajoutez</p></div>${close}</div>
-    <div class="brain-list">${n?groups.map(([name,items],gi)=>`<div class="brain-group m-enter" style="--m-d:${gi*50}ms"><div class="bt-lbl"><span>${name}</span><span class="tnum">${items.length}</span></div><div class="bt-in">${items.map(it=>{const chips=[brainDayLbl(it.date),it.week&&!it.date?'semaine du '+fmt(it.week):'',it.time||'',it.priority==='Haute'?'important':'',it.cat==='rituel'?(it.when||'chaque jour'):''].filter(Boolean);
+    <div class="brain-list">${n?groups.map(([name,items],gi)=>`<div class="brain-group m-enter" style="--m-d:${gi*50}ms"><div class="bt-lbl"><span>${name}</span><span class="tnum">${items.length}</span></div><div class="bt-in">${items.map(it=>{const isT=!['rituel','cap','idee'].includes(it.cat),chips=[isT?brainDayLbl(it.date):'',isT&&it.week&&!it.date?'semaine du '+fmt(it.week):'',isT?it.time||'':'',it.priority==='Haute'?'important':'',it.cat==='rituel'?(it.when||'chaque jour'):''].filter(Boolean);
       return `<div class="brain-item"><div style="flex:1;min-width:0"><span class="bt-title">${esc(it.title)}</span>${chips.length?`<div class="brain-chips tnum">${chips.map(c=>`<span>${esc(c)}</span>`).join('')}</div>`:''}</div><button type="button" class="icon-btn" data-act="brain-del" data-i="${it.i}" aria-label="Retirer « ${esc(it.title)} »">${ic('x',15)}</button></div>`}).join('')}</div></div>`).join(''):'<p class="bt-empty">Tout a été retiré. Revenez au texte pour le modifier.</p>'}</div>
     <div class="brain-row"><button type="button" class="btn" data-act="brain-edit">Modifier</button><button type="button" class="btn primary brain-go" data-act="brain-add" ${n?'':'disabled'}>Tout ajouter</button></div>
     <p class="help" style="margin:12px 0 0">Rangé sur l’appareil, sans rien envoyer.</p>`;
